@@ -20,6 +20,7 @@
 //! depends_on: src/sprints/model.ts · src/tasks/new.ts · src/shared/template.ts
 //! impacts:    src/tasks/new.ts · 03_resources/templates/system/sprint/CONTEXT.md
 
+import { template } from '../home/paths.ts'
 import { Command } from 'commander'
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
@@ -28,7 +29,7 @@ import { criticaDoNome, nomeDePasta } from '../tasks/new.ts'
 import { PRIMEIRA, proximoNNN, sprints, sprintsDir } from './model.ts'
 import { doTemplate } from '../shared/template.ts'
 
-const TPL = join(RAIZ, '03_resources/templates/system/sprint')
+const TPL = template('system/sprint')
 /** O teto de palavras do slug da sprint. Uma a mais que a task porque um pacote
  *  de capacidades precisa de uma palavra pra dizer o pacote. */
 const MAX_PALAVRAS = 5

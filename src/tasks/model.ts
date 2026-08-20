@@ -21,7 +21,7 @@ import { frontMatter } from '../runs.ts'
 import { db } from '../shared/db.ts'
 import { pref } from '../shared/schema.ts'
 import { resolvePorPrefixo } from '../shared/resolve.ts'
-import { root as home, store } from '../home/paths.ts'
+import { root as home, store, template } from '../home/paths.ts'
 
 export const RAIZ = home()
 export const PROJETOS = join(RAIZ, '01_projects')
@@ -63,7 +63,7 @@ export const RODANDO = 'in_progress'
  *  CAMINHO — sem ela, `sprints/999_x/tasks/001_y/` e `sprints/999_x/docs/` eram
  *  indistinguíveis para quem varre, e a varredura tinha que adivinhar pelo `NNN_`. */
 export const TASKS = 'tasks'
-export const TPL = join(RAIZ, '03_resources/templates/system/task')
+export const TPL = template('system/task')
 const PREF = 'tasks.project'
 
 export const rel = (p: string) => p.slice(RAIZ.length).replace(/^\//, '')

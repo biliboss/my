@@ -65,7 +65,7 @@ export function repoRoot(from = import.meta.dir): string {
  *  A REEXPORTAÇÃO FICA porque dezenove arquivos já importam daqui, e trocar o import
  *  de todos eles no mesmo commit da mudança de semântica faria o diff esconder a
  *  mudança. `home/paths.ts` é o endereço novo; este é o encaminhamento. */
-export { code as repoRootOf, root as home, trees } from "../home/paths.ts";
+export { code as repoRootOf, root as home, template, trees } from "../home/paths.ts";
 
 /** A filename from human text: lowercase, unaccented, hyphenated, first six words.
  *

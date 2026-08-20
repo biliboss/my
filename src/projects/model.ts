@@ -30,12 +30,12 @@ import { join } from "node:path";
 import { frontMatter } from "../runs.ts";
 import { CEILING_MIN, minutos, semDuration, sprints, tasksSoltas } from "../sprints/model.ts";
 import { ARQUIVO as DONE } from "../tasks/model.ts";
-import { home } from "../shared/file.ts";
+import { home, template } from "../shared/file.ts";
 
 export const RAIZ = home();
 export const PROJETOS = join(RAIZ, "01_projects");
 export const AREAS = join(RAIZ, "02_areas");
-export const TPL = join(RAIZ, "03_resources/templates/system/projects");
+export const TPL = template("system/projects");
 
 export const hoje = () => new Date().toISOString().slice(0, 10);
 

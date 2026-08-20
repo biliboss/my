@@ -19,12 +19,12 @@
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { home } from "../shared/file.ts";
+import { home, template } from "../shared/file.ts";
 import { doTemplate } from "../shared/template.ts";
 
 export const RAIZ = home();
 export const PROJETOS = join(RAIZ, "01_projects");
-export const TPL = join(RAIZ, "03_resources/templates/system/system_design");
+export const TPL = template("system/system_design");
 
 /** Os DOIS docs fixos, na ordem em que são escritos: nome no destino ← nome no
  *  template. `NN_system_design_<fluxo>.md` (02 em diante) não entra aqui de

@@ -102,6 +102,25 @@ export function ensure(name: HomeSystem.ValueObjects.Store): Path {
  *  que existir. Sem duplicata quando ainda são a mesma pasta. */
 export const trees = (): Path[] => (root() === code() ? [root()] : [root(), code()]);
 
+/** UM TEMPLATE, DA CASA SE ELA TIVER, SENÃO DO CÓDIGO.
+ *
+ *  Os moldes de task, sprint, projeto e system_design são do SISTEMA — vêm no
+ *  repositório e ninguém precisa inventá-los pra abrir a primeira task. Mas uma casa
+ *  pode querer os seus, e a precedência é a casa, sempre: o molde é uma decisão de
+ *  quem escreve, não de quem instalou.
+ *
+ *  ISTO NÃO É DUAL-WRITE, é precedência declarada, e a diferença é a regra do
+ *  @CLAUDE.md: o proibido é a cópia pendurada que ninguém sabe qual vale. Aqui a
+ *  ordem está escrita, é a mesma em todo chamador, e a de baixo é semente — ela só
+ *  aparece quando a de cima não existe.
+ *
+ *  Antes de 20/08 não havia escolha a fazer: código e casa eram a mesma pasta, e os
+ *  quatro `TPL` do fonte apontavam pro único `03_resources/templates/` que existia. */
+export function template(rel: string): Path {
+	const mine = join(root(), "03_resources/templates", rel);
+	return existsSync(mine) ? mine : join(code(), "03_resources/templates", rel);
+}
+
 /** MUDA UM STORE DE CASA UMA VEZ SÓ, e nunca apaga a origem.
  *
  *  `_data/agents.json` e `_data/workspaces.json` moravam DENTRO do checkout, e o
