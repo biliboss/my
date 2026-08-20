@@ -7,7 +7,7 @@
 //! work ENDED, and the queue has nowhere to put them. Two axes, two types below.
 //!
 //! implemented: src/tasks/model.ts · src/tasks/new.ts · src/tasks/start.ts · src/tasks/done.ts · src/tasks/claim.ts · src/tasks/list.ts · src/tasks/monitor.ts · src/tasks/check.ts
-//! depends_on:  src/tasks/
+//! depends_on:  src/tasks/ · packages/interfaces/labels.ts
 //! checks:      declared HERE, never imported. `check()` returns `Finding[]` and
 //!              the runner reads it structurally, so a check costs no dependency.
 //!              IMPLEMENTED in `src/tasks/check.ts`.
@@ -22,6 +22,50 @@ export interface Finding {
 	path: string;
 	says: string;
 }
+
+/** WHAT `tasks` DECLARES TO `my-labels` — its two groups, and every name it owns.
+ *
+ *  TWO GROUPS, AND CONFUSING THEM IS THE COMMON MISTAKE. `kind` is WHAT THE WORK IS;
+ *  `service` is HOW THE QUEUE TREATS IT. A bug fix can be expedited and a feature can
+ *  be expedited — they are orthogonal, and folding them into one list is how
+ *  `expedite` ends up competing with `feature` for the same slot on a card.
+ *
+ *  BOTH GROUPS ARE EXCLUSIVE, which is what a `group` means in `my-labels`: a task is
+ *  one kind and gets one class of service. A task that is both `issue` and `feature`
+ *  is two tasks nobody split.
+ *
+ *  `service` IS A POLICY, NEVER A PRIORITY NUMBER — the sentence is `kanban`'s and it
+ *  is why these are words: a queue where everything can be a 1 has no queue. An
+ *  expedite is a DECISION with a name, and the name is what makes it countable and
+ *  arguable later.
+ *
+ *  DECLARED HERE AND NOT IN `labels.ts` on purpose. `my-labels` owns the MECHANIC —
+ *  uniqueness, ownership, the edges — and each package owns its WORDS. A central list
+ *  of everybody's labels is the second store the whole design exists to refuse, and it
+ *  is also what makes a collision report ("who owns `feature`?") answerable.
+ *
+ *  NOT SEALED. The three kinds cover what this house has written so far and a fourth
+ *  is plausible — `chore` and `spike` are both one argument away. `company`'s trio is
+ *  sealed because the three ARE the theory; these three are just the three so far, and
+ *  sealing a set that is merely current turns the next honest addition into a fight. */
+export const LABELS = {
+	kind: {
+		issue: "algo que ESTÁ quebrado e deveria funcionar",
+		feature: "algo que não existe e vai passar a existir",
+		enhancement: "algo que já funciona e vai funcionar melhor",
+	},
+	service: {
+		standard: "entra na fila e espera a vez — o default, e o que não se escreve",
+		expedite: "fura a fila, e alguém decidiu isso com o nome na frente",
+		fixed_date: "tem data que não move, e é a data que manda no lote",
+	},
+} as const;
+
+/** The two groups, as the type a caller narrows on. Closed on purpose here even though
+ *  `my-labels` keeps names open: inside this package the set IS the vocabulary, and an
+ *  unknown kind arriving is a typo, not a new category. */
+export type Kind = keyof typeof LABELS.kind;
+export type Service = keyof typeof LABELS.service;
 
 export declare namespace TaskSystem {
 	export namespace ValueObjects {

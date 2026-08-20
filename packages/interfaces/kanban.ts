@@ -52,7 +52,7 @@
 //!              IMPLEMENTED in `src/kanban/model.ts` (swept by `src/kanban/check.ts`).
 
 import type { Shared } from "./shared";
-import type { Metrics as TaskMetrics, TaskSystem } from "./tasks";
+import type { Metrics as TaskMetrics, Service as TaskService, TaskSystem } from "./tasks";
 
 /** What this system found rotten. Declared here rather than imported: the runner
  *  reads the shape, so owning a check costs no dependency on a hub. */
@@ -101,10 +101,17 @@ export declare namespace KanbanSystem {
 		 *  values, and without exclusivity a card would appear in two rows at once. */
 		export type LabelGroup = string;
 
-		/** Why this card jumps the queue: `standard`, `expedite`, `fixed_date`. Open,
-		 *  and it is a POLICY not a priority number — a queue where everything can be
-		 *  a 1 has no queue. */
-		export type Service = string;
+		/** Why this card jumps the queue. A POLICY, not a priority number — a queue
+		 *  where everything can be a 1 has no queue.
+		 *
+		 *  IT WAS `string` HERE AND THE THREE NAMES LIVED IN THIS COMMENT, which made
+		 *  this file the second store of a vocabulary `tasks` also has. Now it points
+		 *  at the declaration (`tasks.LABELS.service`), and the board SELECTS from what
+		 *  was declared instead of describing it again — the debt `labels.ts` names.
+		 *
+		 *  Open at the end anyway: a board is allowed a class of service this house has
+		 *  not met, and a closed union would drop it silently. */
+		export type Service = TaskService | (string & {});
 	}
 
 	export namespace Entities {
