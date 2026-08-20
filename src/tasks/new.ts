@@ -218,7 +218,7 @@ export function command(): Command {
   return cmd
 }
 
-export function main(argv: string[]): number {
+export async function main(argv: string[]): Promise<number> {
   const cmd = command().exitOverride()
   try {
     cmd.parse(argv, { from: 'user' })
@@ -228,7 +228,7 @@ export function main(argv: string[]): number {
   const [titulo] = cmd.args
   const opts = cmd.opts()
 
-  const { slug, porque } = projetoCorrente(opts.project)
+  const { slug, porque } = await projetoCorrente(opts.project)
   if (!slug)
     return console.error(
       `de que projeto é esta task? passe \`-P <slug>\` (fica lembrado), ou rode de dentro de 01_projects/<slug>/\n  existem: ${projetos().join(', ')}`,
@@ -236,7 +236,7 @@ export function main(argv: string[]): number {
   const dir = join(PROJETOS, slug)
   if (!existsSync(dir))
     return console.error(`projeto não existe: 01_projects/${slug}/ (veio de ${porque})\n  existem: ${projetos().join(', ')}`), 1
-  if (porque !== 'último usado') lembra(slug)
+  if (porque !== 'último usado') await lembra(slug)
 
   const criada = criar(slug, titulo!, opts)
   if ('erro' in criada) return console.error(criada.erro), 1
@@ -256,4 +256,4 @@ export function main(argv: string[]): number {
   return 0
 }
 
-if (import.meta.main) process.exit(main(process.argv.slice(2)))
+if (import.meta.main) main(process.argv.slice(2)).then((c) => process.exit(c))

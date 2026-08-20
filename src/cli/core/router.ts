@@ -22,6 +22,7 @@ import { readFileSync } from "node:fs";
 import { spawn } from "./rec.ts";
 import { SRC, summary, usage, type Node } from "./scan.ts";
 import { VERBS } from "./verbs.ts";
+import { close as closeDb } from "../../home/db.ts";
 
 type Main = (argv: string[]) => number | Promise<number>;
 
@@ -108,6 +109,16 @@ export async function attach(parent: Command, nodes: Node[]): Promise<Command> {
           // processo antes do flush, e `my runs | head` saía vazio — medido em
           // 17/08. O valor dos quatro formatos é justamente o pipe.
           process.exitCode = code;
+          // FECHA O QUE O COMANDO ABRIU. O SurrealDB do `home/db.ts` mantém um
+          // socket vivo, e socket vivo segura o loop do Bun: `my tasks list`
+          // imprimia a lista e FICAVA — 120s de timeout num comando de 300ms
+          // (medido 20/08).
+          //
+          // Fechar, e não `process.exit()`: o comentário acima é da mesma família e
+          // vale aqui em dobro. `exit` com stdout num PIPE mata antes do flush, e
+          // `my runs | head` saía vazio. Encerrar o recurso deixa o processo morrer
+          // sozinho, com o buffer entregue.
+          await closeDb();
         });
       continue;
     }

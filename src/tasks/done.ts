@@ -76,7 +76,7 @@ export function command(): Command {
   return cmd
 }
 
-export function main(argv: string[]): number {
+export async function main(argv: string[]): Promise<number> {
   const cmd = command().exitOverride()
   try {
     cmd.parse(argv, { from: 'user' })
@@ -86,9 +86,9 @@ export function main(argv: string[]): number {
   const [alvo] = cmd.args
   const opts = cmd.opts()
 
-  const { slug, porque } = projetoCorrente(opts.project)
+  const { slug, porque } = await projetoCorrente(opts.project)
   if (!slug) return console.error(`de que projeto? \`-P <slug>\`\n  existem: ${projetos().join(', ')}`), 1
-  if (porque !== 'último usado') lembra(slug)
+  if (porque !== 'último usado') await lembra(slug)
 
   const t = acharTask(slug, alvo!)
   if ('erro' in t) return console.error(t.erro), 1
@@ -224,4 +224,4 @@ export function done(t: Task, opts: { blocked?: string; dropped?: string } = {})
   return { task: t, state: 'done', arquivada: arquivada || undefined, arquivos: sujo.out.split('\n').length, head: head.out, onde }
 }
 
-if (import.meta.main) process.exit(main(process.argv.slice(2)))
+if (import.meta.main) main(process.argv.slice(2)).then((c) => process.exit(c))

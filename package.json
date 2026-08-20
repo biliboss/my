@@ -22,9 +22,10 @@
     "check": "bun run --filter '*' check"
   },
   "dependencies": {
+    "@biliboss/interfaces": "workspace:*",
     "commander": "^15.0.0",
     "drizzle-orm": "^0.45.2",
-    "@biliboss/interfaces": "workspace:*"
+    "surrealdb": "^2.0.8"
   },
   "devDependencies": {
     "drizzle-kit": "^0.31.10",

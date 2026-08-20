@@ -14,12 +14,10 @@
 //! depends_on: src/runs.ts · src/shared/resolve.ts
 //! impacts:    src/tasks/new.ts · src/tasks/list.ts · src/tasks/start.ts · src/tasks/done.ts · src/sprints/model.ts
 
-import { eq } from 'drizzle-orm'
 import { existsSync, mkdirSync, readFileSync, readdirSync, renameSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { frontMatter } from '../runs.ts'
-import { db } from '../shared/db.ts'
-import { pref } from '../shared/schema.ts'
+import { db } from '../home/db.ts'
 import { resolvePorPrefixo } from '../shared/resolve.ts'
 import { root as home, store, template } from '../home/paths.ts'
 
@@ -73,23 +71,34 @@ export const agora = () => new Date().toISOString().replace(/\.\d+Z$/, 'Z')
 /** O projeto corrente, em três degraus, e o primeiro que responde ganha. O
  *  `porque` existe pra o erro ENSINAR: "veio do cwd" e "veio do último usado"
  *  se consertam de formas diferentes. */
-export function projetoCorrente(explicito?: string): { slug?: string; porque: string } {
+export async function projetoCorrente(explicito?: string): Promise<{ slug?: string; porque: string }> {
   if (explicito) return { slug: explicito, porque: '--project' }
   // O `cwd` dentro de `01_projects/<slug>` é o caso em que perguntar seria pedir
   // ao humano o que o shell já respondeu.
   const m = process.cwd().match(/01_projects\/([a-z0-9][a-z0-9_-]*)/)
   if (m) return { slug: m[1], porque: 'cwd' }
-  const guardado = db().select().from(pref).where(eq(pref.key, PREF)).all()[0]
-  if (guardado) return { slug: guardado.value, porque: 'último usado' }
+  const guardado = await lido(PREF)
+  if (guardado) return { slug: guardado, porque: 'último usado' }
   return { porque: 'nada' }
 }
 
-export const lembra = (slug: string) =>
-  db()
-    .insert(pref)
-    .values({ key: PREF, value: slug })
-    .onConflictDoUpdate({ target: pref.key, set: { value: slug } })
-    .run()
+/** UMA PREFERÊNCIA, do SurrealDB. `SELECT *` e não `SELECT value`: `value` é
+ *  PALAVRA RESERVADA no SurrealQL, e `SELECT value FROM pref:x` sai como
+ *  `Unexpected token, expected FROM` — que não parece nome de campo (medido 20/08,
+ *  depois de três diagnósticos errados). */
+async function lido(chave: string): Promise<string | undefined> {
+  const s = await db()
+  const [linhas] = await s.query<[{ value: string }[]]>('SELECT * FROM type::record("pref", $k)', { k: chave })
+  return linhas?.[0]?.value
+}
+
+/** UPSERT, que é a operação que `pref` sempre foi: a chave é natural e escrever
+ *  duas vezes tem que ser escrever uma. No drizzle isso era
+ *  `insert().onConflictDoUpdate()`; aqui é um verbo só. */
+export const lembra = async (slug: string): Promise<void> => {
+  const s = await db()
+  await s.query('UPSERT type::record("pref", $k) SET value = $v', { k: PREF, v: slug })
+}
 
 export type Task = {
   nnn: string
