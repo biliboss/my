@@ -49,6 +49,24 @@ export const KINDS = {
 /** WHICH LENS READS WHAT, and which role loads which lens. Was three paragraphs; the
  *  paragraphs disagreed with each other twice before this became data.
  *
+ *  ── `reads` IS THE SEED, NOT THE DEFINITION (20/08) ────────────────────────
+ *
+ *  A LENS IS A LABEL. `company` declares `hustler · hacker · hipster` sealed — the
+ *  trio IS the theory — and a page belongs to a lens because it WEARS that label, not
+ *  because of which folder it fell into. `my labels wearing hacker` is the lens, and
+ *  it crosses systems for free: a task, a folder and a page can all be `hacker`, and
+ *  no folder list can express that.
+ *
+ *  So `reads` stops being the definition and becomes the SEED — where to go looking
+ *  for pages to label the first time. It stays here because a rule that runs once
+ *  still has to be written down, and because it is the honest record of what the
+ *  folders held on the day the labels were applied.
+ *
+ *  THIS IS THE SAME REFUSAL THAT KILLED `packages/my-hacker`: three READINGS of one
+ *  store, never three stores. A folder list per lens was that mistake one level down
+ *  — the store stayed single, but the READING got frozen into a path, so a page in
+ *  the wrong folder was in the wrong lens forever and nobody could say why.
+ *
  *  THE FIRST VERSION OF THIS CONSTANT WAS ASPIRATIONAL, and measured on 20/08 the same
  *  day it was written: it named nine folders — `references/coding`, `design-system`,
  *  `qa`, `infra`, `product`, `design`, `voice`, `offers`, `clients` — and ZERO existed

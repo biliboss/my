@@ -78,6 +78,56 @@
 //! measured does not enter a contract — `find()` returns database order until somebody
 //! measures it. It is the only unmeasured claim in this file.
 //!
+//! ── LABELLING IS AN EVENT, AND THAT IS THE OTHER HALF OF THE POINT ──────────
+//!
+//! "This got labelled `blocked`" is a FACT something should react to. Once labels are
+//! edges in one store, the bus is already there — and a house that has one bus stops
+//! inventing a second one per system.
+//!
+//! TWO MECHANISMS, MEASURED, AND THEY ARE NOT ALTERNATIVES:
+//!
+//!   `LIVE`   push to whoever is CONNECTED. `db.live(new Table("labeled"))` fires on
+//!            CREATE and DELETE of the edge. Nothing durable: a subscriber that was
+//!            not there missed it, by design.
+//!   `EVENT`  `DEFINE EVENT … WHEN $event = "CREATE" THEN (CREATE outbox …)` — the
+//!            server writes the fact down. It fired on `RELATE`, measured. This is
+//!            what a `my_api` reads on boot to catch up.
+//!
+//! `watch()` is the LIVE one because that is what a CLI wants; the outbox is what an
+//! API wants, and the same edge feeds both. Neither needs a broker.
+//!
+//! **THE `.where()` OF A LIVE QUERY IS IGNORED WHEN GIVEN A STRING**, and this is the
+//! nastiest thing measured all day: `.where("out = label:bug")` does not throw, does
+//! not warn, and delivers EVERY event on the table to a subscriber that believed it
+//! had filtered. In a pub/sub that is every consumer reacting to everything. Only
+//! `surql\`out = ${new RecordId("label","bug")}\`` filters. `match` below exists so a
+//! caller never has to know this — it builds the expression.
+//!
+//! ── THE RULES LIVE IN THE DATABASE, NOT IN THIS INTERFACE ───────────────────
+//!
+//! Measured 20/08, and it changes what `apply()` has to do:
+//!
+//!   `ASSERT`      refuses at write time with a usable message — `means` cannot be
+//!                 empty, and the client stops re-validating it.
+//!   `SCHEMAFULL`  refuses a field nobody declared: a typo becomes an error instead
+//!                 of a new column.
+//!   `DEFAULT`     `at` is `time::now()` on the edge — the client never sends it.
+//!   `TYPE RELATION IN … OUT …`  the edge cannot point at the wrong kind of thing.
+//!
+//! So `apply()` is thin on purpose. A validation written here AND asserted there is
+//! two rules that drift; the one that survives is the one the database enforces.
+//!
+//! ── NATIVE TYPES, NOT STRINGS ───────────────────────────────────────────────
+//!
+//! `at` is `datetime`, not an ISO string — a date kept as text is a date compared with
+//! string `<`. The subject and the label are `record<t>` links, which is what makes
+//! `->` traversal and `FETCH` work at all. A group's membership is a `set<>`, not an
+//! `array<>`: unordered and unique is exactly the rule, and expressing it in the type
+//! means no code enforces it.
+//!
+//! This interface still speaks `Shared.Instant` at its edge because a CLI prints
+//! strings — the STORAGE is native, the boundary is not.
+//!
 //! ── EVERYTHING IS ASYNC, AND THAT IS NOT STYLE ───────────────────────────────
 //!
 //! The first draft of this interface was synchronous. It cannot be: the store is a
@@ -92,6 +142,17 @@
 //! names living in a comment — a second store of a vocabulary `tasks` also had. It now
 //! points at `tasks.LABELS.service`, so the board SELECTS from what was declared
 //! instead of describing it again. That is the shape every other absorption takes.
+//!
+//! SECOND DEBT PAID, same day: `resources.LENSES[*].reads` was a folder list, and a
+//! folder list is a reading FROZEN INTO A PATH — a page in the wrong folder was in the
+//! wrong lens forever, and nobody could say why. A lens is now `wearing(<label>)`, with
+//! `reads` demoted to the seed. It crosses systems for free: a task, a folder and a
+//! page can all be `hacker`, which no folder list can express.
+//!
+//! `kanban` PAID DIFFERENTLY, and the difference is worth reading: it declares its five
+//! column words and NEVER applies them. Declaring buys the word in the flat namespace
+//! so a second `done` is a collision; applying would make this file state, which it
+//! refuses to be. Same registry, opposite use.
 //!
 //! `kanban.Board.labels` is a second store of the same thing. It becomes a SELECTION of
 //! declared labels — the board says which it uses, not what they mean — and this file is
@@ -202,6 +263,38 @@ export declare namespace LabelSystem {
 		conflictsWith?: Label;
 	};
 
+	/** WHO GETS WOKEN. One label, a set of them, a whole group, or everything — the
+	 *  flexibility is the point, because the interesting subscription is rarely one word.
+	 *
+	 *  `any` fires when ANY of them lands; `all` only when the subject ends up wearing
+	 *  every one. The second is the expensive one and it is why this is a TYPE instead
+	 *  of a string: `blocked` alone is noise, `blocked` AND `p1` is a page.
+	 *
+	 *  A string here would also be the bug the header describes — the live `.where()`
+	 *  swallows strings silently, so the caller never hands one over. */
+	export type Match =
+		| { any: LabelName[] }
+		| { all: LabelName[] }
+		| { group: Group }
+		| "everything";
+
+	/** What a subscriber receives. `action` is the EDGE's, not the subject's: a label
+	 *  going on and a label coming off are different news, and collapsing them is how a
+	 *  listener ends up re-running work on an untag. */
+	export interface Event {
+		action: "applied" | "removed";
+		subject: Subject;
+		label: LabelName;
+		at: Shared.Instant;
+	}
+
+	/** The handle. `stop()` and nothing else: a subscription that can only be ended by
+	 *  ending the process is a leak with a heartbeat. */
+	export interface Watch {
+		match: Match;
+		stop(): void;
+	}
+
 	/** THE EDGE. `at` lives on the relation, not on the subject and not on the label —
 	 *  it is a fact about the LINK, and putting it anywhere else makes it a fact about
 	 *  the wrong thing. */
@@ -291,6 +384,19 @@ export interface Labels {
 	 *  DATABASE ORDER, NOT RANKING — see the header. `search::score()` measured 0 while
 	 *  the row matched, and a ranking nobody measured does not belong in a contract. */
 	find(q: LabelSystem.Query, system?: string): Promise<LabelSystem.Hit[]>;
+
+	// ─── LISTENING ───────────────────────────────────────────────────────────
+
+	/** WAKES ON A LABEL. Returns the handle, because a subscription with no off switch
+	 *  means the only way to stop is killing the process that also holds the CLI.
+	 *
+	 *  THE FILTER IS BUILT HERE, NEVER PASSED AS A STRING — see the header. A live
+	 *  `.where()` given a string is ignored in silence, and a subscriber that believes
+	 *  it filtered gets every event on the table. */
+	watch(
+		match: LabelSystem.Match,
+		on: (e: LabelSystem.Event) => void,
+	): Promise<LabelSystem.Watch>;
 
 	/** WHAT SHOWS UP ALONGSIDE this label. Two edges out, which is what a graph gives for
 	 *  free and a column cannot give at all.

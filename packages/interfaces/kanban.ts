@@ -61,6 +61,48 @@ export interface Finding {
 	says: string;
 }
 
+/** WHAT `kanban` DECLARES TO `my-labels` — the five words it owns.
+ *
+ *  DECLARING IS NOT APPLYING, and this file is the reason that distinction exists.
+ *  `labels.ts` refuses to be state — *"a thing labelled `done` is not done"* — and a
+ *  column IS state. Both hold, because these two verbs are different things:
+ *
+ *    `declare`  kanban OWNS the word `done` in the flat namespace. Nobody else can
+ *               declare a different `done` without a collision finding.
+ *    `apply`    hanging `done` on a card. Kanban does NOT do this — a card's column
+ *               is where it SITS, and the place is the state.
+ *
+ *  So the five are registered and never applied. It looks like ceremony until the day
+ *  another package declares `ready` meaning "the client approved it" — and then the
+ *  collision is a conversation instead of two months of two meanings under one word.
+ *
+ *  THE FIVE ARE THE FLOW, NOT THE FOLDERS. `tasks.Place` is
+ *  `backlog · tasks · in_progress · done` because that is what a directory can be
+ *  named; this is what a WALL is called. `ready` and `doing` have no folder and are
+ *  the two that matter most to read — the queue between commitment and work, and the
+ *  work itself. A board that maps them onto four folders loses `ready`, which is
+ *  exactly where a queue tells you it is stuck.
+ *
+ *  EXCLUSIVE, as `group` means in `my-labels`: a card is in one column. That is the
+ *  one structural fact a wall has, and it is why this is a group rather than five
+ *  loose words.
+ *
+ *  NOT SEALED. A board is allowed a sixth column — `review` is one argument away, and
+ *  a house that seals its wall shape is telling every future board it is wrong. */
+export const LABELS = {
+	column: {
+		inbox: "chegou e ninguém olhou ainda — a fila de quem pede",
+		backlog: "olhado e aceito, esperando a vez",
+		ready: "comprometido: vai ser puxado a seguir",
+		doing: "alguém está nisto agora",
+		done: "acabou, e a prova está no lugar",
+	},
+} as const;
+
+/** The columns as a type. Closed HERE even though `my-labels` keeps names open: inside
+ *  this package the five ARE the wall, and a sixth arriving unannounced is a typo. */
+export type ColumnName = keyof typeof LABELS.column;
+
 export declare namespace KanbanSystem {
 	export namespace ValueObjects {
 		/** `my-teams-v1` — the board, and the folder under `01_projects/`. The name a
