@@ -1,0 +1,39 @@
+{
+  "name": "@biliboss/my-graph",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@heroui/react": "catalog:",
+    "cytoscape": "catalog:",
+    "cytoscape-cola": "^2.5.1",
+    "framer-motion": "catalog:",
+    "next": "16.3.1",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "webcola": "^3.4.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/cytoscape": "catalog:",
+    "@types/node": "^20",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "tailwindcss": "^4",
+    "typescript": "catalog:"
+  },
+  "ignoreScripts": [
+    "sharp",
+    "unrs-resolver"
+  ],
+  "trustedDependencies": [
+    "sharp",
+    "unrs-resolver"
+  ],
+  "description": "Draws what depends on what, read straight from the code.",
+  "license": "MIT"
+}

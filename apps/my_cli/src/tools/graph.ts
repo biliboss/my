@@ -1,7 +1,7 @@
 #!/usr/bin/env bun
 //! O viewer do grafo: o LINK de uma leitura, se tem alguém servindo, e abrir.
 //!
-//! `github.com/biliboss/my-graph` — nosso código, release DELE.
+//! `apps/my-graph` no monorepo — nosso código, ao lado do nosso.
 //!
 //!     my tools graph url                          o grafo como ele abre
 //!     my tools graph url --open shared,tools      dois arquivos abertos em anel
@@ -18,14 +18,14 @@
 //! PARÂMETRO NO DEFAULT É OMITIDO, e não é economia de bytes: o `serialize()` de
 //! lá faz exatamente isso, e uma URL que escreve `d=comfortable` à mão passa a
 //! carregar uma escolha que ninguém fez — no dia em que o default de lá mudar,
-//! ela congela o antigo. Os defaults estão em `~/src/my-graph/lib/viewer-state.ts`
+//! ela congela o antigo. Os defaults estão em `apps/my-graph/lib/viewer-state.ts`
 //! (`comfortable`, `monokai`, sem externals, sem hub escondido) e são DELE.
 //!
 //! `up()` é async e `url()` não: perguntar se alguém serve é falar com um
 //! programa de fora, montar um link é aritmética de string. Falha de fora aqui é
 //! EVENTO — `up()` devolve `false` pra servidor no chão, e nunca joga.
 //!
-//! depends_on: ~/src/my-graph/lib/viewer-state.ts
+//! depends_on: apps/my-graph/lib/viewer-state.ts
 //! impacts:    src/interfaces/tools.ts · src/tools/check.ts
 
 import { flag } from "../shared/gh.ts";
@@ -117,13 +117,13 @@ export async function main(argv: string[]): Promise<number> {
 		const servindo = await up();
 		// Exit 1 quando está no chão: é o que deixa `my tools graph up && …` valer,
 		// e é a mesma convenção dos checks desta casa.
-		console.log(servindo ? `up ${BASE}` : `down ${BASE} — o Next de ~/src/my-graph não está em :4173`);
+		console.log(servindo ? `up ${BASE}` : `down ${BASE} — o Next de apps/my-graph não está em :4173`);
 		return servindo ? 0 : 1;
 	}
 
 	if (verbo === "open") {
 		if (!(await up())) {
-			console.error(`my tools graph open: ninguém servindo em ${BASE} — suba o viewer em ~/src/my-graph`);
+			console.error(`my tools graph open: ninguém servindo em ${BASE} — suba o viewer: cd apps/my-graph && bun run dev --port 4173`);
 			return 1;
 		}
 		const r = open(view);
