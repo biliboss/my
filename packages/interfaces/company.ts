@@ -38,10 +38,10 @@
 //! needs a hipster or it ships correct and unloved.
 //!
 //! AND THIS IS WHAT MAKES THE TRIO LOAD-BEARING INSTEAD OF DECORATIVE: every tear at
-//! every seam is an ABSENCE of one area. `Tear` and `Area` are the same fact read from
+//! every seam is an ABSENCE of one role. `Tear` and `Role` are the same fact read from
 //! two sides — which is why `Gap` carries `missing` and it is not optional.
 //!
-//! AN AREA IS NOT A TEAM, A FOLDER OR A PACKAGE. `resources.ts` already refused this
+//! A ROLE IS NOT A TEAM, A FOLDER OR A PACKAGE. `resources.ts` already refused this
 //! one level down — *"three READINGS of one store, never three stores"* — and the
 //! refusal holds here for the same reason: split the company BY audience and the same
 //! promise gets written three times and drifts twice.
@@ -94,12 +94,20 @@ export declare namespace CompanySystem {
 	export type Trio = "vender" | "entregar" | "amar";
 
 	/** THE SECOND AXIS, and closed for the same reason `Trio` is: three is the claim.
-	 *  Credit is Reid Hoffman's; the rotation from people to processes is this project's.
+	 *
+	 *  THE WORD IS `role` BECAUSE O2 ALREADY USES IT — there, work is *"addressed to a
+	 *  role, never to an agent"*, and the graph carries an `o2:role` node. A second word
+	 *  for the same unit is a fork of the vocabulary, not a synonym.
+	 *
+	 *  Lineage: popularised by Reid Hoffman; the one peer-reviewed anchor is Rudic,
+	 *  Hübner & Baum, *Journal of Business Venturing Insights* 15 (2021). It is a
+	 *  practitioner framework, NOT a standardised academic construct — worth saying here
+	 *  so nobody later cites this file as evidence it is one.
 	 *
 	 *  · `hustler` — what it is worth, and to whom. The offer, the price, the promise.
 	 *  · `hacker`  — whether it can be built, and why it broke last time.
 	 *  · `hipster` — whether it is worth building, and how it should feel. */
-	export type Area = "hustler" | "hacker" | "hipster";
+	export type Role = "hustler" | "hacker" | "hipster";
 
 	/** Anything below the trio. Open, because the sub-processes are the part each company
 	 *  owns; a closed set here would tell a house its way of working is invalid. */
@@ -110,11 +118,11 @@ export declare namespace CompanySystem {
 		label: string;
 		/** Absent only on the three. Everything else hangs off something. */
 		parent?: ProcessId;
-		/** WHICH AREA CARRIES IT. One, not a list: a sub-process that leans on all three
+		/** WHICH ROLE CARRIES IT. One, not a list: a sub-process that leans on all three
 		 *  equally has not been cut finely enough, and "everyone owns it" is the shape
 		 *  ownership takes right before nobody does. Absent on the three — a process is
 		 *  made of all three by definition, which is the whole 3×3. */
-		area?: Area;
+		role?: Role;
 		/** Written by this house rather than adopted from the shipped set. These are the
 		 *  ones worth reading first — the rest are everybody's. */
 		own: boolean;
@@ -163,7 +171,7 @@ export declare namespace CompanySystem {
 	/** THE FOUR WAYS A SEAM TEARS. Each belongs to exactly one seam, and the fourth is the
 	 *  reason the ring exists:
 	 *
-	 *  · `oversold`   claimed more than was delivered — `vender→entregar`, and the area
+	 *  · `oversold`   claimed more than was delivered — `vender→entregar`, and the role
 	 *                 that was absent is `hacker`: the promise outran what is buildable
 	 *  · `undersold`  delivered more than was claimed — `hustler` missing: the value is
 	 *                 real, invisible, and never becomes a reason to buy
@@ -179,10 +187,10 @@ export declare namespace CompanySystem {
 	export interface Gap {
 		seam: Seam;
 		tear: Tear;
-		/** WHICH AREA WAS ABSENT. Required, and derivable from `tear` — it is stated
+		/** WHICH ROLE WAS ABSENT. Required, and derivable from `tear` — it is stated
 		 *  anyway because the name of the tear says what happened and this says who was
 		 *  not in the room, and only the second one can be fixed on Monday. */
-		missing: Area;
+		missing: Role;
 		claim: Claim["id"];
 		promised: string;
 		delivered?: string;
