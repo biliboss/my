@@ -17,6 +17,7 @@ the context it needs.
 |---|---|
 | **my** | the system: local-first, plain text as interface, the human is the gate |
 | [my-graph](https://github.com/biliboss/my-graph) | the X-ray: draws who depends on whom, read from the code |
+| [my-company](https://github.com/biliboss/my-company) | the theory: the three processes every company depends on |
 
 ## Public page
 

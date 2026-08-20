@@ -283,11 +283,11 @@ function App() {
         <div className="shell section fit-grid">
           <div>
             <div className="section-kicker">07 / da mesma família</div>
-            <h2>my é o sistema.<br />my-graph é a radiografia.</h2>
+            <h2>my é o sistema.<br />my-graph é a radiografia.<br />my-company é a teoria.</h2>
             <p className="lead">Mesma casa, mesma disciplina: texto puro como interface, cada saída é superfície de edição, o humano é o portão.</p>
             <a href="https://biliboss.github.io/my-graph/" target="_blank" rel="noreferrer" className="family-link">Conhecer o my-graph <Arrow /></a>
           </div>
-          <div className="fit-columns">
+          <div className="fit-columns three">
             <div className="fit-column yes">
               <span>MY — O SISTEMA</span>
               <p>Sistema operacional pessoal local-first</p>
@@ -300,7 +300,14 @@ function App() {
               <p>Nasceu dentro do my e virou ferramenta própria</p>
               <p>Lê interface.ts e desenha quem depende de quem</p>
               <p>A primeira árvore desenhada foi a do próprio my</p>
-              <p>biliboss.github.io/my-graph</p>
+              <p><a href="https://biliboss.github.io/my-graph/" target="_blank" rel="noreferrer">biliboss.github.io/my-graph</a></p>
+            </div>
+            <div className="fit-column fam">
+              <span>MY-COMPANY — A TEORIA</span>
+              <p>Os três processos de que toda empresa depende</p>
+              <p>A landing veio antes do projeto — de propósito</p>
+              <p>O grafo vivo desenha a empresa enquanto você rola</p>
+              <p><a href="https://biliboss.github.io/my-company/" target="_blank" rel="noreferrer">biliboss.github.io/my-company</a></p>
             </div>
           </div>
         </div>
@@ -318,7 +325,7 @@ function App() {
       <footer className="footer shell">
         <a className="brand" href="#top"><span className="brand-mark">m</span><span>my</span></a>
         <p>Local-first personal operating system.</p>
-        <div><a href="https://biliboss.github.io/my-graph/" target="_blank" rel="noreferrer">Família my-graph <Arrow /></a><a href="https://arxiv.org/html/2603.16021v2" target="_blank" rel="noreferrer">Paper ICM <Arrow /></a><a href="https://github.com/biliboss/my" target="_blank" rel="noreferrer">Código <Arrow /></a></div>
+        <div><a href="https://biliboss.github.io/my-graph/" target="_blank" rel="noreferrer">Família my-graph <Arrow /></a><a href="https://biliboss.github.io/my-company/" target="_blank" rel="noreferrer">Família my-company <Arrow /></a><a href="https://arxiv.org/html/2603.16021v2" target="_blank" rel="noreferrer">Paper ICM <Arrow /></a><a href="https://github.com/biliboss/my" target="_blank" rel="noreferrer">Código <Arrow /></a></div>
       </footer>
     </main>
   );
