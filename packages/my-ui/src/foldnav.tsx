@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 //! os PASSOS internos de uma dobra rolável (marcadores invisíveis posicionados
 //! ao longo dela). Sem isso, `j` pularia a demonstração inteira de uma vez.
 //!
-//! Padrão da família my: my · my-graph · my-company · my-kanban.
+//! Padrão da família my, e por isso mora aqui e não em cada landing.
 
 /** Um teclado só é atalho quando ninguém está escrevendo. */
 function typingInside(el: EventTarget | null) {

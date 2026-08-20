@@ -1,0 +1,4 @@
+/*! my-company — o que é SÓ deste produto.
+ *  Tokens, casca e dobra vêm de `@biliboss/my-ui/tokens.css`. */
+/* O fundo para ONDE a legenda começa: nó atrás de card é nó que não existe. */
+.story-canvas { position: absolute; inset: 0 0 260px; transform: translate3d(0, calc(var(--p) * -34px), 0); }

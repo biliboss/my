@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="pt-BR" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#15141b" />
+    <title>my-graph — A arquitetura lida do código, não da memória</title>
+    <meta name="description" content="Aponte para uma árvore de sistemas e veja quem depende de quem. Cada aresta cita a origem, cada figura carimba quando foi gerada. Nenhuma seta desenhada à mão." />
+    <meta property="og:title" content="my-graph — A arquitetura lida do código, não da memória" />
+    <meta property="og:description" content="Seta sólida é import. Tracejada é comentário. Pálido é rascunho. Um diagrama que não consegue mentir sem deixar rastro." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://biliboss.github.io/my-graph/" />
+    <meta property="og:site_name" content="my-graph" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:image" content="https://biliboss.github.io/my-graph/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="my-graph — grafo de dependências lido do código-fonte" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://biliboss.github.io/my-graph/og.png" />
+    <link rel="canonical" href="https://biliboss.github.io/my-graph/" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareSourceCode",
+      "name": "my-graph",
+      "description": "Draws what depends on what, read straight from the code. Every edge cites its source; a stale picture is detectable.",
+      "codeRepository": "https://github.com/biliboss/my-graph",
+      "programmingLanguage": "TypeScript",
+      "license": "https://opensource.org/licenses/MIT",
+      "author": { "@type": "Person", "name": "Gabriel", "url": "https://github.com/biliboss" }
+    }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

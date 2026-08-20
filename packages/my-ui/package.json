@@ -1,0 +1,63 @@
+{
+  "name": "@biliboss/my-ui",
+  "version": "0.1.0",
+  "description": "The design system the my family shares: two themes, the page shell, the parallax fold, and j/k fold navigation.",
+  "license": "MIT",
+  "author": "Gabriel (biliboss)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/biliboss/my-ui.git"
+  },
+  "homepage": "https://github.com/biliboss/my-ui#readme",
+  "keywords": [
+    "design-system",
+    "heroui",
+    "react",
+    "parallax",
+    "scrollytelling",
+    "my-family"
+  ],
+  "type": "module",
+  "sideEffects": [
+    "*.css"
+  ],
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./graph": {
+      "types": "./dist/graph.d.ts",
+      "default": "./dist/graph.js"
+    },
+    "./tokens.css": "./dist/tokens.css"
+  },
+  "peerDependencies": {
+    "@heroui/react": ">=3",
+    "cytoscape": ">=3",
+    "react": ">=19",
+    "react-dom": ">=19"
+  },
+  "peerDependenciesMeta": {
+    "cytoscape": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@heroui/react": "catalog:",
+    "@types/cytoscape": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "cytoscape": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "typescript": "catalog:"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json && cp src/tokens.css dist/tokens.css",
+    "check": "tsc -p tsconfig.json --noEmit"
+  }
+}

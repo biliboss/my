@@ -1,10 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { Button, Card, CardContent, Chip, Input } from "@heroui/react";
-import { FoldNav } from "./foldnav";
+import { Family, FoldNav, ThemeSwitch, useTheme } from "@biliboss/my-ui";
 import linksJson from "./data/icm-links.json";
 import bibliography from "./data/icm-bibliography.json";
 
-type Theme = "aura" | "tokyo";
 type LinkItem = {
   title: string;
   url: string;
@@ -35,18 +34,11 @@ function Arrow({ down = false }: { down?: boolean }) {
 }
 
 function App() {
-  const [theme, setTheme] = useState<Theme>(() =>
-    (localStorage.getItem("my-theme") as Theme) || "aura",
-  );
+  const { theme, setTheme } = useTheme();
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("all");
   const [expanded, setExpanded] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-
-  useEffect(() => {
-    document.documentElement.dataset.theme = theme;
-    localStorage.setItem("my-theme", theme);
-  }, [theme]);
 
   const filteredLinks = useMemo(() => {
     const needle = query.trim().toLocaleLowerCase("pt-BR");
@@ -78,10 +70,7 @@ function App() {
           <a href="#familia">Família</a>
           <a href="https://github.com/biliboss/my" target="_blank" rel="noreferrer">GitHub <Arrow /></a>
         </div>
-        <div className="theme-switch" aria-label="Tema visual">
-          <button className={theme === "aura" ? "active" : ""} onClick={() => setTheme("aura")}>Aura</button>
-          <button title="Tokyo Night" className={theme === "tokyo" ? "active" : ""} onClick={() => setTheme("tokyo")}>Tokyo</button>
-        </div>
+        <ThemeSwitch theme={theme} setTheme={setTheme} />
       </nav>
 
       <header className="hero shell" id="top" data-fold>
@@ -281,45 +270,16 @@ function App() {
         </div>
       </section>
 
-      <section className="fit-section" id="familia" data-fold>
-        <div className="shell section fit-grid">
-          <div>
-            <div className="section-kicker">07 / da mesma família</div>
-            <h2>my é o sistema.<br />my-graph é a radiografia.<br />my-company é a teoria.<br />my-kanban é o quadro.</h2>
-            <p className="lead">Mesma casa, mesma disciplina: texto puro como interface, cada saída é superfície de edição, o humano é o portão.</p>
-            <a href="https://biliboss.github.io/my-graph/" target="_blank" rel="noreferrer" className="family-link">Conhecer o my-graph <Arrow /></a>
-          </div>
-          <div className="fit-columns four">
-            <div className="fit-column yes">
-              <span>MY — O SISTEMA</span>
-              <p>Sistema operacional pessoal local-first</p>
-              <p>Pastas e contratos como arquitetura</p>
-              <p>Cada etapa deixa um artefato legível</p>
-              <p>github.com/biliboss/my</p>
-            </div>
-            <div className="fit-column fam">
-              <span>MY-GRAPH — A RADIOGRAFIA</span>
-              <p>Nasceu dentro do my e virou ferramenta própria</p>
-              <p>Lê interface.ts e desenha quem depende de quem</p>
-              <p>A primeira árvore desenhada foi a do próprio my</p>
-              <p><a href="https://biliboss.github.io/my-graph/" target="_blank" rel="noreferrer">biliboss.github.io/my-graph</a></p>
-            </div>
-            <div className="fit-column fam">
-              <span>MY-COMPANY — A TEORIA</span>
-              <p>Os três processos de que toda empresa depende</p>
-              <p>A landing veio antes do projeto — de propósito</p>
-              <p>O grafo vivo desenha a empresa enquanto você rola</p>
-              <p><a href="https://biliboss.github.io/my-company/" target="_blank" rel="noreferrer">biliboss.github.io/my-company</a></p>
-            </div>
-            <div className="fit-column fam">
-              <span>MY-KANBAN — O QUADRO</span>
-              <p>O mesmo conjunto de cards, várias perguntas</p>
-              <p>Rótulo chave:valor vira coluna, sem mover card</p>
-              <p><a href="https://biliboss.github.io/my-kanban/" target="_blank" rel="noreferrer">biliboss.github.io/my-kanban</a></p>
-            </div>
-          </div>
-        </div>
-      </section>
+      <Family
+        self="my"
+        kicker="07 / da mesma família"
+        title="my é o sistema."
+        lead={
+          <>
+            Mesma casa, mesma disciplina: texto puro como interface, cada saída é superfície de edição, o humano é o portão.
+          </>
+        }
+      />
 
       <section className="shell final-cta" data-fold>
         <span className="section-kicker">O SISTEMA COMEÇA VISÍVEL</span>

@@ -1,4 +1,26 @@
 {
+  "name": "my",
+  "private": true,
+  "workspaces": {
+    "packages": ["packages/*", "apps/*"],
+    "catalog": {
+      "@heroui/react": "3.2.4",
+      "@types/react": "19.2.2",
+      "@types/react-dom": "19.2.2",
+      "@vitejs/plugin-react": "5.0.4",
+      "cytoscape": "3.34.1",
+      "@types/cytoscape": "3.21.9",
+      "framer-motion": "13.1.1",
+      "react": "19.2.0",
+      "react-dom": "19.2.0",
+      "typescript": "5.9.3",
+      "vite": "7.1.12"
+    }
+  },
+  "scripts": {
+    "build": "bun run --filter './apps/*' build",
+    "check": "bun run --filter '*' check"
+  },
   "dependencies": {
     "commander": "^15.0.0",
     "drizzle-orm": "^0.45.2"
