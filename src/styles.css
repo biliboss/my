@@ -243,3 +243,8 @@ a.source-row:hover { background: color-mix(in srgb, var(--primary) 5%, transpare
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+
+/* ── família: cross-link para o my-graph ───────────────────────────────────── */
+.family-link { display: inline-block; margin-top: 34px; padding: 14px 22px; border-radius: 12px; background: var(--bg-deep); color: var(--text); font-weight: 750; font-size: 15px; transition: .18s ease; }
+.family-link:hover { background: var(--primary); color: #fff; transform: translateY(-2px); }
+.fit-column.fam span { color: #1f7a63; }

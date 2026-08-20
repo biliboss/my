@@ -73,6 +73,7 @@ function App() {
           <a href="#metodo">Método</a>
           <a href="#evidencia">Evidência</a>
           <a href="#fontes">Fontes</a>
+          <a href="#familia">Família</a>
           <a href="https://github.com/biliboss/my" target="_blank" rel="noreferrer">GitHub <Arrow /></a>
         </div>
         <div className="theme-switch" aria-label="Tema visual">
@@ -278,6 +279,33 @@ function App() {
         </div>
       </section>
 
+      <section className="fit-section" id="familia">
+        <div className="shell section fit-grid">
+          <div>
+            <div className="section-kicker">07 / da mesma família</div>
+            <h2>my é o sistema.<br />my-graph é a radiografia.</h2>
+            <p className="lead">Mesma casa, mesma disciplina: texto puro como interface, cada saída é superfície de edição, o humano é o portão.</p>
+            <a href="https://biliboss.github.io/my-graph/" target="_blank" rel="noreferrer" className="family-link">Conhecer o my-graph <Arrow /></a>
+          </div>
+          <div className="fit-columns">
+            <div className="fit-column yes">
+              <span>MY — O SISTEMA</span>
+              <p>Sistema operacional pessoal local-first</p>
+              <p>Pastas e contratos como arquitetura</p>
+              <p>Cada etapa deixa um artefato legível</p>
+              <p>github.com/biliboss/my</p>
+            </div>
+            <div className="fit-column fam">
+              <span>MY-GRAPH — A RADIOGRAFIA</span>
+              <p>Nasceu dentro do my e virou ferramenta própria</p>
+              <p>Lê interface.ts e desenha quem depende de quem</p>
+              <p>A primeira árvore desenhada foi a do próprio my</p>
+              <p>biliboss.github.io/my-graph</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section className="shell final-cta">
         <span className="section-kicker">O SISTEMA COMEÇA VISÍVEL</span>
         <h2>Não terceirize sua memória<br />para uma caixa-preta.</h2>
@@ -290,7 +318,7 @@ function App() {
       <footer className="footer shell">
         <a className="brand" href="#top"><span className="brand-mark">m</span><span>my</span></a>
         <p>Local-first personal operating system.</p>
-        <div><a href="https://arxiv.org/html/2603.16021v2" target="_blank" rel="noreferrer">Paper ICM <Arrow /></a><a href="https://github.com/biliboss/my" target="_blank" rel="noreferrer">Código <Arrow /></a></div>
+        <div><a href="https://biliboss.github.io/my-graph/" target="_blank" rel="noreferrer">Família my-graph <Arrow /></a><a href="https://arxiv.org/html/2603.16021v2" target="_blank" rel="noreferrer">Paper ICM <Arrow /></a><a href="https://github.com/biliboss/my" target="_blank" rel="noreferrer">Código <Arrow /></a></div>
       </footer>
     </main>
   );
