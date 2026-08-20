@@ -1,11 +1,11 @@
-//! `my-canvas` — DRAFT. A base de DESKTOP da família. Tipos só, nada atrás disto.
+//! `my-browser` — DRAFT. A base de DESKTOP da família. Tipos só, nada atrás disto.
 //!
 //! ── SOZINHO ELE NÃO TEM VALOR, e é por isso que é `packages/` ──────────────────
 //!
 //! Um `apps/*` é uma coisa que alguém abre. Este não é: ninguém quer "abrir o
-//! canvas". O que se quer é o `my-graph` VIRANDO aplicativo, o `my-kanban` com
+//! browser". O que se quer é o `my-graph` VIRANDO aplicativo, o `my-kanban` com
 //! ícone no Dock, uma pergunta do `my` na frente do que a pessoa está fazendo. O
-//! canvas é o chão dos três — some ele e cada um reescreve janela do seu jeito, que
+//! browser é o chão dos três — some ele e cada um reescreve janela do seu jeito, que
 //! é exatamente o estado de onde esta casa está saindo.
 //!
 //! QUATRO JANELAS EXISTIAM, e TER QUATRO era o problema, nunca qual delas: `askuser`
@@ -13,7 +13,7 @@
 //! desenhado em `packages/interfaces/tools.ts` que nunca virou código. Este arquivo só se
 //! paga se os quatro morrerem — enquanto não morrerem, ele é o quinto.
 //!
-//! O CORTE VEM DO `askuser`, e estava escrito lá antes de existir canvas: *"a janela
+//! O CORTE VEM DO `askuser`, e estava escrito lá antes de existir este pacote: *"a janela
 //! é SUPERFÍCIE, não peça"*. Sai a janela; fica a espinha — a rodada, o `fecha()`, o
 //! `409`, expirar sem ninguém contando tempo. Disco é dele. Pixel é daqui.
 //!
@@ -59,6 +59,16 @@
 //! `version.json`. `Channel` está no vocabulário abaixo por causa disso: `canary` é
 //! o que deixa esta casa comer a própria comida sem arrastar quem só usa.
 //!
+//! ── O NOME MUDOU: ERA `my-canvas` (20/08) ────────────────────────────────────
+//!
+//! `canvas` dizia SUPERFÍCIE DE DESENHO, e é o que ele NÃO é: nada aqui desenha um
+//! pixel — quem desenha é a página, e o `Content` que ela recebe é HTML ou uma URL.
+//! O que este pacote faz é ABRIR e CONTROLAR uma janela com um webview dentro, que é
+//! literalmente um browser sem cromo.
+//!
+//! O nome errado tinha custo: ele convidava um `draw()`, um `clear()`, um contexto 2D
+//! — a API que um canvas tem e esta não pode ter, porque o motor é o WKWebView.
+//!
 //! ── A FORMA DESTE ARQUIVO ────────────────────────────────────────────────────
 //!
 //! UM ARQUIVO, e não uma pasta `interfaces/`. A pasta é o que se faz quando UM
@@ -68,7 +78,7 @@
 //!
 //! external:    Electrobun · WKWebView (macOS) · WebView2 (Windows) · CEF (opcional)
 //! implemented: nada
-//! planned:     packages/my-canvas/
+//! planned:     packages/my-browser/
 //! usado_por:   apps/my-graph · apps/my-kanban · apps/my
 //! substitui:   o namespace `Window` de src/interfaces/tools.ts (Neutralino), que
 //!              SAI no mesmo commit em que este nascer — não depois
@@ -80,7 +90,7 @@ export interface Finding {
 	says: string;
 }
 
-export declare namespace CanvasSystem {
+export declare namespace BrowserSystem {
 	/** ISO 8601, `Z`. Declarado aqui e não importado: um pacote publicável não
 	 *  depende do `shared` de uma casa pra saber o que é um instante. */
 	export type Instant = string;
@@ -217,7 +227,7 @@ export declare namespace CanvasSystem {
  *  Tudo `Promise`, e isso não é estilo: cada verbo atravessa FFI e um webview que
  *  ainda não existe no instante da chamada. Um contrato síncrono aqui seria uma
  *  mentira que só aparece no primeiro `await` esquecido. */
-export interface Canvas {
+export interface Browser {
 	/** O runtime responde? A única checagem honesta pra algo com release próprio. */
 	check(): Promise<Finding[]>;
 
@@ -227,32 +237,32 @@ export interface Canvas {
 
 	/** As telas físicas. Sem isto, `place` e `monitor` são chute — e o Electrobun não
 	 *  escolhe monitor por opção, então a conta é daqui. */
-	monitors(): Promise<CanvasSystem.Monitor[]>;
+	monitors(): Promise<BrowserSystem.Monitor[]>;
 
 	/** Abre e VOLTA. A superfície sobrevive à chamada — é o que o `my-graph` quer,
 	 *  porque ninguém fica olhando um grafo com o terminal preso. */
 	open(
-		content: CanvasSystem.Content,
-		opts?: CanvasSystem.Options,
-	): Promise<CanvasSystem.Opened | CanvasSystem.Fail>;
+		content: BrowserSystem.Content,
+		opts?: BrowserSystem.Options,
+	): Promise<BrowserSystem.Opened | BrowserSystem.Fail>;
 
 	/** Abre e ESPERA. Bloquear é a feature: pergunta que não segura o chamador é
 	 *  pergunta que um agente desatento responde sozinho. A diferença entre este
 	 *  verbo e `open` não é técnica, é quem manda no tempo. */
 	ask(
-		content: CanvasSystem.Content,
-		opts?: CanvasSystem.Options,
-	): Promise<CanvasSystem.Answer | CanvasSystem.Fail>;
+		content: BrowserSystem.Content,
+		opts?: BrowserSystem.Options,
+	): Promise<BrowserSystem.Answer | BrowserSystem.Fail>;
 
 	/** Redesenha o que já está aberto, pelo RPC — sem recarregar e sem piscar. É o
 	 *  verbo que faz uma superfície virar PROGRESSO em vez de N janelas. */
 	render(
-		id: CanvasSystem.SurfaceId,
-		content: CanvasSystem.Content,
-	): Promise<{ ok: true; id: CanvasSystem.SurfaceId } | CanvasSystem.Fail>;
+		id: BrowserSystem.SurfaceId,
+		content: BrowserSystem.Content,
+	): Promise<{ ok: true; id: BrowserSystem.SurfaceId } | BrowserSystem.Fail>;
 
 	/** O que a página emitiu, conforme emite. Termina quando a superfície fecha. */
-	listen(id: CanvasSystem.SurfaceId): AsyncIterable<CanvasSystem.Event>;
+	listen(id: BrowserSystem.SurfaceId): AsyncIterable<BrowserSystem.Event>;
 
 	/** PNG do que está na tela. É como um agente VÊ a própria superfície — sem isto,
 	 *  ele afirma que desenhou e ninguém, nem ele, conferiu.
@@ -260,19 +270,19 @@ export interface Canvas {
 	 *  NÃO VERIFICADO NA API (20/08). Confira antes de implementar; se não existir,
 	 *  este membro sai ou ganha o custo do FFI escrito ao lado. */
 	shot(
-		id: CanvasSystem.SurfaceId,
+		id: BrowserSystem.SurfaceId,
 		out: string,
-	): Promise<{ ok: true; path: string } | CanvasSystem.Fail>;
+	): Promise<{ ok: true; path: string } | BrowserSystem.Fail>;
 
 	/** As superfícies desta casa abertas agora. Sem isto, uma janela que perdeu o dono
 	 *  fica na tela e ninguém sabe quem a abriu. */
-	list(): Promise<CanvasSystem.Opened[]>;
+	list(): Promise<BrowserSystem.Opened[]>;
 
-	focus(id: CanvasSystem.SurfaceId): Promise<{ ok: true; id: CanvasSystem.SurfaceId } | CanvasSystem.Fail>;
+	focus(id: BrowserSystem.SurfaceId): Promise<{ ok: true; id: BrowserSystem.SurfaceId } | BrowserSystem.Fail>;
 
-	close(id: CanvasSystem.SurfaceId): Promise<{ ok: true; id: CanvasSystem.SurfaceId } | CanvasSystem.Fail>;
+	close(id: BrowserSystem.SurfaceId): Promise<{ ok: true; id: BrowserSystem.SurfaceId } | BrowserSystem.Fail>;
 
 	/** Tem versão nova no canal deste bundle? Ler é separado de aplicar porque
 	 *  reiniciar é decisão de quem está usando, nunca do updater. */
-	update(): Promise<CanvasSystem.Update | CanvasSystem.Fail>;
+	update(): Promise<BrowserSystem.Update | BrowserSystem.Fail>;
 }

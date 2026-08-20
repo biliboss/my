@@ -189,7 +189,7 @@ export declare namespace ToolsSystem {
 	 *  devolve o que a pessoa respondeu". Neutralino não dá RPC; a resposta ia ter
 	 *  que ser um POST pra um servidor que alguém subisse.
 	 *
-	 *  O lugar dela agora é `packages/my-canvas`, sobre Electrobun, que tem RPC
+	 *  O lugar dela agora é `packages/my-browser`, sobre Electrobun, que tem RPC
 	 *  tipado dos dois lados e serve o bundle por esquema próprio — as duas coisas
 	 *  que faltavam. E ela deixa de ser `tools` por um motivo de fronteira, não de
 	 *  runtime: `tools` agrupa programa que QUEBRA A GENTE de fora pra dentro, e uma
@@ -197,7 +197,7 @@ export declare namespace ToolsSystem {
 	 *  cai um verbo, cai a capacidade de PERGUNTAR.
 	 *
 	 *  Não fica ponteiro nem tipo pendurado aqui: migração que deixa metade pra trás
-	 *  é o dual-write que o @CLAUDE.md proíbe. Quem quiser janela, `my-canvas`. */
+	 *  é o dual-write que o @CLAUDE.md proíbe. Quem quiser janela, `my-browser`. */
 
 	export namespace Vscode {
 		/** Relative to `~/src` — `me/01_projects/my-teams-v1`. */

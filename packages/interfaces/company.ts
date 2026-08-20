@@ -74,7 +74,7 @@
 //! planned:     apps/my-company/
 //! depends_on:  packages/interfaces/shared.ts · packages/interfaces/kanban.ts ·
 //!              packages/interfaces/labels.ts ·
-//!              packages/interfaces/resources.ts · packages/interfaces/canvas.ts
+//!              packages/interfaces/resources.ts · packages/interfaces/browser.ts
 //! buries:      packages/my-hacker/ — a lens that had become a package (20/08)
 //! checks:      declared HERE, never imported. `check()` returns `Finding[]` and the
 //!              runner reads the shape, so owning a check costs no dependency.
@@ -87,7 +87,7 @@ export interface Finding {
 }
 
 import type { Shared } from "./shared";
-import type { CanvasSystem } from "./canvas";
+import type { BrowserSystem } from "./browser";
 
 export declare namespace CompanySystem {
 	/** THE ONLY CLOSED UNION HERE. A fourth member is not an extension, it is a
@@ -234,7 +234,7 @@ export interface Company {
 	 *  real answer and the common one early, when there are too few claims to tear. */
 	gaps(seam?: CompanySystem.Seam): CompanySystem.Gap[];
 
-	/** THE COMPANY, DRAWN — `my-graph` on this tree, inside a `my-canvas` window.
+	/** THE COMPANY, DRAWN — `my-graph` on this tree, inside a `my-browser` window.
 	 *
 	 *  IT IS A COMPOSITION, AND OWNS NO PIXEL. Same extractor that reads the code, same
 	 *  viewer, same window; only the root differs. A company that draws itself with its
@@ -242,10 +242,10 @@ export interface Company {
 	 *  the prettier and the staler — which is the failure this whole file is about, one
 	 *  level up.
 	 *
-	 *  FULLSCREEN, and that is not a default worth re-deciding here: `my-canvas` already
+	 *  FULLSCREEN, and that is not a default worth re-deciding here: `my-browser` already
 	 *  separates the picture somebody STANDS IN FRONT OF from the panel somebody ANSWERS,
 	 *  and a company graph is the first kind. */
-	graph(): Promise<CanvasSystem.Opened | CanvasSystem.Fail>;
+	graph(): Promise<BrowserSystem.Opened | BrowserSystem.Fail>;
 
 	/** The folder of contracts `graph()` points the viewer at. Separate on purpose:
 	 *  handing the root to something else — a second window, a screenshot, a CI job —
