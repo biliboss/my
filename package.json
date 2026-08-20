@@ -23,7 +23,8 @@
   },
   "dependencies": {
     "commander": "^15.0.0",
-    "drizzle-orm": "^0.45.2"
+    "drizzle-orm": "^0.45.2",
+    "@biliboss/interfaces": "workspace:*"
   },
   "devDependencies": {
     "drizzle-kit": "^0.31.10",

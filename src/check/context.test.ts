@@ -48,9 +48,10 @@ cpSync(join(import.meta.dir, "../shared/file.ts"), join(RAIZ, "src/shared/file.t
 // módulo — sem estes dois o check morre com `export 'home' not found`, que é o mesmo
 // sintoma enganoso que o comentário acima descreve.
 mkdirSync(join(RAIZ, "src/home"), { recursive: true });
-mkdirSync(join(RAIZ, "src/interfaces"), { recursive: true });
 cpSync(join(import.meta.dir, "../home/paths.ts"), join(RAIZ, "src/home/paths.ts"));
-cpSync(join(import.meta.dir, "../interfaces/home.ts"), join(RAIZ, "src/interfaces/home.ts"));
+// O contrato NÃO é copiado: `home/paths.ts` o importa com `import type`, que a
+// transpilação apaga — dentro da fixture não existe `node_modules` pra resolver
+// `@biliboss/interfaces`, e copiá-lo seria remendar um problema que não existe.
 
 write("CONTEXT.md", 100); // no teto, exatamente — não é achado
 write("02_areas/00_workflows/CONTEXT.md", 101); // um acima — é o defeito

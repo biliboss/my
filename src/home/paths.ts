@@ -5,7 +5,7 @@
 //!     my home paths --json          pro jq
 //!     my home paths root            só uma, crua — pro `$(...)` de um script
 //!
-//! `Home.root/code/machine/area/store/ensure/resolve` (@src/interfaces/home.ts).
+//! `Home.root/code/machine/area/store/ensure/resolve` (@packages/interfaces/src/home.ts).
 //!
 //! TUDO É FUNÇÃO, NUNCA CONSTANTE DE MÓDULO. `import` é içado acima de qualquer
 //! `process.env.MY_HOME = …` no arquivo que importa, então uma constante calculada
@@ -21,18 +21,58 @@
 //! impacts:    src/shared/file.ts · src/shared/db.ts · src/herdr/policy.ts ·
 //!             src/herdr/agents/roster.ts · src/teams/model.ts
 
-import { existsSync, mkdirSync, renameSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
-import { dirname, join } from "node:path";
+import { dirname, join, resolve as resolvePath } from "node:path";
 
-import type { HomeSystem } from "../interfaces/home.ts";
+import type { HomeSystem } from "@biliboss/interfaces/home.ts";
 
 type Path = HomeSystem.ValueObjects.Path;
 
 const HOME = () => process.env.HOME ?? homedir();
 
-/** A CASA: o que os verbos leem e escrevem. */
-export const root = (): Path => process.env.MY_HOME ?? join(HOME(), "src/me");
+/** ONDE A CASA PADRÃO FICA ANOTADA — uma linha, o caminho, e nada mais.
+ *
+ *  ARQUIVO E NÃO O SQLITE, e a razão é ciclo: `shared/db.ts` pergunta a ESTE módulo
+ *  onde o banco mora (`store("db")`). Guardar a casa lá dentro faria a camada de
+ *  baixo depender de quem depende dela — e o preço seria pagar a abertura de um
+ *  banco pra responder a pergunta mais básica que este arquivo tem.
+ *
+ *  Uma linha de texto também é o que deixa `cat ~/.me/home` responder sem o CLI, e
+ *  isso importa no dia em que o CLI é justamente o que não está subindo. */
+const DEFAULT_FILE = () => join(machine(), "home");
+
+/** A casa ANOTADA, ou nada. Arquivo ilegível conta como nada: uma casa que ninguém
+ *  consegue ler não é melhor que uma casa não escolhida, e cair no default é o
+ *  comportamento que o usuário já conhece. */
+export function storedRoot(): Path | undefined {
+	try {
+		const v = readFileSync(DEFAULT_FILE(), "utf8").trim();
+		return v || undefined;
+	} catch {
+		return undefined;
+	}
+}
+
+/** A CASA: o que os verbos leem e escrevem.
+ *
+ *  TRÊS CAMADAS, e a ordem é do mais VOLÁTIL pro mais estável: `MY_HOME` é desta
+ *  chamada, o arquivo é desta máquina, o default é o que sempre foi. Env ganha
+ *  porque é o que um teste e um CI usam pra apontar pra uma árvore descartável sem
+ *  mexer no que a pessoa configurou — e uma alavanca de sessão que perde pra uma de
+ *  disco é uma alavanca que não serve. */
+export const root = (): Path => process.env.MY_HOME ?? storedRoot() ?? join(HOME(), "src/me");
+
+/** ESCOLHE A CASA PADRÃO desta máquina. Recusa o que não existe: apontar pro vazio
+ *  faz todo verbo reportar uma casa vazia, que é indistinguível de uma casa nova —
+ *  e o erro só aparece quando alguém estranha que a lista veio curta. */
+export function setRoot(path: Path): { ok: true; root: Path } | { erro: string } {
+	const abs = path.startsWith("~") ? join(HOME(), path.slice(1)) : resolvePath(path);
+	if (!existsSync(abs)) return { erro: `não existe: ${abs}` };
+	mkdirSync(machine(), { recursive: true });
+	writeFileSync(DEFAULT_FILE(), `${abs}\n`);
+	return { ok: true, root: abs };
+}
 
 /** O CHECKOUT deste processo, por ÂNCORA e nunca por contar `../`.
  *
@@ -153,7 +193,7 @@ export function resolve(): HomeSystem.Entities.Resolved {
 		code: code(),
 		machine: machine(),
 		why: {
-			root: process.env.MY_HOME ? "env:MY_HOME" : "default:~/src/me",
+			root: process.env.MY_HOME ? "env:MY_HOME" : storedRoot() ? `file:${DEFAULT_FILE()}` : "default:~/src/me",
 			code: process.env.MY_CODE ? "env:MY_CODE" : "anchor:.git",
 			machine: process.env.MY_MACHINE ? "env:MY_MACHINE" : "default:~/.me",
 		},

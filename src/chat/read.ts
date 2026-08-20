@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 //! Lê um canal inteiro, do jeito que um humano lê — `View.read`
-//! (@src/interfaces/chat.ts). NUNCA consome nada: ver `seen.ts` pra mover cursor.
+//! (@packages/interfaces/src/chat.ts). NUNCA consome nada: ver `seen.ts` pra mover cursor.
 //!
 //!     my chat read plantao-coding                # tudo, oldest first
 //!     my chat read plantao-coding --thread 022    # só aquele assunto
@@ -12,7 +12,7 @@
 //! depends_on: src/chat/store.ts
 //! impacts:    src/agents/chat.ts
 
-import type { ChatSystem } from "../interfaces/chat.ts";
+import type { ChatSystem } from "@biliboss/interfaces/chat.ts";
 import { allMessages, type Msg } from "./store.ts";
 
 export function read(channel: ChatSystem.ValueObjects.ChannelName, thread?: ChatSystem.ValueObjects.Thread): Msg[] {

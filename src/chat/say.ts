@@ -1,5 +1,5 @@
 #!/usr/bin/env bun
-//! Fala num canal. `Chat.say` do contrato (@src/interfaces/chat.ts) — o único
+//! Fala num canal. `Chat.say` do contrato (@packages/interfaces/src/chat.ts) — o único
 //! verbo que escreve sem esperar resposta.
 //!
 //!     my chat say plantao-coding qa-workflow "afira a #179, mesmo contrato"
@@ -13,7 +13,7 @@
 //! depends_on: src/chat/store.ts
 //! impacts:    src/chat/ask.ts · src/agents/send.ts
 
-import type { ChatSystem } from "../interfaces/chat.ts";
+import type { ChatSystem } from "@biliboss/interfaces/chat.ts";
 import { append, type Msg, whoAmI } from "./store.ts";
 
 export function say(

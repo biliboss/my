@@ -28,7 +28,7 @@
 
 import { Command } from "commander";
 
-import type { TeamsSystem } from "../interfaces/teams.ts";
+import type { TeamsSystem } from "@biliboss/interfaces/teams.ts";
 import { send } from "../herdr/panes/send.ts";
 import { type Team, queueOf } from "./model.ts";
 import { all } from "./list.ts";
@@ -66,7 +66,7 @@ export async function pass(seen: Map<string, Set<string>>, quiet = false): Promi
 	return woken;
 }
 
-/** `Teams.watch()` (@src/interfaces/teams.ts): the loop, and the handle that stops
+/** `Teams.watch()` (@packages/interfaces/src/teams.ts): the loop, and the handle that stops
  *  it. Returned rather than kept, because otherwise the only off switch is killing
  *  the process that also keeps the teams. */
 export async function watch(everyS = DEFAULT_EVERY_S): Promise<TeamsSystem.Entities.Watch> {

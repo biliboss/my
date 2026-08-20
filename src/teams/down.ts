@@ -18,7 +18,7 @@
 
 import { Command } from "commander";
 
-import type { Fail } from "../interfaces/teams.ts";
+import type { Fail } from "@biliboss/interfaces/teams.ts";
 import { close } from "../herdr/workspaces/close.ts";
 import { type TeamName, forget, storedOf } from "./model.ts";
 import { find } from "./list.ts";

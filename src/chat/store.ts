@@ -7,7 +7,7 @@
 //! MATA `src/agents/bus.ts`, E O FORMATO MUDA — essa é a decisão central desta
 //! migração. O arquivo velho (`.my_agents_chat.tsv`, 4 colunas: `at·from·to·texto`)
 //! não tinha `seq`, `channel`, `thread` nem `answers`; o contrato
-//! (@src/interfaces/chat.ts) pede os oito. `migrar()` roda sozinha na primeira
+//! (@packages/interfaces/src/chat.ts) pede os oito. `migrar()` roda sozinha na primeira
 //! leitura — se `.my_chat.tsv` ainda não existe e o arquivo velho existe, ela
 //! nasce a partir dele:
 //!
@@ -40,7 +40,7 @@
 
 import { appendFileSync, existsSync, mkdirSync, readFileSync, readdirSync, renameSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import type { ChatSystem } from "../interfaces/chat.ts";
+import type { ChatSystem } from "@biliboss/interfaces/chat.ts";
 
 // LIDO A CADA CHAMADA, nunca guardado numa const de módulo: um `import` estático
 // é IÇADO pro topo do arquivo por ES modules — ele roda antes de qualquer outra

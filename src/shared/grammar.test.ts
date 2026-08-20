@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test";
-import type { Grammar as ContractGrammar, Shared } from "../../01_projects/my-teams-v1/interfaces/shared.ts";
+import type { Grammar as ContractGrammar, Shared } from "@biliboss/interfaces/shared.ts";
 import {
   GrammarViolation,
   grammar,

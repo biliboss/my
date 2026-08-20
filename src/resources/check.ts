@@ -32,7 +32,7 @@
 //! depends_on: src/resources/store.ts · src/shared/findings.ts
 //! impacts:    src/shared/house.ts
 
-import type { Finding } from "../interfaces/resources.ts";
+import type { Finding } from "@biliboss/interfaces/resources.ts";
 import { emit } from "../shared/findings.ts";
 import { index, store } from "./store.ts";
 

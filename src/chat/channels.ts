@@ -1,5 +1,5 @@
 #!/usr/bin/env bun
-//! Lista os canais conhecidos — `View.channels` (@src/interfaces/chat.ts). Um
+//! Lista os canais conhecidos — `View.channels` (@packages/interfaces/src/chat.ts). Um
 //! canal existe pra este verbo quando `open.ts` o registrou OU quando `say.ts`
 //! escreveu nele pela primeira vez (find-or-create em `store.ts:registerChannel`,
 //! chave natural = nome).

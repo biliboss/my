@@ -1,5 +1,5 @@
 #!/usr/bin/env bun
-//! `Agents.start` (@src/interfaces/agents.ts) — start one, named, and REMEMBER it.
+//! `Agents.start` (@packages/interfaces/src/agents.ts) — start one, named, and REMEMBER it.
 //!
 //!     bun run src/agents/start.ts alice --workspace cockpit --prompt "afira a #178"
 //!     bun run src/agents/start.ts qa --pane w3K:p4 --prompt "roda os testes"
@@ -21,7 +21,7 @@
 //! depends_on: src/herdr/agents/start.ts · src/herdr/agents/roster.ts · src/agents/list.ts
 //! impacts:    —
 
-import type { AgentSystem, Fail } from '../interfaces/agents.ts'
+import type { AgentSystem, Fail } from '@biliboss/interfaces/agents.ts'
 import { startWhenReady } from '../herdr/agents/start.ts'
 import { remember } from '../herdr/agents/roster.ts'
 import { find } from './view.ts'

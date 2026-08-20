@@ -1,5 +1,5 @@
 #!/usr/bin/env bun
-//! Abre um canal — `Chat.open` (@src/interfaces/chat.ts). Não é obrigatório
+//! Abre um canal — `Chat.open` (@packages/interfaces/src/chat.ts). Não é obrigatório
 //! antes de `say`: `say` registra o canal sozinho na primeira mensagem. Isto
 //! existe pra declarar `members` de antemão, quando alguém quer que `to: "all"`
 //! signifique algo antes da primeira linha ser escrita.
@@ -11,7 +11,7 @@
 //!
 //! depends_on: src/chat/store.ts
 
-import type { ChatSystem } from "../interfaces/chat.ts";
+import type { ChatSystem } from "@biliboss/interfaces/chat.ts";
 import { registerChannel, type Channel } from "./store.ts";
 
 export function open(name: ChatSystem.ValueObjects.ChannelName, members: ChatSystem.ValueObjects.Addressee[] = []): Channel {

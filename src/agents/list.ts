@@ -16,7 +16,7 @@
 //! escreveu. Um registro paralelo de "quem clonou quem" seria a segunda fonte, e
 //! ela envelheceria no primeiro pane fechado à mão.
 //!
-//! `all()` (@src/interfaces/agents.ts `View.all`) lives HERE: this module already
+//! `all()` (@packages/interfaces/src/agents.ts `View.all`) lives HERE: this module already
 //! does the one join it needs — the herdr-raw agent joined with the NAME family
 //! the `-N` suffix encodes. `View.check` is `./check.ts`, DELIBERATELY a separate
 //! file — this one imports herdr statically for `all()`, which taints it async
@@ -31,7 +31,7 @@ import { list as vivos, type Agent } from '../herdr/agents/list.ts'
 import { roster } from '../herdr/agents/roster.ts'
 import { baseCurta, nomeDoClone } from './clone.ts'
 import { fmtOf, out } from '../shared/gh.ts'
-import type { AgentSystem } from '../interfaces/agents.ts'
+import type { AgentSystem } from '@biliboss/interfaces/agents.ts'
 
 type Linha = Agent & { nome: string; base: string; n: number; eu: boolean }
 

@@ -3,7 +3,7 @@
 //! (@src/shared/house.ts), então nenhum registro é preciso.
 //!
 //! DUAS PERGUNTAS, as mesmas que o contrato promete em `View.check()`
-//! (@src/interfaces/chat.ts:110): nenhuma mensagem sem `from`, e nenhum
+//! (@packages/interfaces/src/chat.ts:110): nenhuma mensagem sem `from`, e nenhum
 //! `answers` apontando pra um `seq` que não existe.
 //!
 //!     my chat check

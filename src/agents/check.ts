@@ -1,5 +1,5 @@
 #!/usr/bin/env bun
-//! `View.check` (@src/interfaces/agents.ts) — SÓ o que `~/.me/agents.json` sozinho
+//! `View.check` (@packages/interfaces/src/agents.ts) — SÓ o que `~/.me/agents.json` sozinho
 //! consegue provar: nenhum nome lembrado aponta pro MESMO pane que outro.
 //!
 //!     my agents check
@@ -28,7 +28,7 @@ import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { store } from '../home/paths.ts'
 import { emit } from '../shared/findings.ts'
-import type { Finding } from '../interfaces/agents.ts'
+import type { Finding } from '@biliboss/interfaces/agents.ts'
 
 const ROSTER_STORE = () => store('agents')
 

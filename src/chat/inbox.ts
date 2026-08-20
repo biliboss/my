@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 //! O que chegou pra MIM, depois do meu cursor — `View.inbox`
-//! (@src/interfaces/chat.ts). Endereçado, ao contrário de `read.ts`: é o que um
+//! (@packages/interfaces/src/chat.ts). Endereçado, ao contrário de `read.ts`: é o que um
 //! agente que acordou lê em vez de reler um canal que divide com três outros.
 //!
 //! NÃO avança cursor nenhum — o contrato é explícito (`chat.ts:187`): `seen`
@@ -13,7 +13,7 @@
 //! depends_on: src/chat/store.ts
 //! impacts:    src/chat/listen.ts
 
-import type { ChatSystem } from "../interfaces/chat.ts";
+import type { ChatSystem } from "@biliboss/interfaces/chat.ts";
 import { allMessages, getCursor, type Msg } from "./store.ts";
 
 export function inbox(

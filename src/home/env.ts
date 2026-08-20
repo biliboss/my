@@ -5,7 +5,7 @@
 //!     my home env --set            só as que estão setadas AGORA, com o valor
 //!     my home env --json | --tsv
 //!
-//! `Home.vars()` (@src/interfaces/home.ts).
+//! `Home.vars()` (@packages/interfaces/src/home.ts).
 //!
 //! POR QUE UMA TABELA ESCRITA À MÃO NÃO APODRECE AQUI: `my home check` varre o
 //! fonte atrás de `process.env.X` e acusa toda leitura que não estiver nesta lista.
@@ -24,7 +24,7 @@
 //! depends_on: src/interfaces/home.ts
 //! impacts:    src/home/check.ts
 
-import type { HomeSystem } from "../interfaces/home.ts";
+import type { HomeSystem } from "@biliboss/interfaces/home.ts";
 import { fmtOf, out } from "../shared/gh.ts";
 
 export type Var = HomeSystem.ValueObjects.Var & { deprecated?: string; by?: string };

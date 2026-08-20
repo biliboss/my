@@ -33,7 +33,7 @@ import { Command } from "commander";
 import { existsSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
-import type { Fail, TeamsSystem } from "../interfaces/teams.ts";
+import type { Fail, TeamsSystem } from "@biliboss/interfaces/teams.ts";
 import { CRACHA, TRAVA, crachaDe, ehMinha, identidade } from "../tasks/claim.ts";
 import { RAIZ } from "../tasks/model.ts";
 import { type Claim, type Member, type TeamName, type WorkPath, memberName, queueOf, storedOf } from "./model.ts";

@@ -1,5 +1,5 @@
 #!/usr/bin/env bun
-//! `Agents.restart · interrupt · stop · tune` (@src/interfaces/agents.ts) — the
+//! `Agents.restart · interrupt · stop · tune` (@packages/interfaces/src/agents.ts) — the
 //! four verbs that MUTATE a live agent, grouped because each one is small and
 //! none of them owns enough to earn its own file.
 //!
@@ -53,7 +53,7 @@ import { split } from '../herdr/panes/split.ts'
 import { list as liveAgents, type Agent as HerdrAgent } from '../herdr/agents/list.ts'
 import { forget, remember, roster } from '../herdr/agents/roster.ts'
 import { esperaTUI, TUI_MS } from './clone.ts'
-import type { AgentSystem, Fail } from '../interfaces/agents.ts'
+import type { AgentSystem, Fail } from '@biliboss/interfaces/agents.ts'
 
 const fail = (error: string, reason: Fail['reason'] = 'not_found'): Fail => ({ ok: false, error, reason })
 

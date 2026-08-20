@@ -17,6 +17,7 @@ import { expect, test, afterAll } from 'bun:test'
 import { rmSync } from 'node:fs'
 import { join } from 'node:path'
 import { PROJETOS, RAIZ } from './model.ts'
+import { code } from '../home/paths.ts'
 
 const SLUGS = ['zz-teste-heuristica-a', 'zz-teste-heuristica-b', 'zz-teste-heuristica-c']
 afterAll(() => {
@@ -27,7 +28,11 @@ afterAll(() => {
 
 const cria = (slug: string, resultado: string, ...extra: string[]) => {
   const p = Bun.spawnSync(
-    ['bun', 'run', join(RAIZ, 'src/cli/my.ts'), 'projects', 'new', slug, '--resultado', resultado, '--area', '04-experimentos', ...extra],
+    // O SCRIPT vem do CÓDIGO, o `cwd` é a CASA — e até 20/08 os dois eram
+    // `RAIZ`, porque eram a mesma pasta. Separados, `join(RAIZ, 'src/cli/my.ts')`
+    // aponta pro vazio e o `spawnSync` devolve stdout VAZIO: o teste falhava
+    // dizendo "esperava .../sprints/, recebi ''", que não parece caminho errado.
+    ['bun', 'run', join(code(), 'src/cli/my.ts'), 'projects', 'new', slug, '--resultado', resultado, '--area', '04-experimentos', ...extra],
     { cwd: RAIZ },
   )
   return new TextDecoder().decode(p.stdout)

@@ -58,7 +58,7 @@ export function repoRoot(from = import.meta.dir): string {
  *
  *  UMA IMPLEMENTAÇÃO SÓ, e isto é a regra de migração do @CLAUDE.md aplicada em
  *  miniatura: `home()` nasceu AQUI em 20/08, ganhou um contrato próprio no mesmo dia
- *  (@src/interfaces/home.ts) e a cópia daqui foi embora no mesmo fôlego. Duas funções
+ *  (@packages/interfaces/src/home.ts) e a cópia daqui foi embora no mesmo fôlego. Duas funções
  *  com o mesmo nome e o mesmo trabalho divergem na primeira mudança, e a que diverge
  *  é sempre a que alguém esqueceu.
  *

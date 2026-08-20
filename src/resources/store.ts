@@ -49,8 +49,8 @@ import {
 	type Hustler,
 	type ResourceSystem,
 	type Resources,
-} from "../interfaces/resources.ts";
-import type { Shared } from "../interfaces/shared.ts";
+} from "@biliboss/interfaces/resources.ts";
+import type { Shared } from "@biliboss/interfaces/shared.ts";
 import { home, repoRoot } from "../shared/file.ts";
 import { MemorySpanSink, Telemetry, type SpanSink } from "../shared/telemetry.ts";
 
@@ -164,7 +164,7 @@ function stackResource(): Resource {
 	const body = [
 		"# stack",
 		"",
-		"O que esta casa usa quando ninguém disse o contrário. Mora em `src/interfaces/resources.ts`.",
+		"O que esta casa usa quando ninguém disse o contrário. Mora em `packages/interfaces/src/resources.ts`.",
 		"",
 		...Object.entries(STACK).map(([k, v]) => `- **${k}** — ${v}`),
 		"",
@@ -176,7 +176,7 @@ function stackResource(): Resource {
 		// checkout do código — e depois da migração pro `biliboss/my` os dois deixam
 		// de ser a mesma pasta. Um recurso apontando pro `src/` da casa apontaria pro
 		// vazio no dia seguinte.
-		path: join(repoRoot(), "src/interfaces/resources.ts"),
+		path: join(repoRoot(), "packages/interfaces/src/resources.ts"),
 		body,
 		mentions: [],
 		aliases: [],

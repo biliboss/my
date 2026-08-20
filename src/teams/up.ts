@@ -26,8 +26,8 @@
 
 import { Command } from "commander";
 
-import type { AgentSystem } from "../interfaces/agents.ts";
-import type { Fail, TeamsSystem } from "../interfaces/teams.ts";
+import type { AgentSystem } from "@biliboss/interfaces/agents.ts";
+import type { Fail, TeamsSystem } from "@biliboss/interfaces/teams.ts";
 import { start } from "../agents/start.ts";
 import { grid } from "../herdr/panes/grid.ts";
 import { create } from "../herdr/workspaces/create.ts";

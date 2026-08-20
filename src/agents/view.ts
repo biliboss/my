@@ -1,5 +1,5 @@
 #!/usr/bin/env bun
-//! `View` (@src/interfaces/agents.ts): `find`, `health`, `screen`, `log`, `caps` —
+//! `View` (@packages/interfaces/src/agents.ts): `find`, `health`, `screen`, `log`, `caps` —
 //! everything that ANSWERS about the fleet without touching it. `all()` and the
 //! entity mapper live in `list.ts` (it already owned the herdr↔name join); this
 //! file is the rest of `View` plus the two verbs measured instead of declared.
@@ -44,7 +44,7 @@
 import { existsSync, readdirSync, readFileSync } from 'node:fs'
 import { homedir } from 'node:os'
 import { join } from 'node:path'
-import type { AgentSystem, Fail } from '../interfaces/agents.ts'
+import type { AgentSystem, Fail } from '@biliboss/interfaces/agents.ts'
 import { list as liveAgents, type Agent as HerdrAgent } from '../herdr/agents/list.ts'
 import { roster } from '../herdr/agents/roster.ts'
 import { read } from '../herdr/panes/read.ts'

@@ -5,7 +5,7 @@
 //! was assembled with, how it is drawn. Whether it is alive is asked of herdr on
 //! every read. An index of existence would be wrong the first time somebody
 //! closes a window by hand, and that is exactly the case the contract calls out
-//! (@src/interfaces/teams.ts, `View`).
+//! (@packages/interfaces/src/teams.ts, `View`).
 //!
 //! `<team>-<role>` IS THE MEMBER'S AGENT NAME — `plantao-coding-qa`. One string
 //! finds the member in the roster, in herdr's pane list and in the lineup, which
@@ -34,7 +34,7 @@ import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync
 import { join } from "node:path";
 
 import { store } from "../home/paths.ts";
-import type { TeamsSystem } from "../interfaces/teams.ts";
+import type { TeamsSystem } from "@biliboss/interfaces/teams.ts";
 import { type Cracha, crachaDe } from "../tasks/claim.ts";
 import { BACKLOG, TASKS, agora, ler, pastasDeTask, placeDe, rel, sprintDe } from "../tasks/model.ts";
 

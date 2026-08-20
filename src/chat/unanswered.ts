@@ -1,5 +1,5 @@
 #!/usr/bin/env bun
-//! As perguntas abertas de um canal — `View.unanswered` (@src/interfaces/chat.ts).
+//! As perguntas abertas de um canal — `View.unanswered` (@packages/interfaces/src/chat.ts).
 //! Hoje é a única razão pra alguém rolar um canal na mão; isto responde direto.
 //!
 //! UMA MENSAGEM CONTA COMO PERGUNTA quando ela mesma não é resposta de ninguém
@@ -12,7 +12,7 @@
 //!
 //! depends_on: src/chat/store.ts
 
-import type { ChatSystem } from "../interfaces/chat.ts";
+import type { ChatSystem } from "@biliboss/interfaces/chat.ts";
 import { allMessages, type Msg } from "./store.ts";
 
 export function unanswered(channel: ChatSystem.ValueObjects.ChannelName): Msg[] {
