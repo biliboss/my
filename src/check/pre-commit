@@ -28,6 +28,27 @@ set -uo pipefail
 repo="$(git rev-parse --show-toplevel)"
 cd "$repo" || exit 0
 
+# ONDE O CÓDIGO ESTÁ, resolvido a partir DESTE arquivo e não do repo commitado.
+#
+# Até 20/08 as duas coisas eram a mesma, e `bun run src/check/gates.ts` funcionava
+# porque o script estava dentro do checkout que ele guardava. O código foi pra
+# `biliboss/my`; o hook desta casa é um symlink pra lá, e a primeira tentativa de
+# commit depois da mudança morreu com `Module not found "src/check/gates.ts"`.
+#
+# `readlink` em loop e não `readlink -f`: o `-f` do macOS não é o do GNU, e um hook
+# que só funciona no Linux é um hook que ninguém no time roda.
+self="${BASH_SOURCE[0]}"
+while [[ -L "$self" ]]; do
+  link="$(readlink "$self")"
+  [[ "$link" == /* ]] && self="$link" || self="$(cd "$(dirname "$self")" && cd "$(dirname "$link")" && pwd)/$(basename "$link")"
+done
+code="$(cd "$(dirname "$self")/../.." && pwd)"
+
+# A CASA é o repo que está sendo commitado — a menos que ele SEJA o código, e aí a
+# casa continua sendo a de sempre. Sem isto, commitar em `my` faria todo check ler
+# uma casa vazia, e casa vazia é indistinguível de casa limpa.
+[[ "$repo" != "$code" ]] && export MY_HOME="$repo"
+
 # Added/copied/modified/renamed only: a deleted path cannot be scanned, and `-z` plus
 # `--diff-filter` keeps a filename with spaces intact.
 mapfile -d '' -t staged < <(git diff --cached --name-only --diff-filter=ACMR -z -- '*.ts' '*.md' '*.yaml' '*.yml')
@@ -42,7 +63,7 @@ for f in "${staged[@]}"; do [[ -f "$f" ]] && existing+=("$f"); done
 # (`01_projects/*/scripts/gate.ts`), never by name: a project's name inside this
 # file would outlive the project, and the second project with a gate would be an
 # edit to shared infrastructure.
-if ! out=$(bun run src/check/gates.ts "${existing[@]}" 2>&1); then
+if ! out=$(bun run "$code"/src/check/gates.ts "${existing[@]}" 2>&1); then
   echo "$out"
   echo
   echo "pre-commit: o gate de um projeto reprovou (acima)."
@@ -55,18 +76,18 @@ fi
 # casa inteira e não só o staged, porque quem quebra um ponteiro é quem MOVE o alvo — e
 # quem move nunca está editando o arquivo que aponta. Foi assim que o `desenho:` do 980
 # ficou pro vazio por horas em 17/08, com uma seção de view sumindo como único sinal.
-if ! out=$(bun run src/check/pointers.ts 2>&1); then
+if ! out=$(bun run "$code"/src/check/pointers.ts 2>&1); then
   echo "$out"
   echo "pre-commit: um run aponta pro vazio (acima)."
-  echo "  ver tudo:  bun run src/check/pointers.ts"
+  echo "  ver tudo:  my check pointers"
   exit 1
 fi
 
-if ! out=$(bun run src/check/citations.ts "${existing[@]}" 2>&1); then
+if ! out=$(bun run "$code"/src/check/citations.ts "${existing[@]}" 2>&1); then
   echo "$out"
   echo
   echo "pre-commit: a citation in the staged files does not open (see above)."
-  echo "  fix it:    bun run src/check/citations.ts --fix --write <file>"
+  echo "  fix it:    my check citations --fix --write <file>"
   echo "  or map it: … --fix --write --map old/path.ts=new/path.ts"
   echo "  or skip:   HOOKS=0 git commit …"
   exit 1
@@ -77,11 +98,11 @@ fi
 # que todo mundo desativa. O repo inteiro é problema do `my check all`.
 md=()
 for f in "${existing[@]}"; do [[ "$f" == *.md ]] && md+=("$f"); done
-if [[ ${#md[@]} -gt 0 ]] && ! out=$(bun run src/check/okf.ts "${md[@]}" 2>&1); then
+if [[ ${#md[@]} -gt 0 ]] && ! out=$(bun run "$code"/src/check/okf.ts "${md[@]}" 2>&1); then
   echo "$out"
   echo
   echo "pre-commit: um markdown deste commit não declara \`type:\` (acima)."
-  echo "  consertar: bun run src/check/okf.ts --fix --write"
+  echo "  consertar: my check okf --fix --write"
   echo "  ou pular:  HOOKS=0 git commit …"
   exit 1
 fi
@@ -101,13 +122,17 @@ fi
 # Então eles ficam fora POR CUSTO, não por estarem quebrados, e a extensão tem o
 # `npm test` dela. Se um dia deixarem de varrer o disco vivo (é o item (b) da
 # 057, que não foi feito), esta linha é onde se reconsidera.
-if printf '%s\0' "${existing[@]}" | grep -qz '\.ts$'; then
-  mapfile -t suite < <(find src -name '*.test.ts' -not -path 'src/extension/*' -not -path '*/node_modules/*')
-  if ! out=$(bun test "${suite[@]}" 2>&1); then
+# A SUÍTE SÓ RODA NO REPO DO CÓDIGO. Commit de conteúdo não tem `.ts` pra quebrar
+# a suíte de outro repositório, e rodá-la ali seria o gate desta casa reprovando
+# por linha que ninguém escreveu aqui — a mesma razão pela qual a catraca não
+# atravessou junto.
+if [[ "$repo" == "$code" ]] && printf '%s\0' "${existing[@]}" | grep -qz '\.ts$'; then
+  mapfile -t suite < <(cd "$code" && find src -name '*.test.ts' -not -path 'src/extension/*' -not -path '*/node_modules/*')
+  if ! out=$(cd "$code" && bun test "${suite[@]}" 2>&1); then
     echo "$out" | tail -25
     echo
     echo "pre-commit: a suíte da casa reprovou (acima)."
-    echo "  rodar:    bun test \$(find src -name '*.test.ts' -not -path 'src/extension/*')"
+    echo "  rodar:    cd $code && bun test \$(find src -name '*.test.ts' -not -path 'src/extension/*')"
     echo "  ou pular: HOOKS=0 git commit …"
     exit 1
   fi
