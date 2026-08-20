@@ -1,6 +1,44 @@
-node_modules/
-dist/
-*.tsbuildinfo
-vite.config.js
-vite.config.d.ts
+# macOS
 .DS_Store
+
+# `package.json` e `bun.lock` são versionados — o que se instala a partir deles não.
+node_modules/
+*.tsbuildinfo
+
+# A landing: build do Vite, e os dois arquivos que o `vite.config.ts` gera ao lado
+# de si mesmo quando o TypeScript compila.
+dist/
+landing/dist/
+landing/vite.config.js
+landing/vite.config.d.ts
+
+# `src/extension/out/` — build da extensão do VS Code; o fonte é o registro.
+src/extension/out/
+
+# `src/extension/media/` — CSS compilado do Tailwind; o fonte é `webview/issue.css`.
+src/extension/media/
+
+# ESTADO DE MÁQUINA NUNCA ENTRA NUM REPOSITÓRIO DE CÓDIGO, e esta linha é a
+# lembrança de um bug real: `_data/agents.json` e `_data/workspaces.json` — o roster
+# de panes e a cerca de workspaces — gravavam DENTRO do checkout. Enquanto código e
+# casa eram a mesma pasta ninguém via. A casa é `~/.me/` agora
+# (@src/interfaces/home.ts), e a linha fica pra pasta não voltar por descuido.
+_data/
+
+# Cache do Python — o compositor do do-sprint roda daqui e deixa .pyc
+__pycache__/
+
+# A UI do askuser tem build próprio.
+src/askuser/ui/node_modules/
+src/askuser/ui/.next/
+src/askuser/ui/out/
+src/askuser/ui/.env.local
+src/askuser/ui/convex/_generated/
+src/askuser/ui/.data/
+
+# Sessões do qa-drive: perfil de Chrome descartável por porta, recriado a cada
+# launch. É bancada, não registro.
+.qa-drive/
+
+# `.pi/` — fila de tarefas do agente pi, estado de ferramenta como `.qa-drive/`.
+.pi/

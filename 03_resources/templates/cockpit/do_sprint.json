@@ -1,0 +1,366 @@
+[
+	{
+		"createSurface": {
+			"surfaceId": "do-sprint",
+			"title": "",
+			"columns": 1,
+			"tags": [
+				"template"
+			]
+		}
+	},
+	{
+		"updateDataModel": {
+			"surfaceId": "do-sprint",
+			"contents": {
+				"run": "{{run}}",
+				"assunto": "{{assunto}}",
+				"feitos": "{{feitos}}",
+				"total": "{{total}}",
+				"s1": "{{s1}}",
+				"s1_backlog": [],
+				"s1_in_progress": [],
+				"s1_done": [],
+				"s2": "{{s2}}",
+				"s2_backlog": [],
+				"s2_in_progress": [],
+				"s2_done": [],
+				"s3": "{{s3}}",
+				"s3_backlog": [],
+				"s3_in_progress": [],
+				"s3_done": [],
+				"s4": "{{s4}}",
+				"s4_backlog": [],
+				"s4_in_progress": [],
+				"s4_done": [],
+				"menu_label": "{{menu_label}}",
+				"runs": []
+			}
+		}
+	},
+	{
+		"updateComponents": {
+			"surfaceId": "do-sprint",
+			"components": [
+				{
+					"id": "barra",
+					"class": "fixed top-0 left-0 right-0 z-50 flex items-center gap-small bg-neutral-100 border-b border-neutral-line shadow-lg",
+					"componentProperties": {
+						"Box": {}
+					},
+					"children": [
+						{
+							"class": "inline-block relative font-mono text-caption",
+							"componentProperties": {
+								"Menu": {
+									"label": {
+										"path": "menu_label"
+									},
+									"items": {
+										"path": "runs"
+									},
+									"summaryClass": "cursor-pointer list-none px-medium py-small text-caption font-mono text-neutral-text hover:text-neutral-text-strong",
+									"listClass": "absolute left-0 top-full z-50 flex flex-col min-w-[10rem] bg-neutral-100 border border-neutral-line",
+									"itemClass": "px-medium py-small text-caption font-mono text-neutral-subtitle no-underline hover:bg-primary-background hover:text-primary-hover",
+									"currentClass": "px-medium py-small text-caption font-mono text-primary-hover no-underline bg-primary-background"
+								}
+							}
+						}
+					]
+				},
+				{
+					"id": "cab",
+					"class": "flex items-baseline gap-small m-0 mt-big mb-medium w-full",
+					"componentProperties": {
+						"Box": {}
+					},
+					"children": [
+						{
+							"class": "text-title text-neutral-text m-0",
+							"componentProperties": {
+								"Text": {
+									"text": {
+										"path": "run"
+									}
+								}
+							}
+						},
+						{
+							"class": "font-mono text-caption text-neutral-subtitle m-0",
+							"componentProperties": {
+								"Text": {
+									"text": {
+										"path": "assunto"
+									}
+								}
+							}
+						},
+						{
+							"class": "font-mono text-caption text-neutral-subtitle m-0 ml-auto",
+							"componentProperties": {
+								"Metric": {
+									"value": {
+										"path": "feitos"
+									},
+									"label": {
+										"path": "total"
+									},
+									"linha": true
+								}
+							}
+						}
+					]
+				},
+				{
+					"id": "colunas",
+					"class": "grid grid-cols-[10ch_repeat(3,minmax(0,1fr))] gap-small w-full mb-tiny",
+					"componentProperties": {
+						"Box": {}
+					},
+					"children": [
+						{
+							"class": "m-0",
+							"componentProperties": {
+								"Text": {
+									"text": ""
+								}
+							}
+						},
+						{
+							"class": "font-mono text-caption text-neutral-subtitle m-0",
+							"componentProperties": {
+								"Text": {
+									"text": "backlog"
+								}
+							}
+						},
+						{
+							"class": "font-mono text-caption text-warning-default m-0",
+							"componentProperties": {
+								"Text": {
+									"text": "in progress"
+								}
+							}
+						},
+						{
+							"class": "font-mono text-caption text-success-default m-0",
+							"componentProperties": {
+								"Text": {
+									"text": "done"
+								}
+							}
+						}
+					]
+				},
+				{
+					"id": "raia1",
+					"class": "grid grid-cols-[10ch_repeat(3,minmax(0,1fr))] gap-small w-full items-start content-start flex-1 min-h-0 overflow-hidden py-small",
+					"componentProperties": {
+						"Box": {}
+					},
+					"children": [
+						{
+							"class": "font-mono text-caption text-neutral-text m-0",
+							"componentProperties": {
+								"Text": {
+									"text": {
+										"path": "s1"
+									}
+								}
+							}
+						},
+						{
+							"class": "list-none p-0 m-0 min-h-0 overflow-hidden text-caption text-neutral-text",
+							"componentProperties": {
+								"List": {
+									"items": {
+										"path": "s1_backlog"
+									},
+									"item": "bg-neutral-200 px-medium py-small mb-tiny truncate"
+								}
+							}
+						},
+						{
+							"class": "list-none p-0 m-0 min-h-0 overflow-hidden text-caption text-neutral-text",
+							"componentProperties": {
+								"List": {
+									"items": {
+										"path": "s1_in_progress"
+									},
+									"item": "bg-warning-300 px-medium py-small mb-tiny truncate"
+								}
+							}
+						},
+						{
+							"class": "list-none p-0 m-0 min-h-0 overflow-hidden text-caption text-neutral-text",
+							"componentProperties": {
+								"List": {
+									"items": {
+										"path": "s1_done"
+									},
+									"item": "bg-success-300 px-medium py-small mb-tiny truncate"
+								}
+							}
+						}
+					]
+				},
+				{
+					"id": "raia2",
+					"class": "grid grid-cols-[10ch_repeat(3,minmax(0,1fr))] gap-small w-full items-start content-start flex-1 min-h-0 overflow-hidden py-small",
+					"componentProperties": {
+						"Box": {}
+					},
+					"children": [
+						{
+							"class": "font-mono text-caption text-neutral-text m-0",
+							"componentProperties": {
+								"Text": {
+									"text": {
+										"path": "s2"
+									}
+								}
+							}
+						},
+						{
+							"class": "list-none p-0 m-0 min-h-0 overflow-hidden text-caption text-neutral-text",
+							"componentProperties": {
+								"List": {
+									"items": {
+										"path": "s2_backlog"
+									},
+									"item": "bg-neutral-200 px-medium py-small mb-tiny truncate"
+								}
+							}
+						},
+						{
+							"class": "list-none p-0 m-0 min-h-0 overflow-hidden text-caption text-neutral-text",
+							"componentProperties": {
+								"List": {
+									"items": {
+										"path": "s2_in_progress"
+									},
+									"item": "bg-warning-300 px-medium py-small mb-tiny truncate"
+								}
+							}
+						},
+						{
+							"class": "list-none p-0 m-0 min-h-0 overflow-hidden text-caption text-neutral-text",
+							"componentProperties": {
+								"List": {
+									"items": {
+										"path": "s2_done"
+									},
+									"item": "bg-success-300 px-medium py-small mb-tiny truncate"
+								}
+							}
+						}
+					]
+				},
+				{
+					"id": "raia3",
+					"class": "grid grid-cols-[10ch_repeat(3,minmax(0,1fr))] gap-small w-full items-start content-start flex-1 min-h-0 overflow-hidden py-small",
+					"componentProperties": {
+						"Box": {}
+					},
+					"children": [
+						{
+							"class": "font-mono text-caption text-neutral-text m-0",
+							"componentProperties": {
+								"Text": {
+									"text": {
+										"path": "s3"
+									}
+								}
+							}
+						},
+						{
+							"class": "list-none p-0 m-0 min-h-0 overflow-hidden text-caption text-neutral-text",
+							"componentProperties": {
+								"List": {
+									"items": {
+										"path": "s3_backlog"
+									},
+									"item": "bg-neutral-200 px-medium py-small mb-tiny truncate"
+								}
+							}
+						},
+						{
+							"class": "list-none p-0 m-0 min-h-0 overflow-hidden text-caption text-neutral-text",
+							"componentProperties": {
+								"List": {
+									"items": {
+										"path": "s3_in_progress"
+									},
+									"item": "bg-warning-300 px-medium py-small mb-tiny truncate"
+								}
+							}
+						},
+						{
+							"class": "list-none p-0 m-0 min-h-0 overflow-hidden text-caption text-neutral-text",
+							"componentProperties": {
+								"List": {
+									"items": {
+										"path": "s3_done"
+									},
+									"item": "bg-success-300 px-medium py-small mb-tiny truncate"
+								}
+							}
+						}
+					]
+				},
+				{
+					"id": "raia4",
+					"class": "grid grid-cols-[10ch_repeat(3,minmax(0,1fr))] gap-small w-full items-start content-start flex-1 min-h-0 overflow-hidden py-small",
+					"componentProperties": {
+						"Box": {}
+					},
+					"children": [
+						{
+							"class": "font-mono text-caption text-neutral-text m-0",
+							"componentProperties": {
+								"Text": {
+									"text": {
+										"path": "s4"
+									}
+								}
+							}
+						},
+						{
+							"class": "list-none p-0 m-0 min-h-0 overflow-hidden text-caption text-neutral-text",
+							"componentProperties": {
+								"List": {
+									"items": {
+										"path": "s4_backlog"
+									},
+									"item": "bg-neutral-200 px-medium py-small mb-tiny truncate"
+								}
+							}
+						},
+						{
+							"class": "list-none p-0 m-0 min-h-0 overflow-hidden text-caption text-neutral-text",
+							"componentProperties": {
+								"List": {
+									"items": {
+										"path": "s4_in_progress"
+									},
+									"item": "bg-warning-300 px-medium py-small mb-tiny truncate"
+								}
+							}
+						},
+						{
+							"class": "list-none p-0 m-0 min-h-0 overflow-hidden text-caption text-neutral-text",
+							"componentProperties": {
+								"List": {
+									"items": {
+										"path": "s4_done"
+									},
+									"item": "bg-success-300 px-medium py-small mb-tiny truncate"
+								}
+							}
+						}
+					]
+				}
+			]
+		}
+	}
+]

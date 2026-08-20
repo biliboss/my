@@ -20,33 +20,65 @@ the context it needs.
 | [my-company](https://github.com/biliboss/my-company) | the theory: the three processes every company depends on |
 | [my-kanban](https://github.com/biliboss/my-kanban) | the board: one set of cards, every question |
 
-## Public page
+## The runtime lives here now
 
-The repository currently ships the public thesis and evidence library while the runtime is migrated from `biliboss/me`.
-
-- Page: https://biliboss.github.io/my/
-- Study reference: [`references/icm-study.md`](references/icm-study.md)
-- Source ledger: [`src/data/icm-links.json`](src/data/icm-links.json)
-- Bibliography: [`src/data/icm-bibliography.json`](src/data/icm-bibliography.json)
-
-The page uses HeroUI and includes two selectable visual systems: Aura (default) and Tokyo Night.
-
-## Develop
+`my` is a CLI. **The directory tree IS the command surface** — a folder is a verb,
+a file is a subverb, and nothing declares a command anywhere: `src/cli/my.ts`
+scans `src/` at startup and builds the parser from what it finds. Moving a file
+changes the CLI, which is the point — it is what stops a command from existing
+with no code behind it.
 
 ```bash
 bun install
-python3 scripts/check_references.py
-bun run dev
+bun run src/cli/my.ts            # the legend
+bun run src/cli/my.ts home paths # the three roots, and how each was decided
 ```
 
-## Build
+Put it on your PATH as a three-line shim that runs the SOURCE, never a compiled
+binary — `bun build --compile` freezes the scan into whatever `src/` looked like
+at build time:
 
 ```bash
-bun run check
-bun run build
+printf '#!/usr/bin/env bash\nexec bun run "%s/src/cli/my.ts" "$@"\n' "$PWD" > ~/.local/bin/my
+chmod +x ~/.local/bin/my
 ```
 
-GitHub Actions publishes `dist/` to GitHub Pages on every push to `main`.
+### Three roots, and none of them is "the repo"
+
+The single most load-bearing idea here, and the one that made this repository
+possible:
+
+| | is | default | env |
+|---|---|---|---|
+| **root** | the HOUSE — what the verbs read and write | `~/src/me` | `MY_HOME` |
+| **code** | the CHECKOUT this process came from | `.git` anchor | `MY_CODE` |
+| **machine** | what is true of THIS machine only | `~/.me` | `MY_MACHINE` |
+
+They used to be one answer, because the code lived inside the house. Twenty files
+called `repoRoot()` to find `01_projects/`. Split them and the same call returns
+the wrong path **with no error** — so the split had to happen before the move,
+not after. `my home check` is what keeps it honest, and `my home env` declares
+every one of the 27 variables this house reads.
+
+Your house is not this repository. Point `MY_HOME` at your own tree:
+
+```bash
+MY_HOME=~/my-house my projects check
+```
+
+## The public page
+
+`landing/` — the thesis, published to https://biliboss.github.io/my/ by GitHub
+Actions on every push to `main`. It sat at the repository root until the runtime
+arrived and both wanted `src/`; the page is what moved, because this repository
+is the system.
+
+```bash
+cd landing && bun install && bun run dev
+```
+
+- Study reference: [`landing/references/icm-study.md`](landing/references/icm-study.md)
+- Source ledger: [`landing/src/data/icm-links.json`](landing/src/data/icm-links.json)
 
 ## Evidence boundary
 

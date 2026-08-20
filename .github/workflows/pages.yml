@@ -22,13 +22,19 @@ jobs:
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: 1.3.9
+      # A PÁGINA MORA EM `landing/` DESDE 20/08, e `src/` passou a ser o RUNTIME.
+      # Os dois queriam a mesma pasta; a página é quem mudou, porque este
+      # repositório é o sistema — a mesma forma que `my-graph` já usa.
       - run: bun install --frozen-lockfile
+        working-directory: landing
       - run: python3 scripts/check_references.py
+        working-directory: landing
       - run: bun run build
+        working-directory: landing
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: landing/dist
 
   deploy:
     environment:

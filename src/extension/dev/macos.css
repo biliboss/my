@@ -1,0 +1,63 @@
+/*! The macOS LIGHT default, for the browser loop.
+ *
+ * Inside the editor every colour comes from a `--vscode-*` variable that VS Code injects
+ * into the webview. A browser injects none, so without this file the views render on
+ * transparent nothing with black-on-black text — which is what happens the first time
+ * anyone opens the dev server.
+ *
+ * The values are the macOS system light defaults (Sonoma): the `systemGray` ramp, the
+ * standard blue accent, SF Pro as the UI face and SF Mono for code. It is a DEFAULT and
+ * not a theme: `?theme=dark` swaps the same variables for the dark set, and a design that
+ * looks right in both is a design that will look right in a user's actual theme.
+ */
+
+:root {
+  --vscode-font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif;
+  --vscode-editor-font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+
+  --vscode-editor-background: #ffffff;
+  --vscode-editor-foreground: #1d1d1f;
+  --vscode-sideBar-background: #f5f5f7;
+  --vscode-editorWidget-border: #d2d2d7;
+  --vscode-panel-border: #d2d2d7;
+  --vscode-textLink-foreground: #0071e3;
+  --vscode-badge-background: #e8e8ed;
+  --vscode-badge-foreground: #1d1d1f;
+
+  --vscode-charts-green: #1e8e3e;
+  --vscode-charts-orange: #c1670c;
+  --vscode-charts-red: #d70015;
+  --vscode-charts-blue: #0071e3;
+  --vscode-charts-purple: #8944ab;
+  --vscode-charts-foreground: #1d1d1f;
+
+  color-scheme: light;
+}
+
+html[data-theme='dark'],
+body.vscode-dark {
+  --vscode-editor-background: #1e1e1e;
+  --vscode-editor-foreground: #e8e8ed;
+  --vscode-sideBar-background: #252526;
+  --vscode-editorWidget-border: #3c3c43;
+  --vscode-panel-border: #3c3c43;
+  --vscode-textLink-foreground: #6ab0ff;
+  --vscode-badge-background: #333338;
+  --vscode-badge-foreground: #e8e8ed;
+
+  --vscode-charts-green: #4ac26b;
+  --vscode-charts-orange: #e3a008;
+  --vscode-charts-red: #ff6369;
+  --vscode-charts-blue: #6ab0ff;
+  --vscode-charts-purple: #c297ff;
+  --vscode-charts-foreground: #e8e8ed;
+
+  color-scheme: dark;
+}
+
+/* The browser has no editor chrome, so the page supplies the frame the pane gets for free. */
+body {
+  margin: 0;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}

@@ -1,0 +1,50 @@
+[
+	{
+		"createSurface": {
+			"surfaceId": "parados",
+			"title": "parados · esperando decisão do Gabriel",
+			"columns": 1,
+			"x": 0,
+			"y": -2
+		}
+	},
+	{
+		"updateDataModel": {
+			"surfaceId": "parados",
+			"contents": {
+				"quantos": "—",
+				"ha": "—",
+				"decisoes": [
+					"ninguém preencheu — quem lê os YAMLs publica o updateDataModel"
+				]
+			}
+		}
+	},
+	{
+		"updateComponents": {
+			"surfaceId": "parados",
+			"components": [
+				{
+					"id": "par-n",
+					"column": 0,
+					"componentProperties": {
+						"Metric": { "value": { "path": "quantos" }, "label": "runs parados", "linha": true }
+					}
+				},
+				{
+					"id": "par-ha",
+					"column": 0,
+					"componentProperties": {
+						"Metric": { "value": { "path": "ha" }, "label": "o mais antigo", "linha": true }
+					}
+				},
+				{
+					"id": "par-lista",
+					"style": { "font-family": "ui-monospace, monospace", "font-size": "0.75rem" },
+					"componentProperties": { "List": { "items": { "path": "decisoes" } } }
+				}
+			]
+		}
+	},
+	{ "focusSurface": { "surfaceId": "parados" } }
+]

@@ -1,0 +1,66 @@
+[
+	{
+		"createSurface": {
+			"surfaceId": "doc",
+			"title": "documento em foco",
+			"columns": 1,
+			"x": 1,
+			"y": 5
+		}
+	},
+	{
+		"updateDataModel": {
+			"surfaceId": "doc",
+			"contents": {
+				"titulo": "03_resources/references/skills/agent-sessions/CONTEXT.md",
+				"aberto": "/doc/references/skills/agent-sessions/CONTEXT.md",
+				"comparar": "/doc/templates/skills/CONTEXT.md"
+			}
+		}
+	},
+	{
+		"updateComponents": {
+			"surfaceId": "doc",
+			"components": [
+				{
+					"id": "h-titulo",
+					"column": 0,
+					"componentProperties": {
+						"Heading": {
+							"text": {
+								"path": "titulo"
+							}
+						}
+					}
+				},
+				{
+					"id": "tabs-doc",
+					"column": 1,
+					"componentProperties": {
+						"Tabs": {
+							"items": [
+								{
+									"label": "documento",
+									"src": {
+										"path": "aberto"
+									}
+								},
+								{
+									"label": "o template dele",
+									"src": {
+										"path": "comparar"
+									}
+								}
+							]
+						}
+					}
+				}
+			]
+		}
+	},
+	{
+		"focusSurface": {
+			"surfaceId": "doc"
+		}
+	}
+]
