@@ -48,7 +48,6 @@ class My {
   @verb("os workflows da casa: as categorias, a árvore, o contrato de um") workflows() {}
   @verb("a pergunta que sobe numa tela e BLOQUEIA até alguém decidir") askuser() {}
   @verb("a frota: despacha trabalho endereçado e lê o que voltou") agents() {}
-  @verb("a lente HACKER como código: o que foi medido, endereçado pelo sha do texto") hacker() {}
   @verb("onde as coisas ficam: as três raízes, as env, e quem escreve onde") home() {}
   @verb("o plantão: sobe um workspace por time, e ele PUXA da própria fila") teams() {}
   @verb("o multiplexador: workspaces, abas, panes, agentes") herdr() {}

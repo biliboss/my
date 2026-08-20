@@ -79,6 +79,10 @@ export const LENSES = {
 			"references/claude_code",
 			"references/google_workspace",
 			"references/skills",
+			// `databases` entrou em 20/08 com a primeira página que não cabia em nenhuma
+			// das outras: SurrealDB, medido subindo um standalone. `clis` é sobre o que
+			// esta casa ESCREVE; isto é sobre o que ela LIGA e que muda por baixo dela.
+			"references/databases",
 		],
 		roles: ["coding", "qa"],
 		asks: {
