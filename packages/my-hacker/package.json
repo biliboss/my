@@ -1,0 +1,11 @@
+{
+  "name": "@biliboss/my-hacker",
+  "version": "0.1.0",
+  "description": "The hacker lens as code: measured findings about CLIs, editors, harnesses and databases, addressed by the SHA-1 of what they say.",
+  "license": "MIT",
+  "author": "Gabriel (biliboss)",
+  "type": "module",
+  "exports": { ".": "./resource.ts", "./resource/*": "./resource/*.ts" },
+  "devDependencies": { "typescript": "catalog:" },
+  "scripts": { "check": "tsc --noEmit --strict --target es2022 resource.ts resource/*.ts" }
+}
