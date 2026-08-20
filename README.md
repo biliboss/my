@@ -1,6 +1,22 @@
 # my
 
-A local-first personal operating system and CLI.
+**The AI doesn't need another framework. It needs to know where it is.**
+
+[![Publish GitHub Pages](https://github.com/biliboss/my/actions/workflows/pages.yml/badge.svg)](https://github.com/biliboss/my/actions/workflows/pages.yml)
+
+![my — the system the AI can read](public/og.png)
+
+A local-first personal operating system and CLI — folders, contracts and
+readable files as the architecture. You see every step. The AI receives only
+the context it needs.
+**[Read the thesis →](https://biliboss.github.io/my/)**
+
+## The family
+
+| repo | job |
+|---|---|
+| **my** | the system: local-first, plain text as interface, the human is the gate |
+| [my-graph](https://github.com/biliboss/my-graph) | the X-ray: draws who depends on whom, read from the code |
 
 ## Public page
 
