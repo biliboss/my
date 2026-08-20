@@ -73,6 +73,7 @@
 //! implemented: nothing
 //! planned:     apps/my-company/
 //! depends_on:  packages/interfaces/shared.ts · packages/interfaces/kanban.ts ·
+//!              packages/interfaces/labels.ts ·
 //!              packages/interfaces/resources.ts
 //! buries:      packages/my-hacker/ — a lens that had become a package (20/08)
 //! checks:      declared HERE, never imported. `check()` returns `Finding[]` and the
@@ -98,6 +99,11 @@ export declare namespace CompanySystem {
 	 *  THE WORD IS `role` BECAUSE O2 ALREADY USES IT — there, work is *"addressed to a
 	 *  role, never to an agent"*, and the graph carries an `o2:role` node. A second word
 	 *  for the same unit is a fork of the vocabulary, not a synonym.
+	 *
+	 *  THE THREE ARE A SEALED LABEL SET, declared by this package in `labels.ts`. The
+	 *  union is the compile-time claim; the declaration is what lets `check()` see a
+	 *  second package trying to own the word `hacker` — a collision a union cannot
+	 *  catch, because the other package has its own union.
 	 *
 	 *  Lineage: popularised by Reid Hoffman; the one peer-reviewed anchor is Rudic,
 	 *  Hübner & Baum, *Journal of Business Venturing Insights* 15 (2021). It is a
