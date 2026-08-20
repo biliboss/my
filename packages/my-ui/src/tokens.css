@@ -1,12 +1,13 @@
 /*! @biliboss/my-ui — os tokens e o chrome que a família my compartilha.
  *
- *  Três temas — synthwave (padrão), aura, tokyo — escolhidos por `data-theme`
- *  no <html>. Tudo abaixo
+ *  UMA paleta: SynthWave '84 (Robb Owen). Não há seletor de tema e não há
+ *  `data-theme` — a paleta É o `:root`. Aura e Tokyo Night existiram até
+ *  20/08 e foram REMOVIDOS junto com o botão que os escolhia: opção que
+ *  ninguém troca é código que ninguém testa. Tudo abaixo
  *  é design system: a casca da página, a dobra parallax e a navegação por
  *  dobra. O que é de UM produto (um grafo, um quadro) fica no produto.
  */
-:root,
-:root[data-theme="synthwave"] {
+:root {
   color-scheme: dark;
   /* SynthWave '84 (Robb Owen) — o padrão da casa. O rosa É a marca do tema, e
      por isso ele ocupa `--primary`; o ciano fica no acento, como no editor. */
@@ -35,49 +36,6 @@
   --neon: 0 0 2px rgba(255, 255, 255, .55), 0 0 12px rgba(255, 126, 219, .55), 0 0 30px rgba(255, 126, 219, .35);
 }
 
-:root[data-theme="aura"] {
-  color-scheme: dark;
-  --bg: #15141b;
-  --bg-deep: #0d0c12;
-  --surface: #1f1d29;
-  --surface-2: #272433;
-  --line: rgba(237, 236, 238, 0.12);
-  --line-strong: rgba(162, 119, 255, 0.38);
-  --text: #edecee;
-  --muted: #9d9aa8;
-  --faint: #6d6978;
-  --primary: #a277ff;
-  --primary-2: #f694ff;
-  --cyan: #61ffca;
-  --blue: #6cb2c7;
-  --warm: #ffca85;
-  --danger: #ff6767;
-  --glow: rgba(162, 119, 255, 0.2);
-  --grid: rgba(162, 119, 255, 0.055);
-  --neon: none;
-}
-
-:root[data-theme="tokyo"] {
-  color-scheme: dark;
-  --bg: #1a1b26;
-  --bg-deep: #10111a;
-  --surface: #24283b;
-  --surface-2: #292e42;
-  --line: rgba(192, 202, 245, 0.12);
-  --line-strong: rgba(122, 162, 247, 0.38);
-  --text: #c0caf5;
-  --muted: #9aa5ce;
-  --faint: #565f89;
-  --primary: #7aa2f7;
-  --primary-2: #bb9af7;
-  --cyan: #7dcfff;
-  --blue: #2ac3de;
-  --warm: #e0af68;
-  --danger: #f7768e;
-  --glow: rgba(122, 162, 247, 0.18);
-  --grid: rgba(122, 162, 247, 0.05);
-  --neon: none;
-}
 
 /* ── ESCALA ──────────────────────────────────────────────────────────────────
  * Espaçamento e tipografia como TOKEN, não como número solto na regra. O que
@@ -180,9 +138,9 @@ main::before { content: ""; position: fixed; inset: 0; pointer-events: none; z-i
 .nav-links { display: flex; align-items: center; gap: 34px; margin-left: auto; margin-right: 40px; }
 .nav-links a { font-size: 13px; color: var(--muted); transition: color .18s ease; }
 .nav-links a:hover { color: var(--text); }
-.theme-switch { display: flex; padding: 3px; border: 1px solid var(--line); border-radius: 12px; background: color-mix(in srgb, var(--surface) 68%, transparent); }
-.theme-switch button { border: 0; background: transparent; color: var(--faint); padding: 7px 10px; border-radius: 8px; font-size: 11px; cursor: pointer; transition: .18s ease; }
-.theme-switch button.active { color: var(--text); background: var(--surface-2); box-shadow: 0 0 20px var(--glow); }
+.switch { display: flex; padding: 3px; border: 1px solid var(--line); border-radius: 12px; background: color-mix(in srgb, var(--surface) 68%, transparent); }
+.switch button { border: 0; background: transparent; color: var(--faint); padding: 7px 10px; border-radius: 8px; font-size: 11px; cursor: pointer; transition: .18s ease; }
+.switch button.active { color: var(--text); background: var(--surface-2); box-shadow: 0 0 20px var(--glow); }
 .menu-button { display: none; }
 
 .hero { min-height: 760px; padding: 128px 0 72px; position: relative; z-index: 1; }
@@ -255,7 +213,7 @@ main::before { content: ""; position: fixed; inset: 0; pointer-events: none; z-i
   .shell { width: min(100% - 32px, 720px); }
   .section { padding-block: 90px; }
   .nav { height: 76px; }
-  .theme-switch { margin-left: auto; margin-right: 16px; }
+  .switch { margin-left: auto; margin-right: 16px; }
   .menu-button { order: 3; display: grid; gap: 5px; width: 36px; height: 36px; place-content: center; border: 1px solid var(--line); border-radius: 9px; background: var(--surface); }
   .menu-button span { width: 15px; border-top: 1px solid var(--text); }
   .nav-links { display: none; position: absolute; top: 75px; left: 0; right: 0; margin: 0; padding: 24px; flex-direction: column; align-items: flex-start; background: var(--bg-deep); border: 1px solid var(--line); }
@@ -271,8 +229,8 @@ main::before { content: ""; position: fixed; inset: 0; pointer-events: none; z-i
 
 @media (max-width: 580px) {
   .shell { width: calc(100% - 28px); }
-  .theme-switch { position: absolute; right: 46px; margin: 0; }
-  .theme-switch button { padding-inline: 7px; font-size: 9px; }
+  .switch { position: absolute; right: 46px; margin: 0; }
+  .switch button { padding-inline: 7px; font-size: 9px; }
   .menu-button { position: absolute; right: 0; }
   .brand > span:last-child { display: none; }
   .hero { padding-top: 80px; }
@@ -355,3 +313,24 @@ kbd { font-family: var(--font-mono); font-size: .82em; padding: 2px 7px; border:
 
 /* A marca provisória: a inicial, na moldura da família. */
 .brand-letter { font-family: var(--font-mono); line-height: 1; }
+
+/* ── LpCarousel: a prova visual, com passo automático ─────────────────────── */
+.carousel { margin-top: 60px; display: grid; grid-template-columns: 1.5fr .5fr; gap: 18px; align-items: stretch; }
+.carousel-figure { margin: 0; position: relative; aspect-ratio: 16/9; border: 1px solid var(--line-strong); border-radius: 18px; overflow: hidden; background: var(--bg-deep); box-shadow: 0 0 60px var(--glow); }
+.carousel-figure img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top left; opacity: 0; transition: opacity .6s ease; }
+.carousel-figure img.active { opacity: 1; }
+.carousel-side { display: flex; flex-direction: column; justify-content: space-between; border: 1px solid var(--line); border-radius: 18px; padding: 30px; background: color-mix(in srgb, var(--surface) 56%, transparent); }
+.carousel-copy h3 { font-size: 30px; letter-spacing: -.04em; margin: 18px 0 16px; }
+.carousel-copy p { color: var(--muted); line-height: 1.65; margin: 0; font-size: 14px; }
+.carousel-controls { display: flex; align-items: center; gap: 16px; margin-top: 28px; }
+.carousel-controls > button { width: 38px; height: 38px; border-radius: 10px; border: 1px solid var(--line); background: transparent; color: var(--muted); cursor: pointer; transition: .18s ease; }
+.carousel-controls > button:hover { color: var(--text); border-color: var(--line-strong); }
+.carousel-dots { display: flex; gap: 8px; flex: 1; justify-content: center; }
+.carousel-dots button { width: 22px; height: 4px; border: 0; border-radius: 2px; background: var(--surface-2); cursor: pointer; transition: .18s ease; padding: 0; }
+.carousel-dots button.active { background: var(--cyan); box-shadow: 0 0 12px var(--glow); }
+  .carousel { grid-template-columns: 1fr; }
+  .carousel-copy h3 { font-size: 24px; }
+@media (max-width: 900px) {
+  .carousel { grid-template-columns: 1fr; }
+  .carousel-copy h3 { font-size: 24px; }
+}

@@ -1,5 +1,5 @@
 import { LayoutGroup, motion } from "framer-motion";
-import { Chip, ChipRow, Story } from "@biliboss/my-ui";
+import { Chip, ChipRow, LpParallax } from "@biliboss/my-ui";
 
 //! A DEMONSTRAÇÃO: o mesmo conjunto de cards, quatro perguntas diferentes.
 //!
@@ -129,9 +129,9 @@ const STEPS: Step[] = [
 
 export function BoardStory() {
   return (
-    <Story steps={STEPS} stepVh={90} stageBottom={250} stageBottomSm={240}>
+    <LpParallax steps={STEPS} stepVh={90} stageBottom={250} stageBottomSm={240}>
       {(step) => <Board step={STEPS[step]} />}
-    </Story>
+    </LpParallax>
   );
 }
 

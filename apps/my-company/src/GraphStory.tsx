@@ -1,4 +1,4 @@
-import { Story, type StoryStep } from "@biliboss/my-ui";
+import { LpParallax, type LpParallaxStep } from "@biliboss/my-ui";
 import { GraphCanvas, type GraphNode } from "@biliboss/my-ui/graph";
 
 //! A TEORIA, DESENHADA. O que sobrou aqui depois do my-ui é só o que é DESTE
@@ -24,7 +24,7 @@ const NODES: GraphNode[] = [
   { id: "seu-cuidado", label: "o seu cuidado", level: 3, parent: "sucesso", custom: true },
 ];
 
-const STEPS: StoryStep[] = [
+const STEPS: LpParallaxStep[] = [
   {
     kicker: "PASSO 1",
     title: "Toda empresa cabe numa bolinha.",
@@ -47,10 +47,10 @@ const STEPS: StoryStep[] = [
   },
 ];
 
-export function GraphStory({ theme }: { theme: string }) {
+export function GraphStory() {
   return (
-    <Story steps={STEPS} stepVh={110}>
-      {(step) => <GraphCanvas nodes={NODES} level={step} theme={theme} />}
-    </Story>
+    <LpParallax steps={STEPS} stepVh={110}>
+      {(step) => <GraphCanvas nodes={NODES} level={step} />}
+    </LpParallax>
   );
 }

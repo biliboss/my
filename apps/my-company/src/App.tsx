@@ -1,65 +1,46 @@
 import { useEffect, useState } from "react";
-import { Button, Card, CardContent } from "@heroui/react";
-import { Family, FoldNav, ThemeSwitch, useTheme } from "@biliboss/my-ui";
+import { Card, CardContent } from "@heroui/react";
+import { Arrow, Button, familyLinks, LpFamilyShowcase, LpFoldNav, LpFooter, LpHero, LpNav, LpTicker, Mark, Page } from "@biliboss/my-ui";
 import { GraphStory } from "./GraphStory";
 
-function Arrow({ down = false }: { down?: boolean }) {
-  return <span aria-hidden="true">{down ? "↓" : "↗"}</span>;
-}
-
 function App() {
-  const { theme, setTheme } = useTheme();
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <main>
-      <div className="ambient ambient-one" />
-      <div className="ambient ambient-two" />
-      <FoldNav />
-      <nav className="nav shell" aria-label="Navegação principal">
-        <a className="brand" href="#top" aria-label="my-company, início">
-          <span className="brand-mark">c</span><span>my-company</span>
-        </a>
-        <button className="menu-button" onClick={() => setMenuOpen(!menuOpen)} aria-expanded={menuOpen}>
-          <span /> <span />
-        </button>
-        <div className={`nav-links ${menuOpen ? "open" : ""}`}>
-          <a href="#teoria">Teoria</a>
-          <a href="#linhagem">Linhagem</a>
-          <a href="#familia">Família</a>
-          <a href="https://github.com/biliboss/my-company" target="_blank" rel="noreferrer">GitHub <Arrow /></a>
-        </div>
-        <ThemeSwitch theme={theme} setTheme={setTheme} />
-      </nav>
+    <Page>
+      <LpFoldNav />
+      <LpNav
+        brand="my-company"
+        mark={<Mark slug="my-company" />}
+        links={[
+            { label: "Teoria", href: "#teoria" },
+            { label: "Linhagem", href: "#linhagem" },
+            { label: "Família", href: "#familia" },
+            { label: "GitHub", href: "https://github.com/biliboss/my-company" },
+          ]}
+      />
 
-      <header className="hero shell" id="top" data-fold>
-        <div className="eyebrow"><span className="pulse" /> landing antes do produto · open source · família my</div>
-        <h1>Toda empresa depende de<br /><em>três processos.</em></h1>
-        <p className="hero-line">O resto é variação.</p>
-        <p className="hero-copy">
-          <strong>my-company</strong> é uma teoria open source sobre o que sustenta uma empresa de pé —
+      <LpHero
+        eyebrow={<> landing antes do produto · open source · família my</>}
+        title={<>Toda empresa depende de<br /><em>três processos.</em></>}
+        line={<>O resto é variação.</>}
+        actions={
+          <>
+              <Button href="https://github.com/biliboss/my-company">Acompanhar no GitHub <Arrow /></Button>
+              <Button href="#teoria" variant="secondary">Ver os três <Arrow down /></Button>
+          </>
+        }
+        proof={["Vender o que entrega.", "Entregar o que vendeu.", "Ser amado pelo que entregou."]}
+      >
+        <strong>my-company</strong> é uma teoria open source sobre o que sustenta uma empresa de pé —
           e esta página veio <strong>antes do projeto existir</strong>, de propósito:
           a promessa é o primeiro artefato.
-        </p>
-        <div className="hero-actions">
-          <a href="https://github.com/biliboss/my-company" target="_blank" rel="noreferrer">
-            <Button size="lg" className="primary-cta">Acompanhar no GitHub <Arrow /></Button>
-          </a>
-          <a href="#teoria">
-            <Button size="lg" variant="ghost" className="secondary-cta">Ver os três <Arrow down /></Button>
-          </a>
-        </div>
-        <div className="hero-proof" aria-label="Os três processos">
-          <span>Vender o que entrega.</span>
-          <span>Entregar o que vendeu.</span>
-          <span>Ser amado pelo que entregou.</span>
-        </div>
-      </header>
+      </LpHero>
 
       {/* Sem `data-fold` aqui: os marcadores da própria GraphStory já param
           nesta altura, e dois stops no mesmo y custam duas teclas pro mesmo lugar. */}
       <section id="teoria" aria-label="A teoria, desenhada">
-        <GraphStory theme={theme} />
+        <GraphStory />
       </section>
 
       <div className="shell">
@@ -69,9 +50,7 @@ function App() {
         </div>
       </div>
 
-      <section className="ticker" aria-label="Resumo">
-        <div>SELL WHAT YOU DELIVER <b>✦</b> DELIVER WHAT YOU SOLD <b>✦</b> BE LOVED FOR WHAT YOU DELIVERED <b>✦</b> LANDING BEFORE PRODUCT <b>✦</b> SELL WHAT YOU DELIVER <b>✦</b> DELIVER WHAT YOU SOLD <b>✦</b> BE LOVED FOR WHAT YOU DELIVERED <b>✦</b> LANDING BEFORE PRODUCT <b>✦</b></div>
-      </section>
+      <LpTicker items={["SELL WHAT YOU DELIVER", "DELIVER WHAT YOU SOLD", "BE LOVED FOR WHAT YOU DELIVERED", "LANDING BEFORE PRODUCT"]} />
 
       <section className="shell section problem" data-fold>
         <div className="section-kicker">02 / o problema real</div>
@@ -119,7 +98,7 @@ function App() {
         </p>
       </section>
 
-      <Family
+      <LpFamilyShowcase
         self="my-company"
         kicker="03 / da mesma família"
         title="my-company é a teoria."
@@ -134,21 +113,16 @@ function App() {
         <span className="section-kicker">A PÁGINA É O PRIMEIRO ARTEFATO</span>
         <h2>Comece pela promessa.<br />O projeto nasce em público.</h2>
         <p>my-company começou como esta landing — antes do primeiro processo escrito. A teoria vira método aqui, commit a commit.</p>
-        <a href="https://github.com/biliboss/my-company" target="_blank" rel="noreferrer">
-          <Button size="lg" className="primary-cta">Acompanhar a construção <Arrow /></Button>
-        </a>
+        <Button href="https://github.com/biliboss/my-company">Acompanhar a construção <Arrow /></Button>
       </section>
 
-      <footer className="footer shell">
-        <a className="brand" href="#top"><span className="brand-mark">c</span><span>my-company</span></a>
-        <p>Sell what you deliver. Deliver what you sold. Be loved.</p>
-        <div>
-          <a href="https://biliboss.github.io/my/" target="_blank" rel="noreferrer">my <Arrow /></a>
-          <a href="https://biliboss.github.io/my-graph/" target="_blank" rel="noreferrer">my-graph <Arrow /></a>
-          <a href="https://github.com/biliboss/my-company" target="_blank" rel="noreferrer">Código <Arrow /></a>
-        </div>
-      </footer>
-    </main>
+      <LpFooter
+        brand="my-company"
+        mark={<Mark slug="my-company" />}
+        tagline="Sell what you deliver. Deliver what you sold. Be loved."
+        links={[...familyLinks("my-company"), { label: "Código", href: "https://github.com/biliboss/my-company" }]}
+      />
+    </Page>
   );
 }
 

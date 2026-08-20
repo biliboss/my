@@ -8,15 +8,15 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 //! halo, palco e legenda em RITMOS diferentes. Duas velocidades já são
 //! parallax; três dão profundidade sem custar JS.
 
-export type StoryStep = {
+export type LpParallaxStep = {
   /** A etiqueta monoespaçada acima do título. */
   kicker: string;
   title: string;
   copy: string;
 };
 
-export type StoryProps = {
-  steps: StoryStep[];
+export type LpParallaxProps = {
+  steps: LpParallaxStep[];
   /** Quanto de rolagem cada passo ocupa, em vh. */
   stepVh?: number;
   /** Quanto o palco recua na base pra não ficar atrás da legenda. */
@@ -27,14 +27,14 @@ export type StoryProps = {
   children: (step: number) => ReactNode;
 };
 
-export function Story({
+export function LpParallax({
   steps,
   stepVh = 100,
   stageBottom = 260,
   stageBottomSm = 210,
   className = "",
   children,
-}: StoryProps) {
+}: LpParallaxProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [step, setStep] = useState(0);
 

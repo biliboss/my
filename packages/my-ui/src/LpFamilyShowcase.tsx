@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
-import { ExternalLink } from "./primitives";
-import { MyGraphMark } from "./logos";
+import { ExternalLink } from "./Primitives";
+import { MyGraphMark } from "./Logos";
 
 //! A FAMÍLIA, como DADO. Ela aparece em toda landing, e enquanto era markup
 //! copiado, incluir um quarto produto custou quatro commits em quatro repos —
@@ -59,8 +59,12 @@ export const FAMILY: Product[] = [
 
 export const product = (slug: string) => FAMILY.find((p) => p.slug === slug)!;
 
-/** A marca de um produto: desenhada quando existe, inicial enquanto não. */
-export function Mark({ slug, size = 28 }: { slug: string; size?: number }) {
+/** A marca de um produto: desenhada quando existe, inicial enquanto não.
+ *
+ *  `22` e não `28`: a moldura do `.brand-mark` tem 30px com borda e padding, e
+ *  um desenho de 28 encosta nas quatro paredes. A inicial usa metade disso
+ *  porque letra e figura não ocupam a caixa do mesmo jeito. */
+export function Mark({ slug, size = 22 }: { slug: string; size?: number }) {
   if (slug === "my-graph") return <MyGraphMark size={size} />;
   return (
     <span className="brand-letter" aria-hidden="true" style={{ fontSize: size * 0.5 }}>
@@ -71,7 +75,7 @@ export function Mark({ slug, size = 28 }: { slug: string; size?: number }) {
 
 /** A faixa clara com a família inteira. `self` é o produto que está falando —
  *  ele aparece na grade, mas sem link pra si mesmo. */
-export function Family({
+export function LpFamilyShowcase({
   self,
   kicker,
   title,

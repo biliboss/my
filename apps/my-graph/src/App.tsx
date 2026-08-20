@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { Button, Card, CardContent } from "@heroui/react";
-import { Family, FoldNav, ThemeSwitch, useTheme } from "@biliboss/my-ui";
+import { Card, CardContent } from "@heroui/react";
+import { Arrow, Button, familyLinks, LpCarousel, LpFamilyShowcase, LpFoldNav, LpFooter, LpHero, LpNav, type LpSlide, LpTicker, Mark, Page } from "@biliboss/my-ui";
 
 const BASE = import.meta.env.BASE_URL;
 
-const slides = [
+const SLIDES: LpSlide[] = [
   {
     src: `${BASE}shots/spaghetti-shop.png`,
     kicker: "CÓDIGO RUIM",
@@ -45,120 +45,42 @@ const inks: Array<[string, string, string, string]> = [
   ["◌", "Círculo cinza", "caminho citado de fora da árvore — desligado por padrão", "externo"],
 ];
 
-function Arrow({ down = false }: { down?: boolean }) {
-  return <span aria-hidden="true">{down ? "↓" : "↗"}</span>;
-}
-
-function Carousel() {
-  const [index, setIndex] = useState(0);
-  const [paused, setPaused] = useState(false);
-
-  useEffect(() => {
-    if (paused) return;
-    const id = setInterval(() => setIndex((i) => (i + 1) % slides.length), 5000);
-    return () => clearInterval(id);
-  }, [paused]);
-
-  const slide = slides[index];
-
-  return (
-    <div
-      className="carousel"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-      aria-roledescription="carrossel"
-      aria-label="Exemplos reais renderizados pelo my-graph"
-    >
-      <figure className="carousel-figure">
-        {slides.map((s, i) => (
-          <img
-            key={s.src}
-            src={s.src}
-            alt={`${s.kicker} — ${s.title}`}
-            className={i === index ? "active" : ""}
-            aria-hidden={i !== index}
-            loading={i === 0 ? "eager" : "lazy"}
-          />
-        ))}
-      </figure>
-      <div className="carousel-side">
-        <div className="carousel-copy" aria-live="polite">
-          <span className="card-number">{slide.kicker}</span>
-          <h3>{slide.title}</h3>
-          <p>{slide.copy}</p>
-        </div>
-        <div className="carousel-controls">
-          <button aria-label="Anterior" onClick={() => setIndex((index - 1 + slides.length) % slides.length)}>←</button>
-          <div className="carousel-dots">
-            {slides.map((s, i) => (
-              <button
-                key={s.src}
-                aria-label={`Slide ${i + 1}: ${s.kicker}`}
-                className={i === index ? "active" : ""}
-                onClick={() => setIndex(i)}
-              />
-            ))}
-          </div>
-          <button aria-label="Próximo" onClick={() => setIndex((index + 1) % slides.length)}>→</button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 function App() {
-  const { theme, setTheme } = useTheme();
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <main>
-      <div className="ambient ambient-one" />
-      <div className="ambient ambient-two" />
-      <FoldNav />
-      <nav className="nav shell" aria-label="Navegação principal">
-        <a className="brand" href="#top" aria-label="my-graph, início">
-          <span className="brand-mark">g</span><span>my-graph</span>
-        </a>
-        <button className="menu-button" onClick={() => setMenuOpen(!menuOpen)} aria-expanded={menuOpen}>
-          <span /> <span />
-        </button>
-        <div className={`nav-links ${menuOpen ? "open" : ""}`}>
-          <a href="#prova">Prova</a>
-          <a href="#mecanismo">Mecanismo</a>
-          <a href="#evidencia">Evidência</a>
-          <a href="#familia">Família</a>
-          <a href="https://github.com/biliboss/my-graph" target="_blank" rel="noreferrer">GitHub <Arrow /></a>
-        </div>
-        <ThemeSwitch theme={theme} setTheme={setTheme} />
-      </nav>
+    <Page>
+      <LpFoldNav />
+      <LpNav
+        brand="my-graph"
+        mark={<Mark slug="my-graph" />}
+        links={[
+            { label: "Prova", href: "#prova" },
+            { label: "Mecanismo", href: "#mecanismo" },
+            { label: "Evidência", href: "#evidencia" },
+            { label: "Família", href: "#familia" },
+            { label: "GitHub", href: "https://github.com/biliboss/my-graph" },
+          ]}
+      />
 
-      <header className="hero shell" id="top" data-fold>
-        <div className="eyebrow"><span className="pulse" /> lido do código · nenhuma seta à mão · família my</div>
-        <h1>Seu diagrama de arquitetura<br /><em>está mentindo.</em></h1>
-        <p className="hero-line">A verdade está no código.</p>
-        <p className="hero-copy">
-          <strong>my-graph</strong> aponta para uma árvore de sistemas, lê o <code>interface.ts</code> de cada um
+      <LpHero
+        eyebrow={<> lido do código · nenhuma seta à mão · família my</>}
+        title={<>Seu diagrama de arquitetura<br /><em>está mentindo.</em></>}
+        line={<>A verdade está no código.</>}
+        actions={
+          <>
+              <Button href="https://github.com/biliboss/my-graph">Ler o código no GitHub <Arrow /></Button>
+              <Button href="#prova" variant="secondary">Ver com seus olhos <Arrow down /></Button>
+          </>
+        }
+        proof={["Seta sólida é import.", "Tracejada é comentário.", "Pálido é rascunho."]}
+      >
+        <strong>my-graph</strong> aponta para uma árvore de sistemas, lê o <code>interface.ts</code> de cada um
           e desenha quem depende de quem — cada verbo de cada interface a um clique.
           Nada é desenhado à mão. Uma figura velha fica <strong>detectável</strong>, não discutível.
-        </p>
-        <div className="hero-actions">
-          <a href="https://github.com/biliboss/my-graph" target="_blank" rel="noreferrer">
-            <Button size="lg" className="primary-cta">Ler o código no GitHub <Arrow /></Button>
-          </a>
-          <a href="#prova">
-            <Button size="lg" variant="ghost" className="secondary-cta">Ver com seus olhos <Arrow down /></Button>
-          </a>
-        </div>
-        <div className="hero-proof" aria-label="Legenda do grafo">
-          <span>Seta sólida é import.</span>
-          <span>Tracejada é comentário.</span>
-          <span>Pálido é rascunho.</span>
-        </div>
-      </header>
+      </LpHero>
 
-      <section className="ticker" aria-label="Resumo">
-        <div>DRAWN FROM THE CODE <b>✦</b> EVERY EDGE CITES ITS SOURCE <b>✦</b> A STALE PICTURE IS DETECTABLE <b>✦</b> CONSTRAINTS, NOT ENERGY <b>✦</b> MEASURE THE CURVE, NOT THE CHORD <b>✦</b> DRAWN FROM THE CODE <b>✦</b> EVERY EDGE CITES ITS SOURCE <b>✦</b> A STALE PICTURE IS DETECTABLE <b>✦</b> CONSTRAINTS, NOT ENERGY <b>✦</b> MEASURE THE CURVE, NOT THE CHORD <b>✦</b></div>
-      </section>
+      <LpTicker items={["DRAWN FROM THE CODE", "EVERY EDGE CITES ITS SOURCE", "A STALE PICTURE IS DETECTABLE", "CONSTRAINTS, NOT ENERGY", "MEASURE THE CURVE, NOT THE CHORD"]} />
 
       <section className="shell section" id="prova" data-fold>
         <div className="section-kicker">01 / veja com seus olhos</div>
@@ -166,7 +88,7 @@ function App() {
           <h2>O grafo não tem<br />modo embelezar.</h2>
           <p>Cinco árvores reais, renderizadas pela mesma ferramenta. Código, rotina, empresa familiar — se dá pra declarar contratos, dá pra mapear. E o desenho entrega a verdade sem pedir licença.</p>
         </div>
-        <Carousel />
+        <LpCarousel slides={SLIDES} label="Exemplos reais renderizados pelo my-graph" />
       </section>
 
       <section className="shell section problem" data-fold>
@@ -282,7 +204,7 @@ function App() {
         <p>A reta limpa o que o arco desenhado não limpa — e uma quadrática atinge só metade da distância do ponto de controle no ápice, então vencer uma penetração de d custa 2d. Três versões erradas ensinaram isso; as duas lições estão escritas onde mordem, em ui/GraphCanvas.tsx.</p>
       </section>
 
-      <Family
+      <LpFamilyShowcase
         self="my-graph"
         kicker="06 / da mesma família"
         title="my-graph é a radiografia."
@@ -297,21 +219,16 @@ function App() {
         <span className="section-kicker">A FIGURA CERTA É A LIDA</span>
         <h2>Pare de desenhar arquitetura.<br />Comece a lê-la.</h2>
         <p>Open source, MIT. Aponte para a sua árvore e veja o que ela realmente é — não o que o diagrama de terça-feira dizia.</p>
-        <a href="https://github.com/biliboss/my-graph" target="_blank" rel="noreferrer">
-          <Button size="lg" className="primary-cta">Apontar para o meu código <Arrow /></Button>
-        </a>
+        <Button href="https://github.com/biliboss/my-graph">Apontar para o meu código <Arrow /></Button>
       </section>
 
-      <footer className="footer shell">
-        <a className="brand" href="#top"><span className="brand-mark">g</span><span>my-graph</span></a>
-        <p>Draws what depends on what, read straight from the code.</p>
-        <div>
-          <a href="https://biliboss.github.io/my/" target="_blank" rel="noreferrer">Família my <Arrow /></a>
-          <a href="https://biliboss.github.io/my-company/" target="_blank" rel="noreferrer">Família my-company <Arrow /></a>
-          <a href="https://github.com/biliboss/my-graph" target="_blank" rel="noreferrer">Código <Arrow /></a>
-        </div>
-      </footer>
-    </main>
+      <LpFooter
+        brand="my-graph"
+        mark={<Mark slug="my-graph" />}
+        tagline="Draws what depends on what, read straight from the code."
+        links={[...familyLinks("my-graph"), { label: "Código", href: "https://github.com/biliboss/my-graph" }]}
+      />
+    </Page>
   );
 }
 

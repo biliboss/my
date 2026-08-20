@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
-import { Button, Card, CardContent, Chip, Input } from "@heroui/react";
-import { Family, FoldNav, ThemeSwitch, useTheme } from "@biliboss/my-ui";
+import { Card, CardContent, Chip, Input } from "@heroui/react";
+import { Arrow, Button, familyLinks, LpFamilyShowcase, LpFoldNav, LpFooter, LpHero, LpNav, LpTicker, Mark, Page } from "@biliboss/my-ui";
 import linksJson from "./data/icm-links.json";
 import bibliography from "./data/icm-bibliography.json";
 
@@ -29,12 +29,7 @@ const categoryNames: Record<string, string> = {
   embedded: "Embutidos",
 };
 
-function Arrow({ down = false }: { down?: boolean }) {
-  return <span aria-hidden="true">{down ? "↓" : "↗"}</span>;
-}
-
 function App() {
-  const { theme, setTheme } = useTheme();
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("all");
   const [expanded, setExpanded] = useState(false);
@@ -52,53 +47,37 @@ function App() {
   const visibleLinks = expanded ? filteredLinks : filteredLinks.slice(0, 18);
 
   return (
-    <main>
-      <div className="ambient ambient-one" />
-      <div className="ambient ambient-two" />
-      <FoldNav />
-      <nav className="nav shell" aria-label="Navegação principal">
-        <a className="brand" href="#top" aria-label="my, início">
-          <span className="brand-mark">m</span><span>my</span>
-        </a>
-        <button className="menu-button" onClick={() => setMenuOpen(!menuOpen)} aria-expanded={menuOpen}>
-          <span /> <span />
-        </button>
-        <div className={`nav-links ${menuOpen ? "open" : ""}`}>
-          <a href="#metodo">Método</a>
-          <a href="#evidencia">Evidência</a>
-          <a href="#fontes">Fontes</a>
-          <a href="#familia">Família</a>
-          <a href="https://github.com/biliboss/my" target="_blank" rel="noreferrer">GitHub <Arrow /></a>
-        </div>
-        <ThemeSwitch theme={theme} setTheme={setTheme} />
-      </nav>
+    <Page>
+      <LpFoldNav />
+      <LpNav
+        brand="my"
+        mark={<Mark slug="my" />}
+        links={[
+            { label: "Método", href: "#metodo" },
+            { label: "Evidência", href: "#evidencia" },
+            { label: "Fontes", href: "#fontes" },
+            { label: "Família", href: "#familia" },
+            { label: "GitHub", href: "https://github.com/biliboss/my" },
+          ]}
+      />
 
-      <header className="hero shell" id="top" data-fold>
-        <div className="eyebrow"><span className="pulse" /> local-first · open source · human-in-the-loop</div>
-        <h1>A IA não precisa de<br /><em>mais um framework.</em></h1>
-        <p className="hero-line">Precisa saber onde está.</p>
-        <p className="hero-copy">
-          <strong>my</strong> transforma pastas, contratos e arquivos legíveis na arquitetura do seu sistema pessoal.
+      <LpHero
+        eyebrow={<> local-first · open source · human-in-the-loop</>}
+        title={<>A IA não precisa de<br /><em>mais um framework.</em></>}
+        line={<>Precisa saber onde está.</>}
+        actions={
+          <>
+              <Button href="https://github.com/biliboss/my">Acompanhar a construção <Arrow /></Button>
+              <Button href="#metodo" variant="secondary">Entender o método <Arrow down /></Button>
+          </>
+        }
+        proof={["Seu disco é o banco.", "Markdown é a interface.", "O humano é o portão."]}
+      >
+        <strong>my</strong> transforma pastas, contratos e arquivos legíveis na arquitetura do seu sistema pessoal.
           Você vê cada etapa. A IA recebe apenas o contexto que precisa.
-        </p>
-        <div className="hero-actions">
-          <a href="https://github.com/biliboss/my" target="_blank" rel="noreferrer">
-            <Button size="lg" className="primary-cta">Acompanhar a construção <Arrow /></Button>
-          </a>
-          <a href="#metodo">
-            <Button size="lg" variant="ghost" className="secondary-cta">Entender o método <Arrow down /></Button>
-          </a>
-        </div>
-        <div className="hero-proof" aria-label="Princípios do produto">
-          <span>Seu disco é o banco.</span>
-          <span>Markdown é a interface.</span>
-          <span>O humano é o portão.</span>
-        </div>
-      </header>
+      </LpHero>
 
-      <section className="ticker" aria-label="Resumo">
-        <div>ONE STAGE, ONE JOB <b>✦</b> PLAIN TEXT AS INTERFACE <b>✦</b> EVERY OUTPUT IS AN EDIT SURFACE <b>✦</b> CONFIGURE THE FACTORY, NOT THE PRODUCT <b>✦</b></div>
-      </section>
+      <LpTicker items={["ONE STAGE, ONE JOB", "PLAIN TEXT AS INTERFACE", "EVERY OUTPUT IS AN EDIT SURFACE", "CONFIGURE THE FACTORY, NOT THE PRODUCT"]} />
 
       <section className="shell section problem" id="metodo" data-fold>
         <div className="section-kicker">01 / o problema real</div>
@@ -258,7 +237,7 @@ function App() {
             ))}
           </div>
           {filteredLinks.length > 18 && (
-            <Button variant="ghost" className="show-more" onClick={() => setExpanded(!expanded)}>
+            <Button variant="secondary" className="show-more" onClick={() => setExpanded(!expanded)}>
               {expanded ? "Mostrar menos" : `Abrir os ${filteredLinks.length} registros`}
             </Button>
           )}
@@ -270,7 +249,7 @@ function App() {
         </div>
       </section>
 
-      <Family
+      <LpFamilyShowcase
         self="my"
         kicker="07 / da mesma família"
         title="my é o sistema."
@@ -285,17 +264,16 @@ function App() {
         <span className="section-kicker">O SISTEMA COMEÇA VISÍVEL</span>
         <h2>Não terceirize sua memória<br />para uma caixa-preta.</h2>
         <p>O my está sendo aberto, parte por parte. Acompanhe o código, leia as decisões e veja o sistema nascer.</p>
-        <a href="https://github.com/biliboss/my" target="_blank" rel="noreferrer">
-          <Button size="lg" className="primary-cta">Ver o projeto no GitHub <Arrow /></Button>
-        </a>
+        <Button href="https://github.com/biliboss/my">Ver o projeto no GitHub <Arrow /></Button>
       </section>
 
-      <footer className="footer shell">
-        <a className="brand" href="#top"><span className="brand-mark">m</span><span>my</span></a>
-        <p>Local-first personal operating system.</p>
-        <div><a href="https://biliboss.github.io/my-graph/" target="_blank" rel="noreferrer">Família my-graph <Arrow /></a><a href="https://biliboss.github.io/my-company/" target="_blank" rel="noreferrer">Família my-company <Arrow /></a><a href="https://arxiv.org/html/2603.16021v2" target="_blank" rel="noreferrer">Paper ICM <Arrow /></a><a href="https://github.com/biliboss/my" target="_blank" rel="noreferrer">Código <Arrow /></a></div>
-      </footer>
-    </main>
+      <LpFooter
+        brand="my"
+        mark={<Mark slug="my" />}
+        tagline="Local-first personal operating system."
+        links={[...familyLinks("my"), { label: "Código", href: "https://github.com/biliboss/my" }]}
+      />
+    </Page>
   );
 }
 

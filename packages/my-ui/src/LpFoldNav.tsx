@@ -66,7 +66,7 @@ export function useFoldNav() {
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
-export function FoldNav() {
+export function LpFoldNav() {
   const { fold, total } = useFoldNav();
   if (!total) return null;
   return (

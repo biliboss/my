@@ -34,18 +34,27 @@ import "@biliboss/my-ui/tokens.css";
 
 | | |
 |---|---|
-| **Tokens** | three themes — **SynthWave '84 (default)**, Aura, Tokyo Night — plus a 4px spacing scale, a fluid type scale, radii and z-layers, all as CSS custom properties |
+| **Tokens** | one palette — **SynthWave '84** (Robb Owen) — plus a 4px spacing scale, a fluid type scale, radii and z-layers, all as CSS custom properties |
 | **Density** | `.density-compact` / `.density-comfortable` on `<html>` rescales everything that uses the scale — one knob, à la Radix |
+| **No theme switch** | there is one palette and no `data-theme`. Aura and Tokyo Night existed until 20/08 and were removed with the button that picked them: an option nobody flips is code nobody tests |
 | **Typography** | `Display` `Title` `Subtitle` `Lead` `Body` `Fine` `Mono` `Code` `Kbd` — each one a decided *(size, line-height, tracking)* triple |
-| **Primitives** | `Button` `Chip` `ChipRow` `Compare` `Caveat` `ExternalLink` `Arrow` |
-| **Layout** | `Page` `Shell` `Section` `Kicker` `SplitHeading` |
-| **Chrome** | `Nav` `Hero` `Ticker` `Footer` `ThemeSwitch` |
-| **Story** | the parallax fold: sticky panel, one step per scroll stretch, `j`/`k` stops |
-| **FoldNav** | keyboard fold navigation — `j` down, `k` up |
-| **Family** | `FAMILY` as data, `<Family/>`, `<Mark/>`, `familyLinks()` |
+| **Primitives** | `Button` `Chip` `ChipRow` `Compare` `Caveat` `ExternalLink` `Arrow` `Page` `Shell` `Section` `Kicker` `SplitHeading` |
+| **Landing pieces** | `LpNav` `LpHero` `LpTicker` `LpFooter` `LpCarousel` `LpFamilyShowcase` `LpFoldNav` |
+| **`LpParallax`** | the parallax fold: sticky panel, one step per scroll stretch, `j`/`k` stops |
+| **Family** | `FAMILY` as data, `<Mark/>`, `familyLinks()` |
 | **Logos** | `MyGraphMark` — the balance |
 | **I18n** | `I18nProvider` `useT` `LocaleSwitch`, no dependency, keys are the source text |
 | **Graph** | `@biliboss/my-ui/graph` — `GraphCanvas`, cytoscape as an **optional** peer |
+
+## Two naming rules
+
+**One file per component, PascalCase, named after what it exports.** `LpHero`
+lives in `LpHero.tsx`. A grep for a component name finds the file, not thirty
+call sites.
+
+**The `Lp` prefix marks a LANDING-PAGE piece** — a whole fold, with an opinion
+about what goes inside it. No prefix means primitive: it works on any screen,
+including inside an app. `Button` has no prefix; `LpHero` does.
 
 ## The one rule about what does *not* go in here
 

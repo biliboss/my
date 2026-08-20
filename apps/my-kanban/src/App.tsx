@@ -1,75 +1,51 @@
 import { useEffect, useState } from "react";
-import { Button, Card, CardContent } from "@heroui/react";
+import { Card, CardContent } from "@heroui/react";
 import { BoardStory } from "./BoardStory";
-import { Family, FoldNav, ThemeSwitch, useTheme } from "@biliboss/my-ui";
-
-function Arrow({ down = false }: { down?: boolean }) {
-  return <span aria-hidden="true">{down ? "↓" : "↗"}</span>;
-}
+import { Arrow, Button, familyLinks, LpFamilyShowcase, LpFoldNav, LpFooter, LpHero, LpNav, LpTicker, Mark, Page } from "@biliboss/my-ui";
 
 function App() {
-  const { theme, setTheme } = useTheme();
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <main>
-      <div className="ambient ambient-one" />
-      <div className="ambient ambient-two" />
-      <FoldNav />
-      <nav className="nav shell" aria-label="Navegação principal">
-        <a className="brand" href="#top" aria-label="my-kanban, início">
-          <span className="brand-mark">k</span><span>my-kanban</span>
-        </a>
-        <button className="menu-button" onClick={() => setMenuOpen(!menuOpen)} aria-expanded={menuOpen}>
-          <span /> <span />
-        </button>
-        <div className={`nav-links ${menuOpen ? "open" : ""}`}>
-          <a href="#perspectivas">Perspectivas</a>
-          <a href="#rotulos">Rótulos</a>
-          <a href="#tempo-real">Tempo real</a>
-          <a href="#familia">Família</a>
-          <a href="https://github.com/biliboss/my-kanban" target="_blank" rel="noreferrer">GitHub <Arrow /></a>
-        </div>
-        <ThemeSwitch theme={theme} setTheme={setTheme} />
-      </nav>
+    <Page>
+      <LpFoldNav />
+      <LpNav
+        brand="my-kanban"
+        mark={<Mark slug="my-kanban" />}
+        links={[
+            { label: "Perspectivas", href: "#perspectivas" },
+            { label: "Rótulos", href: "#rotulos" },
+            { label: "Tempo real", href: "#tempo-real" },
+            { label: "Família", href: "#familia" },
+            { label: "GitHub", href: "https://github.com/biliboss/my-kanban" },
+          ]}
+      />
 
-      <header className="hero shell" id="top" data-fold>
-        <div className="eyebrow"><span className="pulse" /> tempo real · event-sourced · família my</div>
-        <h1>Sua coluna não é<br />uma gaveta.<em> É uma pergunta.</em></h1>
-        <p className="hero-line">Troque a pergunta.</p>
-        <p className="hero-copy">
-          Todo quadro te obriga a escolher <strong>um</strong> eixo — e depois te cobra um segundo
+      <LpHero
+        eyebrow={<> tempo real · event-sourced · família my</>}
+        title={<>Sua coluna não é<br />uma gaveta.<em> É uma pergunta.</em></>}
+        line={<>Troque a pergunta.</>}
+        actions={
+          <>
+              <Button href="https://github.com/biliboss/my-kanban">Acompanhar no GitHub <Arrow /></Button>
+              <Button href="#perspectivas" variant="secondary">Ver girar <Arrow down /></Button>
+          </>
+        }
+        proof={["Em que pé está?", "A que processo serve?", "Quem está segurando?", "O que pode explodir?"]}
+        note={<>Cai tudo no <strong>inbox</strong> — inclusive pedindo pra um agente. O que for relevante
+          sobe pro <strong>backlog</strong>. O que estiver pronto vai pro <strong>ready</strong>,
+          e é de lá que os agentes <strong>puxam</strong> trabalho.</>}
+      >
+        Todo quadro te obriga a escolher <strong>um</strong> eixo — e depois te cobra um segundo
           quadro pra cada pergunta que sobrou. <strong>my-kanban</strong> vira o mesmo conjunto de
           cards por qualquer rótulo <code>chave:valor</code>: nada é movido, nada é duplicado.
-        </p>
-        <div className="hero-actions">
-          <a href="https://github.com/biliboss/my-kanban" target="_blank" rel="noreferrer">
-            <Button size="lg" className="primary-cta">Acompanhar no GitHub <Arrow /></Button>
-          </a>
-          <a href="#perspectivas">
-            <Button size="lg" variant="ghost" className="secondary-cta">Ver girar <Arrow down /></Button>
-          </a>
-        </div>
-        <div className="hero-proof" aria-label="As quatro perguntas">
-          <span>Em que pé está?</span>
-          <span>A que processo serve?</span>
-          <span>Quem está segurando?</span>
-          <span>O que pode explodir?</span>
-        </div>
-        <p className="hero-note">
-          Cai tudo no <strong>inbox</strong> — inclusive pedindo pra um agente. O que for relevante
-          sobe pro <strong>backlog</strong>. O que estiver pronto vai pro <strong>ready</strong>,
-          e é de lá que os agentes <strong>puxam</strong> trabalho.
-        </p>
-      </header>
+      </LpHero>
 
       <section id="perspectivas" aria-label="As perspectivas, ao vivo">
         <BoardStory />
       </section>
 
-      <section className="ticker" aria-label="Resumo">
-        <div>A COLUNA É UMA QUERY <b>✦</b> O CARD NÃO SE MOVE <b>✦</b> A PERGUNTA MUDA <b>✦</b> UM QUADRO, N EIXOS <b>✦</b> A COLUNA É UMA QUERY <b>✦</b> O CARD NÃO SE MOVE <b>✦</b> A PERGUNTA MUDA <b>✦</b> UM QUADRO, N EIXOS <b>✦</b></div>
-      </section>
+      <LpTicker items={["A COLUNA É UMA QUERY", "O CARD NÃO SE MOVE", "A PERGUNTA MUDA", "UM QUADRO, N EIXOS"]} />
 
       <section className="shell section problem" data-fold>
         <div className="section-kicker">02 / o problema real</div>
@@ -142,7 +118,7 @@ function App() {
         </p>
       </section>
 
-      <Family
+      <LpFamilyShowcase
         self="my-kanban"
         kicker="04 / da mesma família"
         title="my-kanban é o quadro."
@@ -157,22 +133,16 @@ function App() {
         <span className="section-kicker">A PÁGINA É O PRIMEIRO ARTEFATO</span>
         <h2>Um quadro só.<br />Todas as perguntas.</h2>
         <p>my-kanban nasce em público, como o resto da família: a promessa primeiro, o código commit a commit.</p>
-        <a href="https://github.com/biliboss/my-kanban" target="_blank" rel="noreferrer">
-          <Button size="lg" className="primary-cta">Acompanhar a construção <Arrow /></Button>
-        </a>
+        <Button href="https://github.com/biliboss/my-kanban">Acompanhar a construção <Arrow /></Button>
       </section>
 
-      <footer className="footer shell">
-        <a className="brand" href="#top"><span className="brand-mark">k</span><span>my-kanban</span></a>
-        <p>A coluna é uma pergunta, não uma gaveta.</p>
-        <div>
-          <a href="https://biliboss.github.io/my/" target="_blank" rel="noreferrer">my <Arrow /></a>
-          <a href="https://biliboss.github.io/my-graph/" target="_blank" rel="noreferrer">my-graph <Arrow /></a>
-          <a href="https://biliboss.github.io/my-company/" target="_blank" rel="noreferrer">my-company <Arrow /></a>
-          <a href="https://github.com/biliboss/my-kanban" target="_blank" rel="noreferrer">Código <Arrow /></a>
-        </div>
-      </footer>
-    </main>
+      <LpFooter
+        brand="my-kanban"
+        mark={<Mark slug="my-kanban" />}
+        tagline="A coluna é uma pergunta, não uma gaveta."
+        links={[...familyLinks("my-kanban"), { label: "Código", href: "https://github.com/biliboss/my-kanban" }]}
+      />
+    </Page>
   );
 }
 
