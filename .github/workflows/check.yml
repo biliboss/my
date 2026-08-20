@@ -1,0 +1,76 @@
+# O portão do CÓDIGO. A suíte, e as perguntas que o código responde sobre si.
+#
+# Este workflow nasceu com a mudança de 20/08, quando o runtime saiu de
+# `biliboss/me` e veio pra cá. Lá o gate era a CATRACA (`src/check/ratchet.ts`),
+# que compara cada número com o teto de `ci/baseline.json`.
+#
+# A CATRACA NÃO ESTÁ AQUI AINDA, e isto é uma recusa escrita e não um esquecimento.
+# Ela roda os treze checks e conta os achados de CADA UM — e onze deles leem uma
+# CASA (`00_inbox`, `01_projects`, `02_areas`, `03_resources`). Neste runner não
+# existe casa nenhuma, então esses onze devolveriam ZERO achados; a catraca leria
+# zero como MELHORA, gravaria o teto novo, e a próxima rodada contra uma casa de
+# verdade reprovaria tudo. Um gate que se sabota assim é pior que gate nenhum.
+#
+# Quando isto for resolvido, o caminho é um dos dois — e a escolha precisa ser
+# feita por alguém, não adivinhada aqui: ou a catraca ganha uma casa de fixture
+# versionada neste repositório (e aí ela mede o código de verdade), ou ela fica no
+# `check.yml` do `me`, onde a casa está, e este workflow nunca a tem.
+#
+# O QUE ESTÁ AQUI é o que só depende do código: a suíte, e `my home check` — que
+# varre o fonte e acusa toda `process.env` lida e não declarada, nos dois sentidos.
+
+name: check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# SHA no push, REF no PR. Num PR só o HEAD importa e cancelar o anterior é economia
+# limpa; num push pra `main` cada commit é registro permanente e merece veredito.
+# Medido no repositório de origem em 19/08: agrupando por ref, 26 das últimas 40
+# rodadas morreram canceladas antes de dizer qualquer coisa.
+concurrency:
+  group: check-${{ github.event_name == 'push' && github.sha || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  suite:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      # `bun.lock` É versionado, então `--frozen-lockfile`: instalação que resolve
+      # versão nova no runner mede outra árvore que a da máquina, e aí um verde no
+      # CI não quer dizer verde aqui.
+      - run: bun install --frozen-lockfile
+
+      # A extensão do VS Code compila pra `out/`, e nove `.test.mjs` importam de lá.
+      # Sem este passo eles não falham com asserção — falham com `Cannot find
+      # module`, que se lê como teste quebrado em vez de build faltando.
+      - name: compila a extensão
+        run: bun install && bun run compile
+        working-directory: src/extension
+
+      - name: a suíte
+        run: bun test ./src/
+
+      # As três raízes, impressas antes de qualquer coisa: um check que leu a árvore
+      # errada reporta zero achados, e zero achados é o que uma casa limpa também
+      # reporta. Uma linha de log responde "contra o que isso rodou?".
+      - name: contra que árvore
+        run: bun run src/home/paths.ts
+
+      # Toda `process.env` lida no fonte está declarada em `src/home/env.ts`, e toda
+      # declarada é lida por alguém. É o que impede a tabela de virar uma lista que
+      # apodrece — regra que ninguém verifica não é regra.
+      - name: env declarada bate com env lida
+        run: bun run src/home/check.ts
