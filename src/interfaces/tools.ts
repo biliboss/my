@@ -183,79 +183,21 @@ export declare namespace ToolsSystem {
 		}
 	}
 
-	/** A PÁGINA NUMA JANELA NATIVA — o runtime do Neutralino, embrulhado UMA vez.
+	/** A JANELA SAIU DAQUI EM 20/08. Era `Window`, era Neutralino, e nunca virou
+	 *  código — o que é a parte que importa: o desenho sobreviveu um mês sem um
+	 *  consumidor conseguir usá-lo, porque faltava a resposta pra "como a página
+	 *  devolve o que a pessoa respondeu". Neutralino não dá RPC; a resposta ia ter
+	 *  que ser um POST pra um servidor que alguém subisse.
 	 *
-	 *  NENHUM APP GANHA SHELL PRÓPRIO, e a pergunta que decidiu isso foi "então o
-	 *  `my-ask` vai ter o dele também?". Se ganhasse, seriam N configs, N binários pra
-	 *  atualizar, e duas janelas se comportando diferente por acidente — quando o que
-	 *  é comum entre elas não é o app, é PÔR UMA PÁGINA NUMA JANELA. Isso é `tools`
-	 *  pelo mesmo teste de todo o resto: o runtime é de fora, e a casa não conserta
-	 *  bug dele no mesmo commit.
+	 *  O lugar dela agora é `packages/my-canvas`, sobre Electrobun, que tem RPC
+	 *  tipado dos dois lados e serve o bundle por esquema próprio — as duas coisas
+	 *  que faltavam. E ela deixa de ser `tools` por um motivo de fronteira, não de
+	 *  runtime: `tools` agrupa programa que QUEBRA A GENTE de fora pra dentro, e uma
+	 *  base de desktop não é um adaptador entre outros vinte — quando ela cai, não
+	 *  cai um verbo, cai a capacidade de PERGUNTAR.
 	 *
-	 *  E OS DOIS CONSUMIDORES QUEREM O OPOSTO UM DO OUTRO, que é a prova de que o
-	 *  parâmetro é o desenho certo: `my-graph` quer fullscreen e FICA; `my-ask` quer
-	 *  pequena, no topo de tudo, focada, e MORRE quando responde. Um shell por app
-	 *  teria escrito essa diferença duas vezes.
-	 *
-	 *  O QUE ELA NÃO COMPRA É VELOCIDADE. No macOS o Neutralino desenha com
-	 *  `WKWebView` — o mesmo motor do Safari, então o render é idêntico ao de uma aba.
-	 *  Contra Electron ele ganha (não embute Chromium nem Node), contra um browser
-	 *  aberto ele não ganha nada em render. O que ele compra é IDENTIDADE: ícone no
-	 *  Dock, fullscreen sem cromo, e uma janela que o `open(1)` não sabe fazer.
-	 *
-	 *  O binário mora em `~/.me/window/`, baixado na primeira chamada e nunca
-	 *  versionado — é máquina, não decisão. */
-	export namespace Window {
-		/** Qualquer coisa que um webview abre. Remoto ou `localhost`; o Neutralino
-		 *  aceita `--url=` e dispensa o servidor dele quando a página é de fora. */
-		export type Url = string;
-
-		/** COMO a janela se comporta, e não que tamanho ela tem. `panel` é a de decisão
-		 *  — pequena, centrada, acima de tudo, sem entrar no Exposé; é a forma que uma
-		 *  pergunta precisa pra não ser respondida por um agente desatento. */
-		export type Mode = "fullscreen" | "window" | "panel";
-
-		export interface Options {
-			/** O que vai na barra e no Dock. Sem ele, o Dock mostra o nome do runtime, e
-			 *  duas janelas desta casa ficam indistinguíveis. */
-			title?: string;
-			mode?: Mode;
-			/** Ignorado em `fullscreen`. */
-			size?: { width: number; height: number };
-			/** Fecha sozinha depois de N ms. O portão que impede uma pergunta esquecida
-			 *  de segurar um agente pra sempre. */
-			timeout?: Shared.Millis;
-		}
-
-		export interface Opened {
-			ok: true;
-			/** Id do processo pro `close`. Não é o PID do sistema: o runtime dá o seu. */
-			id: string;
-			url: Url;
-		}
-
-		/** POR QUE A JANELA NÃO ABRIU — e as três razões se respondem diferente: sem
-		 *  runtime se resolve baixando, `spawn` é máquina cheia, e `unreachable` é o
-		 *  servidor da página que não subiu (o caso comum, porque `my-graph` precisa do
-		 *  Next de pé). */
-		export type Fail = {
-			ok: false;
-			error: string;
-			reason: "not_installed" | "spawn" | "unreachable";
-		};
-
-		/** O QUE A PÁGINA DEVOLVEU quando a janela fechou. `text` é o que ela escreveu
-		 *  antes de morrer; ausente quando o humano fechou no X, e essa diferença é o
-		 *  contrato inteiro do portão — fechar sem responder NÃO é responder. */
-		export interface Answered {
-			ok: true;
-			text?: string;
-			/** `closed` o humano fechou · `answered` a página devolveu · `timeout` estourou
-			 *  o teto. Tratar `closed` ou `timeout` como `answered` é seguir com uma
-			 *  decisão que ninguém tomou — a mesma regra das quatro saídas do `askuser`. */
-			how: "answered" | "closed" | "timeout";
-		}
-	}
+	 *  Não fica ponteiro nem tipo pendurado aqui: migração que deixa metade pra trás
+	 *  é o dual-write que o @CLAUDE.md proíbe. Quem quiser janela, `my-canvas`. */
 
 	export namespace Vscode {
 		/** Relative to `~/src` — `me/01_projects/my-teams-v1`. */
@@ -376,39 +318,6 @@ export interface Tools {
 		 *  and a socket cannot be asked synchronously. Connection refused, DNS and
 		 *  timeout are all `false`: three OS messages, one question. */
 		up(): Promise<boolean>;
-	};
-
-	/** `my tools window` — uma página numa janela nativa. NO CODE YET.
-	 *
-	 *  Os dois consumidores já são conhecidos e pedem coisas opostas: `graph.open`
-	 *  passa a rotear por aqui com `mode: "fullscreen"`, e o `my-ask`, quando nascer,
-	 *  chama `ask()` com `mode: "panel"`. É o parâmetro que impede o segundo shell. */
-	window: {
-		/** Abre e VOLTA. A janela sobrevive à chamada — é o que `my-graph` quer, porque
-		 *  ninguém fica olhando um grafo com o terminal preso. */
-		open(
-			url: ToolsSystem.Window.Url,
-			opts?: ToolsSystem.Window.Options,
-		): Promise<ToolsSystem.Window.Opened | ToolsSystem.Window.Fail>;
-
-		/** Abre e ESPERA. Bloquear é a feature, e é a mesma frase que `askuser.ask`
-		 *  carrega: pergunta que não segura o chamador é pergunta que um agente
-		 *  desatento responde sozinho. A diferença entre este verbo e `open` não é
-		 *  técnica, é quem manda no tempo. */
-		ask(
-			url: ToolsSystem.Window.Url,
-			opts?: ToolsSystem.Window.Options,
-		): Promise<ToolsSystem.Window.Answered | ToolsSystem.Window.Fail>;
-
-		close(id: string): Promise<{ ok: true; id: string } | ToolsSystem.Window.Fail>;
-
-		/** As janelas desta casa abertas agora. Sem isto, uma janela que perdeu o dono
-		 *  fica na tela e ninguém sabe quem a abriu. */
-		list(): Promise<ToolsSystem.Window.Opened[]>;
-
-		/** O runtime está em `~/.me/window/`? Separado de `open` de propósito: baixar
-		 *  ~2 MB na primeira chamada é uma espera que o chamador merece prever. */
-		ready(): Promise<boolean>;
 	};
 
 	vscode: {
