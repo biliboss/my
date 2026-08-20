@@ -32,6 +32,14 @@ export type ViewerState = {
 	 *  são 17 pastas nesta árvore, e elas não pertencem ao grafo de dependência — são a
 	 *  pergunta que fica DO LADO dele. */
 	orphans: boolean;
+	/** SÓ ESTE NÓ, mais quem toca nele. A VISTA DE UM CONTRATO: o círculo, as
+	 *  interfaces dele em anel, e as relações que entram e saem — nada mais.
+	 *
+	 *  NÃO É `sel` COM ZOOM. `sel` abre o painel e deixa o resto do grafo desenhado
+	 *  atrás, apagado; a vizinhança inteira continua competindo pelo olho e o cola
+	 *  continua resolvendo o layout dos 13. Aqui os outros SAEM do grafo, então o
+	 *  layout é o desta vista e não uma janela sobre o layout de outra. */
+	only: string;
 	/** A palette name from `ui/Themes.tsx`. In the URL like everything else, so a
 	 *  screenshot of the graph carries the theme it was read in. */
 	theme: string;
@@ -40,7 +48,7 @@ export type ViewerState = {
 /** COMFORTABLE IS THE DEFAULT, chosen by looking: at this node count the extra 15%
  *  is what stops labels touching the circle below them. */
 const DEFAULTS: ViewerState = {
-	open: [], selected: "", density: "comfortable", externals: false, hideHub: false, orphans: false,
+	open: [], selected: "", density: "comfortable", externals: false, hideHub: false, orphans: false, only: "",
 	// MONOKAI IS THE DEFAULT because the editor in the next window is Monokai, and two
 	// greens for one idea is a reader translating between windows.
 	theme: "monokai",
@@ -56,6 +64,7 @@ export function parse(hash: string): ViewerState {
 		externals: p.get("ext") === "1",
 		hideHub: p.get("hub") === "0",
 		orphans: p.get("orf") === "1",
+		only: p.get("only") ?? "",
 		theme: p.get("t") ?? DEFAULTS.theme,
 	};
 }
@@ -68,6 +77,7 @@ export function serialize(s: ViewerState): string {
 	if (s.externals) p.set("ext", "1");
 	if (s.hideHub) p.set("hub", "0");
 	if (s.orphans) p.set("orf", "1");
+	if (s.only) p.set("only", s.only);
 	if (s.theme !== DEFAULTS.theme) p.set("t", s.theme);
 	// `:` `/` `,` VOLTAM A SER ELES MESMOS. `URLSearchParams` percent-encoda os três,
 	// e no FRAGMENTO nenhum deles é reservado — `#sel=orphan%3Aextension%2Fwebview` é o

@@ -16,10 +16,11 @@
 //! passa pelo Caddy e é qualificado; a janela abre em branco e o log nativo diz que
 //! carregou.
 //!
-//! depends_on: apps/my_cli/src/tools/graph.ts · packages/my-canvas
+//! depends_on: apps/my_cli/src/tools/graph.ts · apps/my_cli/src/tools/canvas.ts
 //! impacts:    packages/interfaces/company.ts
 
 import { up } from "../tools/graph.ts";
+import { open as abreJanela, ready } from "../tools/canvas.ts";
 
 /** O viewer atrás do Caddy responde nos dois; a janela só aceita este. */
 const DIRETO = "http://localhost:4173";
@@ -33,27 +34,10 @@ export function url(): string {
 	return `${DIRETO}/#sel=company`;
 }
 
-/** O launcher do app empacotado. `build/` não é versionado: quem nunca rodou o build
- *  do my-canvas recebe a instrução, não um erro de arquivo. */
-function launcher(): string {
-	return new URL("../../../../packages/my-canvas/build/dev-macos-arm64/MyApp-dev.app/Contents/MacOS/launcher", import.meta.url).pathname;
-}
-
 export async function open(): Promise<{ ok: true; url: string } | { ok: false; error: string }> {
 	if (!(await up())) return { ok: false, error: `ninguém servindo o my-graph — suba: cd apps/my-graph && bun run dev --port 4173` };
-	const bin = launcher();
-	if (!(await Bun.file(bin).exists())) return { ok: false, error: `my-canvas não construído — rode: cd packages/my-canvas && bun run build` };
-
-	const link = url();
-	// SPAWN DESACOPLADO: a janela sobrevive ao comando. Grafo é coisa que se olha, e
-	// ninguém fica com o terminal preso olhando um desenho.
-	Bun.spawn([bin], {
-		env: { ...process.env, MY_CANVAS_URL: link, MY_CANVAS_TITLE: "my company" },
-		stdout: "ignore",
-		stderr: "ignore",
-		stdin: "ignore",
-	}).unref();
-	return { ok: true, url: link };
+	if (!(await ready())) return { ok: false, error: "my-canvas não construído — rode: cd packages/my-canvas && bun run build" };
+	return await abreJanela(url(), "my company");
 }
 
 export async function main(argv: string[]): Promise<number> {

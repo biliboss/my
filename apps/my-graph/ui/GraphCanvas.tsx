@@ -159,10 +159,23 @@ export function GraphCanvas({
 				// EXTERNALS ARE A LAYOUT INPUT, not a `display: none`. Hiding them left cola
 				// solving for 22 circles and showing 9, so the visible nine sat wherever the
 				// hidden thirteen pushed them — a sprawl with no reason on screen (20/08).
+				// `only` PODA O GRAFO, não o esconde: quem não toca o nó pedido sai da
+				// lista antes do cola rodar, então o layout é o desta vista. A vizinhança
+				// FICA — "só esta interface" sem o que entra e sai nela é uma ficha, não
+				// um grafo.
+				const tocam = state.only
+					? new Set<string>([
+							state.only,
+							...graph.edges.flatMap(e =>
+								e.source === state.only ? [e.target] : e.target === state.only ? [e.source] : [],
+							),
+						])
+					: null;
 				const nodes = graph.nodes.filter(
 					n =>
 						(state.externals || !n.id.startsWith("ext:")) &&
-						(state.orphans || !n.orphan),
+						(state.orphans || !n.orphan) &&
+						(!tocam || tocam.has(n.id)),
 				);
 				const has = (id: string) => nodes.some(n => n.id === id);
 				// The hub keeps its circle and loses its arrows: removing the node too would
