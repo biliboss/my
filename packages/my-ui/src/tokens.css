@@ -11,12 +11,16 @@
   /* SynthWave '84 (Robb Owen) — o padrão da casa. O rosa É a marca do tema, e
      por isso ele ocupa `--primary`; o ciano fica no acento, como no editor. */
   --bg: #262335;
+  /* `--bg-deep` é DERIVADO, não copiado: o tema tem `#241b2f` como fundo mais
+     escuro, mas ele fica a três pontos do `--bg` e o card desta casa — que usa
+     `--bg-deep` como interior — sumiria dentro da página. Mesma matiz, puxada
+     pra baixo o bastante pra separação existir sem borda extra. */
   --bg-deep: #1a1626;
   --surface: #2a2139;
   --surface-2: #34294f;
   --line: rgba(255, 255, 255, 0.12);
   --line-strong: rgba(255, 126, 219, 0.42);
-  --text: #f9f9f9;
+  --text: #ffffff;
   --muted: #b8b0d0;
   --faint: #848bbd;
   --primary: #ff7edb;

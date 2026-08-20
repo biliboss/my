@@ -17,7 +17,13 @@ const LABELS: Record<Theme, { short: string; title: string }> = {
   tokyo: { short: "Tokyo", title: "Tokyo Night" },
 };
 
-const KEY = "my-theme";
+/** A chave carrega VERSÃO porque a escolha guardada foi feita num mundo com
+ *  outras opções: até 20/08 só existiam `aura` e `tokyo`, e `aura` era o
+ *  padrão — então todo mundo que abriu qualquer landing da família tem
+ *  `my-theme=aura` no disco. Como o salvo ganha do padrão, o SynthWave nunca
+ *  apareceria pra essa pessoa. Subir a versão descarta a escolha que ninguém
+ *  fez de propósito; a que vier depois desta linha é respeitada. */
+const KEY = "my-theme.v2";
 
 /** O tema vive no `<html data-theme>` e persiste no localStorage.
  *
