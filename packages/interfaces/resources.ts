@@ -97,10 +97,11 @@ export const LENSES = {
 			"references/claude_code",
 			"references/google_workspace",
 			"references/skills",
-			// `databases` entrou em 20/08 com a primeira página que não cabia em nenhuma
-			// das outras: SurrealDB, medido subindo um standalone. `clis` é sobre o que
-			// esta casa ESCREVE; isto é sobre o que ela LIGA e que muda por baixo dela.
-			"references/databases",
+			// `references/databases` VIVEU MEIA HORA, em 20/08. A página de SurrealDB
+			// nasceu aqui e mudou pra `packages/my-resources/resource/surrealdb.ts` no
+			// mesmo dia: é conhecimento sobre o CÓDIGO, e código anda com código. A
+			// pasta saiu junto — semente que aponta pra pasta vazia é a mesma podridão
+			// que este comentário já descreve dois parágrafos acima.
 		],
 		roles: ["coding", "qa"],
 		asks: {

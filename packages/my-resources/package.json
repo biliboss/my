@@ -1,0 +1,23 @@
+{
+  "name": "@biliboss/my-resources",
+  "version": "0.1.0",
+  "description": "Everything this house knows, N at a time: the .ts resources this package ships, plus the markdown of whatever house MY_HOME points at.",
+  "license": "MIT",
+  "author": "Gabriel (biliboss)",
+  "type": "module",
+  "exports": {
+    ".": "./index.ts",
+    "./resource": "./resource.ts",
+    "./resource/*": "./resource/*.ts"
+  },
+  "dependencies": {
+    "@biliboss/interfaces": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "typescript": "catalog:"
+  },
+  "scripts": {
+    "check": "tsc --noEmit --strict --target es2022 --module esnext --moduleResolution bundler --allowImportingTsExtensions --skipLibCheck --types node *.ts resource/*.ts"
+  }
+}
