@@ -1,0 +1,1100 @@
+[
+  {
+    "title": "Learn more",
+    "url": "https://info.arxiv.org/about",
+    "category": "arxiv",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "Back to arXiv",
+    "url": "https://arxiv.org/",
+    "category": "arxiv",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "Why HTML?",
+    "url": "https://info.arxiv.org/about/accessible_HTML.html",
+    "category": "arxiv",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "Report Issue",
+    "url": "https://arxiv.org/html/2603.16021v2#",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "Back to Abstract",
+    "url": "https://arxiv.org/abs/2603.16021v2",
+    "category": "study",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "Download PDF",
+    "url": "https://arxiv.org/pdf/2603.16021v2",
+    "category": "study",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "javascript:toggleNavTOC();",
+    "url": "javascript:toggleNavTOC();",
+    "category": "embedded",
+    "origin": "paper",
+    "safe": false
+  },
+  {
+    "title": "javascript:toggleReadingMode();",
+    "url": "javascript:toggleReadingMode();",
+    "category": "embedded",
+    "origin": "paper",
+    "safe": false
+  },
+  {
+    "title": "Abstract.",
+    "url": "https://arxiv.org/html/2603.16021v2#abstract1",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "1 Introduction",
+    "url": "https://arxiv.org/html/2603.16021v2#S1",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "2 Background and Related Work",
+    "url": "https://arxiv.org/html/2603.16021v2#S2",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "2.1 Composability and the Unix Tradition",
+    "url": "https://arxiv.org/html/2603.16021v2#S2.SS1",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "2.2 Context Engineering and Agentic AI",
+    "url": "https://arxiv.org/html/2603.16021v2#S2.SS2",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "2.3 Human Oversight and Observability",
+    "url": "https://arxiv.org/html/2603.16021v2#S2.SS3",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "3 Interpretable Context Methodology",
+    "url": "https://arxiv.org/html/2603.16021v2#S3",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "3.1 Design Principles",
+    "url": "https://arxiv.org/html/2603.16021v2#S3.SS1",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "3.2 Architecture",
+    "url": "https://arxiv.org/html/2603.16021v2#S3.SS2",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "3.3 Stage Contracts and Handoffs",
+    "url": "https://arxiv.org/html/2603.16021v2#S3.SS3",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "3.4 Portability and Reproducibility",
+    "url": "https://arxiv.org/html/2603.16021v2#S3.SS4",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "4 Working Implementations",
+    "url": "https://arxiv.org/html/2603.16021v2#S4",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "4.1 Model and Environment",
+    "url": "https://arxiv.org/html/2603.16021v2#S4.SS1",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "4.2 Script-to-Animation Pipeline",
+    "url": "https://arxiv.org/html/2603.16021v2#S4.SS2",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "4.3 Course Deck Production",
+    "url": "https://arxiv.org/html/2603.16021v2#S4.SS3",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "4.4 Building New Workspaces",
+    "url": "https://arxiv.org/html/2603.16021v2#S4.SS4",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "4.5 Early Practitioner Experience",
+    "url": "https://arxiv.org/html/2603.16021v2#S4.SS5",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "4.6 Threats to Validity",
+    "url": "https://arxiv.org/html/2603.16021v2#S4.SS6",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "5 Discussion",
+    "url": "https://arxiv.org/html/2603.16021v2#S5",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "5.1 Where This Works",
+    "url": "https://arxiv.org/html/2603.16021v2#S5.SS1",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "5.2 Where This Does Not Work",
+    "url": "https://arxiv.org/html/2603.16021v2#S5.SS2",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "5.3 Observability as a Side Effect",
+    "url": "https://arxiv.org/html/2603.16021v2#S5.SS3",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "5.4 Implications for Intelligent System Design",
+    "url": "https://arxiv.org/html/2603.16021v2#S5.SS4",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "6 Future Directions: Compilation, Debugging, and Source Integrity",
+    "url": "https://arxiv.org/html/2603.16021v2#S6",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "6.1 ICM as Multi-Pass Incremental Compilation",
+    "url": "https://arxiv.org/html/2603.16021v2#S6.SS1",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "6.2 Toward Semantic Debugging",
+    "url": "https://arxiv.org/html/2603.16021v2#S6.SS2",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "6.3 Source Integrity and the Edit-Source Principle",
+    "url": "https://arxiv.org/html/2603.16021v2#S6.SS3",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "7 Conclusion",
+    "url": "https://arxiv.org/html/2603.16021v2#S7",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "References",
+    "url": "https://arxiv.org/html/2603.16021v2#bib",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "License: CC BY 4.0",
+    "url": "https://info.arxiv.org/help/license/index.html#licenses-available",
+    "category": "arxiv",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "theceo@eduba.io",
+    "url": "mailto:theceo@eduba.io",
+    "category": "contact",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "https://github.com/RinDig/Interpretable-Context-Methodology-ICM-",
+    "url": "https://github.com/RinDig/Interpretable-Context-Methodology-ICM-",
+    "category": "code",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "mcilroy1978",
+    "url": "https://arxiv.org/html/2603.16021v2#bib.bib1",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "ritchie1974",
+    "url": "https://arxiv.org/html/2603.16021v2#bib.bib2",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "kernighan1984",
+    "url": "https://arxiv.org/html/2603.16021v2#bib.bib5",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "raymond2003",
+    "url": "https://arxiv.org/html/2603.16021v2#bib.bib4",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "shaw1996",
+    "url": "https://arxiv.org/html/2603.16021v2#bib.bib6",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "feldman1979",
+    "url": "https://arxiv.org/html/2603.16021v2#bib.bib7",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "aho2006",
+    "url": "https://arxiv.org/html/2603.16021v2#bib.bib52",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "parnas1972",
+    "url": "https://arxiv.org/html/2603.16021v2#bib.bib9",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "dijkstra1974",
+    "url": "https://arxiv.org/html/2603.16021v2#bib.bib8",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "karpathy2025",
+    "url": "https://arxiv.org/html/2603.16021v2#bib.bib16",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "martin2025",
+    "url": "https://arxiv.org/html/2603.16021v2#bib.bib17",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "willison2025",
+    "url": "https://arxiv.org/html/2603.16021v2#bib.bib18",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "chase2022",
+    "url": "https://arxiv.org/html/2603.16021v2#bib.bib21",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "wu2023autogen",
+    "url": "https://arxiv.org/html/2603.16021v2#bib.bib20",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "liu2024",
+    "url": "https://arxiv.org/html/2603.16021v2#bib.bib25",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "jiang2023",
+    "url": "https://arxiv.org/html/2603.16021v2#bib.bib31",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "anthropic2024mcp",
+    "url": "https://arxiv.org/html/2603.16021v2#bib.bib23",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "jones2025",
+    "url": "https://arxiv.org/html/2603.16021v2#bib.bib24",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "fails2003",
+    "url": "https://arxiv.org/html/2603.16021v2#bib.bib35",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "amershi2014",
+    "url": "https://arxiv.org/html/2603.16021v2#bib.bib34",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "dudley2018",
+    "url": "https://arxiv.org/html/2603.16021v2#bib.bib36",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "horvitz1999",
+    "url": "https://arxiv.org/html/2603.16021v2#bib.bib37",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "parasuraman1997",
+    "url": "https://arxiv.org/html/2603.16021v2#bib.bib41",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "lee2004",
+    "url": "https://arxiv.org/html/2603.16021v2#bib.bib40",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "parasuraman2000",
+    "url": "https://arxiv.org/html/2603.16021v2#bib.bib42",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "shneiderman2020",
+    "url": "https://arxiv.org/html/2603.16021v2#bib.bib43",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "shneiderman2022",
+    "url": "https://arxiv.org/html/2603.16021v2#bib.bib44",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "rudin2019",
+    "url": "https://arxiv.org/html/2603.16021v2#bib.bib45",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "enqvist2023",
+    "url": "https://arxiv.org/html/2603.16021v2#bib.bib49",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "novelli2024",
+    "url": "https://arxiv.org/html/2603.16021v2#bib.bib50",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "shneiderman1983",
+    "url": "https://arxiv.org/html/2603.16021v2#bib.bib46",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "humble2010",
+    "url": "https://arxiv.org/html/2603.16021v2#bib.bib15",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "1",
+    "url": "https://arxiv.org/html/2603.16021v2#S3.F1",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "2",
+    "url": "https://arxiv.org/html/2603.16021v2#S3.F2",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "3",
+    "url": "https://arxiv.org/html/2603.16021v2#S3.F3",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "jiang2024",
+    "url": "https://arxiv.org/html/2603.16021v2#bib.bib32",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "gabriel1991",
+    "url": "https://arxiv.org/html/2603.16021v2#bib.bib11",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "pike1995",
+    "url": "https://arxiv.org/html/2603.16021v2#bib.bib12",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "4",
+    "url": "https://arxiv.org/html/2603.16021v2#S3.F4",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "⬇",
+    "url": "data:text/plain;base64,IyMgSW5wdXRzCi0gTGF5ZXIgNCAod29ya2luZyk6IC4uLzAxX3Jlc2VhcmNoL291dHB1dC8KLSBMYXllciAzIChyZWZlcmVuY2UpOiAuLi8uLi9fY29uZmlnL3ZvaWNlLm1kCi0gTGF5ZXIgMyAocmVmZXJlbmNlKTogcmVmZXJlbmNlcy9zdHJ1Y3R1cmUubWQKCiMjIFByb2Nlc3MKV3JpdGUgYSBzY3JpcHQgYmFzZWQgb24gdGhlIHJlc2VhcmNoIG91dHB1dC4KRm9sbG93IHRoZSBzdHJ1Y3R1cmUgaW4gc3RydWN0dXJlLm1kLgpNYXRjaCB0aGUgdG9uZSBkZXNjcmliZWQgaW4gdm9pY2UubWQuCgojIyBPdXRwdXRzCi0gc2NyaXB0X2RyYWZ0Lm1kIC0+IG91dHB1dC8=",
+    "category": "embedded",
+    "origin": "paper",
+    "safe": false
+  },
+  {
+    "title": "wu2022chains",
+    "url": "https://arxiv.org/html/2603.16021v2#bib.bib26",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "knuth1984",
+    "url": "https://arxiv.org/html/2603.16021v2#bib.bib10",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "wei2022",
+    "url": "https://arxiv.org/html/2603.16021v2#bib.bib27",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "chacon2014",
+    "url": "https://arxiv.org/html/2603.16021v2#bib.bib13",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "morris2021",
+    "url": "https://arxiv.org/html/2603.16021v2#bib.bib14",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "anthropic2026opus",
+    "url": "https://arxiv.org/html/2603.16021v2#bib.bib54",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "5",
+    "url": "https://arxiv.org/html/2603.16021v2#S4.F5",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "amershi2019",
+    "url": "https://arxiv.org/html/2603.16021v2#bib.bib47",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "zeller2009",
+    "url": "https://arxiv.org/html/2603.16021v2#bib.bib53",
+    "category": "sections",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "https://doi.org/10.1145/361011.361061",
+    "url": "https://doi.org/10.1145/361011.361061",
+    "category": "research",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "http://www.catb.org/esr/writings/taoup/html/",
+    "url": "http://www.catb.org/esr/writings/taoup/html/",
+    "category": "article",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "https://doi.org/10.1002/spe.4380090402",
+    "url": "https://doi.org/10.1002/spe.4380090402",
+    "category": "research",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "https://www.cs.utexas.edu/˜EWD/transcriptions/EWD04xx/EWD447.html",
+    "url": "https://www.cs.utexas.edu/~EWD/transcriptions/EWD04xx/EWD447.html",
+    "category": "article",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "https://doi.org/10.1145/361598.361623",
+    "url": "https://doi.org/10.1145/361598.361623",
+    "category": "research",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "https://doi.org/10.1093/comjnl/27.2.97",
+    "url": "https://doi.org/10.1093/comjnl/27.2.97",
+    "category": "research",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "https://www.dreamsongs.com/WorseIsBetter.html",
+    "url": "https://www.dreamsongs.com/WorseIsBetter.html",
+    "category": "article",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "https://css.csail.mit.edu/6.824/2014/papers/plan9.pdf",
+    "url": "https://css.csail.mit.edu/6.824/2014/papers/plan9.pdf",
+    "category": "article",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "https://git-scm.com/book",
+    "url": "https://git-scm.com/book",
+    "category": "code",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "https://x.com/karpathy/status/1937902205765607626",
+    "url": "https://x.com/karpathy/status/1937902205765607626",
+    "category": "article",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "https://blog.langchain.com/context-engineering-for-agents/",
+    "url": "https://blog.langchain.com/context-engineering-for-agents/",
+    "category": "article",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "https://simonwillison.net/2025/jun/27/context-engineering/",
+    "url": "https://simonwillison.net/2025/jun/27/context-engineering/",
+    "category": "article",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "https://www.promptingguide.ai/guides/context-engineering-guide",
+    "url": "https://www.promptingguide.ai/guides/context-engineering-guide",
+    "category": "article",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "https://arxiv.org/abs/2308.08155",
+    "url": "https://arxiv.org/abs/2308.08155",
+    "category": "research",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "https://github.com/langchain-ai/langchain",
+    "url": "https://github.com/langchain-ai/langchain",
+    "category": "code",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "https://doi.org/10.1145/3586183.3606763",
+    "url": "https://doi.org/10.1145/3586183.3606763",
+    "category": "research",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "https://www.anthropic.com/news/model-context-protocol",
+    "url": "https://www.anthropic.com/news/model-context-protocol",
+    "category": "article",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "https://www.anthropic.com/engineering/code-execution-with-mcp",
+    "url": "https://www.anthropic.com/engineering/code-execution-with-mcp",
+    "category": "article",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "https://arxiv.org/abs/2307.03172",
+    "url": "https://arxiv.org/abs/2307.03172",
+    "category": "research",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "https://doi.org/10.1145/3491102.3517582",
+    "url": "https://doi.org/10.1145/3491102.3517582",
+    "category": "research",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "https://arxiv.org/abs/2201.11903",
+    "url": "https://arxiv.org/abs/2201.11903",
+    "category": "research",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "https://arxiv.org/abs/2302.04761",
+    "url": "https://arxiv.org/abs/2302.04761",
+    "category": "research",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "https://arxiv.org/abs/2305.15334",
+    "url": "https://arxiv.org/abs/2305.15334",
+    "category": "research",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "https://arxiv.org/abs/2005.11401",
+    "url": "https://arxiv.org/abs/2005.11401",
+    "category": "research",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "https://doi.org/10.18653/v1/2023.emnlp-main.825",
+    "url": "https://doi.org/10.18653/v1/2023.emnlp-main.825",
+    "category": "research",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "https://arxiv.org/abs/2310.06839",
+    "url": "https://arxiv.org/abs/2310.06839",
+    "category": "research",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "https://addyo.substack.com/p/context-engineering-bringing-engineering",
+    "url": "https://addyo.substack.com/p/context-engineering-bringing-engineering",
+    "category": "article",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "https://doi.org/10.1609/aimag.v35i4.2513",
+    "url": "https://doi.org/10.1609/aimag.v35i4.2513",
+    "category": "research",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "https://doi.org/10.1145/604045.604056",
+    "url": "https://doi.org/10.1145/604045.604056",
+    "category": "research",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "https://doi.org/10.1145/3185517",
+    "url": "https://doi.org/10.1145/3185517",
+    "category": "research",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "https://doi.org/10.1145/302979.303030",
+    "url": "https://doi.org/10.1145/302979.303030",
+    "category": "research",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "https://doi.org/10.1145/2939672.2939778",
+    "url": "https://doi.org/10.1145/2939672.2939778",
+    "category": "research",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "https://papers.nips.cc/paper/7062-a-unified-approach-to-interpreting-model-predictions",
+    "url": "https://papers.nips.cc/paper/7062-a-unified-approach-to-interpreting-model-predictions",
+    "category": "research",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "https://doi.org/10.1518/hfes.46.1.50_30392",
+    "url": "https://doi.org/10.1518/hfes.46.1.50_30392",
+    "category": "research",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "https://doi.org/10.1518/001872097778543886",
+    "url": "https://doi.org/10.1518/001872097778543886",
+    "category": "research",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "https://doi.org/10.1109/3468.844354",
+    "url": "https://doi.org/10.1109/3468.844354",
+    "category": "research",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "https://doi.org/10.1080/10447318.2020.1741118",
+    "url": "https://doi.org/10.1080/10447318.2020.1741118",
+    "category": "research",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "https://doi.org/10.1038/s42256-019-0048-x",
+    "url": "https://doi.org/10.1038/s42256-019-0048-x",
+    "category": "research",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "https://doi.org/10.1109/MC.1983.1654471",
+    "url": "https://doi.org/10.1109/MC.1983.1654471",
+    "category": "research",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "https://doi.org/10.1145/3290605.3300233",
+    "url": "https://doi.org/10.1145/3290605.3300233",
+    "category": "research",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "https://people.eecs.berkeley.edu/˜matei/papers/2018/ieee_mlflow.pdf",
+    "url": "https://people.eecs.berkeley.edu/~matei/papers/2018/ieee_mlflow.pdf",
+    "category": "article",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "https://doi.org/10.1080/17579961.2023.2245683",
+    "url": "https://doi.org/10.1080/17579961.2023.2245683",
+    "category": "research",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11614927/",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11614927/",
+    "category": "research",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "https://doi.org/10.2139/ssrn.5147196",
+    "url": "https://doi.org/10.2139/ssrn.5147196",
+    "category": "research",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "https://www.anthropic.com/news/claude-opus-4-6",
+    "url": "https://www.anthropic.com/news/claude-opus-4-6",
+    "category": "article",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "view the build logs",
+    "url": "https://arxiv.org/html/2603.16021v2/__stdout.txt",
+    "category": "study",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "L A T E xml",
+    "url": "https://math.nist.gov/~BMiller/LaTeXML/",
+    "category": "article",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "the following issues",
+    "url": "https://github.com/arXiv/html_feedback/issues",
+    "category": "code",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "list of packages that need conversion",
+    "url": "https://github.com/brucemiller/LaTeXML/wiki/Porting-LaTeX-packages-for-LaTeXML",
+    "category": "code",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "developer contributions",
+    "url": "https://github.com/brucemiller/LaTeXML/issues",
+    "category": "code",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "member institutions",
+    "url": "https://info.arxiv.org/about/ourmembers.html",
+    "category": "arxiv",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "Help",
+    "url": "https://info.arxiv.org/help",
+    "category": "arxiv",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "Contact",
+    "url": "https://info.arxiv.org/help/contact.html",
+    "category": "arxiv",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "Subscribe",
+    "url": "https://info.arxiv.org/help/subscribe",
+    "category": "arxiv",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "Copyright",
+    "url": "https://info.arxiv.org/help/license/index.html",
+    "category": "arxiv",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "Privacy",
+    "url": "https://info.arxiv.org/help/policies/privacy_policy.html",
+    "category": "arxiv",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "Accessibility",
+    "url": "https://info.arxiv.org/help/web_accessibility.html",
+    "category": "arxiv",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "Operational Status (opens in new tab)",
+    "url": "https://status.arxiv.org",
+    "category": "arxiv",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "https://www.simonsfoundation.org/",
+    "url": "https://www.simonsfoundation.org/",
+    "category": "article",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "https://www.sfi.org.bm/",
+    "url": "https://www.sfi.org.bm/",
+    "category": "article",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "https://www.schmidtsciences.org/",
+    "url": "https://www.schmidtsciences.org/",
+    "category": "article",
+    "origin": "paper",
+    "safe": true
+  },
+  {
+    "title": "Eduba",
+    "url": "https://eduba.io/",
+    "category": "ecosystem",
+    "origin": "discovery",
+    "note": "site",
+    "safe": true
+  },
+  {
+    "title": "Interpretable Context Methodology – David Hague",
+    "url": "https://www.youtube.com/watch?v=ac2dC_KpEgk",
+    "category": "video",
+    "origin": "discovery",
+    "note": "Columbus AI Tinkerers · 11:38",
+    "safe": true
+  },
+  {
+    "title": "Youtube Analysis Agent — The ICM Folder Method Cheat Code",
+    "url": "https://www.youtube.com/watch?v=stMW5FBNNwU",
+    "category": "video",
+    "origin": "discovery",
+    "note": "Jamie Lynn · 4:50",
+    "safe": true
+  },
+  {
+    "title": "Jake Van Clief's ICM Folder System: The Simple Explanation Nobody Gave You",
+    "url": "https://www.youtube.com/watch?v=tvvaOCK_Z50",
+    "category": "video",
+    "origin": "discovery",
+    "note": "RyMac · 18:16",
+    "safe": true
+  },
+  {
+    "title": "Stop Building AI Agents. Use This Folder System Instead.",
+    "url": "https://www.youtube.com/watch?v=MkN-ss2Nl10",
+    "category": "video",
+    "origin": "discovery",
+    "note": "Jake Van Clief · 23:18",
+    "safe": true
+  },
+  {
+    "title": "Using AI ICM Folder System to build my Business site",
+    "url": "https://www.youtube.com/watch?v=xs8q49WhNH4",
+    "category": "video",
+    "origin": "discovery",
+    "note": "Jamie Lynn · 14:05",
+    "safe": true
+  }
+]

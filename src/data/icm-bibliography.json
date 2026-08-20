@@ -1,0 +1,362 @@
+[
+  {
+    "id": "bib.bib1",
+    "citation": "(1) M. D. McIlroy, E. N. Pinson, and B. A. Tague, “Unix Time-Sharing System: Foreword,” The Bell System Technical Journal , vol. 57, no. 6, part 2, pp. 1902–1903, 1978.",
+    "urls": []
+  },
+  {
+    "id": "bib.bib2",
+    "citation": "(2) D. M. Ritchie and K. Thompson, “The UNIX Time-Sharing System,” Communications of the ACM , vol. 17, no. 7, pp. 365–375, 1974. DOI: https://doi.org/10.1145/361011.361061",
+    "urls": [
+      "https://doi.org/10.1145/361011.361061"
+    ]
+  },
+  {
+    "id": "bib.bib3",
+    "citation": "(3) P. H. Salus, A Quarter Century of Unix . Addison-Wesley, 1994. ISBN: 0-201-54777-5.",
+    "urls": []
+  },
+  {
+    "id": "bib.bib4",
+    "citation": "(4) E. S. Raymond, The Art of Unix Programming . Addison-Wesley Professional, 2003. ISBN: 0-13-142901-9. Available: http://www.catb.org/esr/writings/taoup/html/",
+    "urls": [
+      "http://www.catb.org/esr/writings/taoup/html/"
+    ]
+  },
+  {
+    "id": "bib.bib5",
+    "citation": "(5) B. W. Kernighan and R. Pike, The UNIX Programming Environment . Prentice Hall, 1984. ISBN: 0-13-937681-X.",
+    "urls": []
+  },
+  {
+    "id": "bib.bib6",
+    "citation": "(6) M. Shaw and D. Garlan, Software Architecture: Perspectives on an Emerging Discipline . Prentice Hall, 1996. ISBN: 0-13-182957-2.",
+    "urls": []
+  },
+  {
+    "id": "bib.bib7",
+    "citation": "(7) S. I. Feldman, “Make — A Program for Maintaining Computer Programs,” Software: Practice and Experience , vol. 9, no. 4, pp. 255–265, 1979. DOI: https://doi.org/10.1002/spe.4380090402",
+    "urls": [
+      "https://doi.org/10.1002/spe.4380090402"
+    ]
+  },
+  {
+    "id": "bib.bib8",
+    "citation": "(8) E. W. Dijkstra, “On the Role of Scientific Thought,” Manuscript EWD447, 1974. Reprinted in Selected Writings on Computing: A Personal Perspective , pp. 60–66. Springer-Verlag, 1982. Available: https://www.cs.utexas.edu/˜EWD/transcriptions/EWD04xx/EWD447.html",
+    "urls": [
+      "https://www.cs.utexas.edu/~EWD/transcriptions/EWD04xx/EWD447.html"
+    ]
+  },
+  {
+    "id": "bib.bib9",
+    "citation": "(9) D. L. Parnas, “On the Criteria To Be Used in Decomposing Systems into Modules,” Communications of the ACM , vol. 15, no. 12, pp. 1053–1058, 1972. DOI: https://doi.org/10.1145/361598.361623",
+    "urls": [
+      "https://doi.org/10.1145/361598.361623"
+    ]
+  },
+  {
+    "id": "bib.bib10",
+    "citation": "(10) D. E. Knuth, “Literate Programming,” The Computer Journal , vol. 27, no. 2, pp. 97–111, 1984. DOI: https://doi.org/10.1093/comjnl/27.2.97",
+    "urls": [
+      "https://doi.org/10.1093/comjnl/27.2.97"
+    ]
+  },
+  {
+    "id": "bib.bib11",
+    "citation": "(11) R. P. Gabriel, “The Rise of ‘Worse is Better’,” Originally part of “Lisp: Good News, Bad News, How to Win Big.” AI Expert , vol. 6, no. 6, pp. 33–35, 1991. Available: https://www.dreamsongs.com/WorseIsBetter.html",
+    "urls": [
+      "https://www.dreamsongs.com/WorseIsBetter.html"
+    ]
+  },
+  {
+    "id": "bib.bib12",
+    "citation": "(12) R. Pike, D. Presotto, S. Dorward, B. Flandrena, K. Thompson, H. Trickey, and P. Winterbottom, “Plan 9 from Bell Labs,” Computing Systems , vol. 8, no. 3, pp. 221–254, 1995. Available: https://css.csail.mit.edu/6.824/2014/papers/plan9.pdf",
+    "urls": [
+      "https://css.csail.mit.edu/6.824/2014/papers/plan9.pdf"
+    ]
+  },
+  {
+    "id": "bib.bib13",
+    "citation": "(13) S. Chacon and B. Straub, Pro Git , 2nd ed. Apress, 2014. ISBN: 978-1-4842-0076-6. Available: https://git-scm.com/book",
+    "urls": [
+      "https://git-scm.com/book"
+    ]
+  },
+  {
+    "id": "bib.bib14",
+    "citation": "(14) K. Morris, Infrastructure as Code: Dynamic Systems for the Cloud Age , 2nd ed. O’Reilly Media, 2021. ISBN: 978-1-098-11467-1.",
+    "urls": []
+  },
+  {
+    "id": "bib.bib15",
+    "citation": "(15) J. Humble and D. Farley, Continuous Delivery: Reliable Software Releases through Build, Test, and Deployment Automation . Addison-Wesley Professional, 2010. ISBN: 978-0-321-60191-9.",
+    "urls": []
+  },
+  {
+    "id": "bib.bib16",
+    "citation": "(16) A. Karpathy, “+1 for ‘context engineering’ over ‘prompt engineering’…,” X (formerly Twitter), June 25, 2025. Available: https://x.com/karpathy/status/1937902205765607626",
+    "urls": [
+      "https://x.com/karpathy/status/1937902205765607626"
+    ]
+  },
+  {
+    "id": "bib.bib17",
+    "citation": "(17) L. Martin, “Context Engineering,” LangChain Blog, July 2, 2025. Available: https://blog.langchain.com/context-engineering-for-agents/",
+    "urls": [
+      "https://blog.langchain.com/context-engineering-for-agents/"
+    ]
+  },
+  {
+    "id": "bib.bib18",
+    "citation": "(18) S. Willison, “Context Engineering,” Simon Willison’s Weblog , June 27, 2025. Available: https://simonwillison.net/2025/jun/27/context-engineering/",
+    "urls": [
+      "https://simonwillison.net/2025/jun/27/context-engineering/"
+    ]
+  },
+  {
+    "id": "bib.bib19",
+    "citation": "(19) DAIR.AI, “Context Engineering Guide,” Prompting Guide , 2025. Available: https://www.promptingguide.ai/guides/context-engineering-guide",
+    "urls": [
+      "https://www.promptingguide.ai/guides/context-engineering-guide"
+    ]
+  },
+  {
+    "id": "bib.bib20",
+    "citation": "(20) Q. Wu, G. Bansal, J. Zhang, Y. Wu, B. Li, E. Zhu, L. Jiang, X. Zhang, S. Zhang, A. Awadallah, R. W. White, D. Burger, and C. Wang, “AutoGen: Enabling Next-Gen LLM Applications via Multi-Agent Conversation,” COLM 2024 , arXiv:2308.08155, August 2023. Available: https://arxiv.org/abs/2308.08155",
+    "urls": [
+      "https://arxiv.org/abs/2308.08155"
+    ]
+  },
+  {
+    "id": "bib.bib21",
+    "citation": "(21) H. Chase, LangChain [open-source framework]. First released October 2022. Available: https://github.com/langchain-ai/langchain",
+    "urls": [
+      "https://github.com/langchain-ai/langchain"
+    ]
+  },
+  {
+    "id": "bib.bib22",
+    "citation": "(22) J. S. Park, J. C. O’Brien, C. J. Cai, M. R. Morris, P. Liang, and M. S. Bernstein, “Generative Agents: Interactive Simulacra of Human Behavior,” Proceedings of UIST ’23 . ACM, 2023. DOI: https://doi.org/10.1145/3586183.3606763",
+    "urls": [
+      "https://doi.org/10.1145/3586183.3606763"
+    ]
+  },
+  {
+    "id": "bib.bib23",
+    "citation": "(23) Anthropic, “Introducing the Model Context Protocol,” Anthropic Blog, November 25, 2024. Available: https://www.anthropic.com/news/model-context-protocol",
+    "urls": [
+      "https://www.anthropic.com/news/model-context-protocol"
+    ]
+  },
+  {
+    "id": "bib.bib24",
+    "citation": "(24) A. Jones and C. Kelly, “Code Execution with MCP,” Anthropic Engineering Blog, 2025. Available: https://www.anthropic.com/engineering/code-execution-with-mcp",
+    "urls": [
+      "https://www.anthropic.com/engineering/code-execution-with-mcp"
+    ]
+  },
+  {
+    "id": "bib.bib25",
+    "citation": "(25) N. F. Liu, K. Lin, J. Hewitt, A. Paranjape, M. Bevilacqua, F. Petroni, and P. Liang, “Lost in the Middle: How Language Models Use Long Contexts,” Transactions of the Association for Computational Linguistics , vol. 12, pp. 157–173, 2024. Available: https://arxiv.org/abs/2307.03172",
+    "urls": [
+      "https://arxiv.org/abs/2307.03172"
+    ]
+  },
+  {
+    "id": "bib.bib26",
+    "citation": "(26) T. Wu, M. Terry, and C. J. Cai, “AI Chains: Transparent and Controllable Human-AI Interaction by Chaining Large Language Model Prompts,” CHI Conference on Human Factors in Computing Systems (CHI ’22) . ACM, 2022. DOI: https://doi.org/10.1145/3491102.3517582",
+    "urls": [
+      "https://doi.org/10.1145/3491102.3517582"
+    ]
+  },
+  {
+    "id": "bib.bib27",
+    "citation": "(27) J. Wei, X. Wang, D. Schuurmans, M. Bosma, B. Ichter, F. Xia, E. Chi, Q. V. Le, and D. Zhou, “Chain-of-Thought Prompting Elicits Reasoning in Large Language Models,” NeurIPS 2022 . Available: https://arxiv.org/abs/2201.11903",
+    "urls": [
+      "https://arxiv.org/abs/2201.11903"
+    ]
+  },
+  {
+    "id": "bib.bib28",
+    "citation": "(28) T. Schick, J. Dwivedi-Yu, R. Dessì, R. Raileanu, M. Lomeli, L. Zettlemoyer, N. Cancedda, and T. Scialom, “Toolformer: Language Models Can Teach Themselves to Use Tools,” NeurIPS 2023 . Available: https://arxiv.org/abs/2302.04761",
+    "urls": [
+      "https://arxiv.org/abs/2302.04761"
+    ]
+  },
+  {
+    "id": "bib.bib29",
+    "citation": "(29) S. G. Patil, T. Zhang, X. Wang, and J. E. Gonzalez, “Gorilla: Large Language Model Connected with Massive APIs,” NeurIPS 2024 , arXiv:2305.15334, 2023. Available: https://arxiv.org/abs/2305.15334",
+    "urls": [
+      "https://arxiv.org/abs/2305.15334"
+    ]
+  },
+  {
+    "id": "bib.bib30",
+    "citation": "(30) P. Lewis, E. Perez, A. Piktus, F. Petroni, V. Karpukhin, N. Goyal, H. Küttler, M. Lewis, W.-t. Yih, T. Rocktäschel, S. Riedel, and D. Kiela, “Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks,” NeurIPS 2020 , pp. 9459–9474. Available: https://arxiv.org/abs/2005.11401",
+    "urls": [
+      "https://arxiv.org/abs/2005.11401"
+    ]
+  },
+  {
+    "id": "bib.bib31",
+    "citation": "(31) H. Jiang, Q. Wu, C.-Y. Lin, Y. Yang, and L. Qiu, “LLMLingua: Compressing Prompts for Accelerated Inference of Large Language Models,” EMNLP 2023 , pp. 13358–13376. DOI: https://doi.org/10.18653/v1/2023.emnlp-main.825",
+    "urls": [
+      "https://doi.org/10.18653/v1/2023.emnlp-main.825"
+    ]
+  },
+  {
+    "id": "bib.bib32",
+    "citation": "(32) H. Jiang, Q. Wu, X. Luo, D. Li, C.-Y. Lin, Y. Yang, and L. Qiu, “LongLLMLingua: Accelerating and Enhancing LLMs in Long Context Scenarios via Prompt Compression,” ACL 2024 , pp. 1658–1677. Available: https://arxiv.org/abs/2310.06839",
+    "urls": [
+      "https://arxiv.org/abs/2310.06839"
+    ]
+  },
+  {
+    "id": "bib.bib33",
+    "citation": "(33) Addyo, “Context Engineering: Bringing Engineering Discipline to Prompts,” Substack, 2025. Available: https://addyo.substack.com/p/context-engineering-bringing-engineering",
+    "urls": [
+      "https://addyo.substack.com/p/context-engineering-bringing-engineering"
+    ]
+  },
+  {
+    "id": "bib.bib34",
+    "citation": "(34) S. Amershi, M. Cakmak, W. B. Knox, and T. Kulesza, “Power to the People: The Role of Humans in Interactive Machine Learning,” AI Magazine , vol. 35, no. 4, pp. 105–120, 2014. DOI: https://doi.org/10.1609/aimag.v35i4.2513",
+    "urls": [
+      "https://doi.org/10.1609/aimag.v35i4.2513"
+    ]
+  },
+  {
+    "id": "bib.bib35",
+    "citation": "(35) J. A. Fails and D. R. Olsen, Jr., “Interactive Machine Learning,” Proceedings of IUI ’03 , pp. 39–45. ACM, 2003. DOI: https://doi.org/10.1145/604045.604056",
+    "urls": [
+      "https://doi.org/10.1145/604045.604056"
+    ]
+  },
+  {
+    "id": "bib.bib36",
+    "citation": "(36) J. J. Dudley and P. O. Kristensson, “A Review of User Interface Design for Interactive Machine Learning,” ACM Transactions on Interactive Intelligent Systems , vol. 8, no. 2, Article 8, pp. 1–37, 2018. DOI: https://doi.org/10.1145/3185517",
+    "urls": [
+      "https://doi.org/10.1145/3185517"
+    ]
+  },
+  {
+    "id": "bib.bib37",
+    "citation": "(37) E. Horvitz, “Principles of Mixed-Initiative User Interfaces,” CHI ’99 , pp. 159–166. ACM, 1999. DOI: https://doi.org/10.1145/302979.303030",
+    "urls": [
+      "https://doi.org/10.1145/302979.303030"
+    ]
+  },
+  {
+    "id": "bib.bib38",
+    "citation": "(38) M. T. Ribeiro, S. Singh, and C. Guestrin, “‘Why Should I Trust You?’: Explaining the Predictions of Any Classifier,” KDD ’16 , pp. 1135–1144. ACM, 2016. DOI: https://doi.org/10.1145/2939672.2939778",
+    "urls": [
+      "https://doi.org/10.1145/2939672.2939778"
+    ]
+  },
+  {
+    "id": "bib.bib39",
+    "citation": "(39) S. M. Lundberg and S.-I. Lee, “A Unified Approach to Interpreting Model Predictions,” NeurIPS 2017 , pp. 4765–4774. Available: https://papers.nips.cc/paper/7062-a-unified-approach-to-interpreting-model-predictions",
+    "urls": [
+      "https://papers.nips.cc/paper/7062-a-unified-approach-to-interpreting-model-predictions"
+    ]
+  },
+  {
+    "id": "bib.bib40",
+    "citation": "(40) J. D. Lee and K. A. See, “Trust in Automation: Designing for Appropriate Reliance,” Human Factors , vol. 46, no. 1, pp. 50–80, 2004. DOI: https://doi.org/10.1518/hfes.46.1.50_30392",
+    "urls": [
+      "https://doi.org/10.1518/hfes.46.1.50_30392"
+    ]
+  },
+  {
+    "id": "bib.bib41",
+    "citation": "(41) R. Parasuraman and V. Riley, “Humans and Automation: Use, Misuse, Disuse, Abuse,” Human Factors , vol. 39, no. 2, pp. 230–253, 1997. DOI: https://doi.org/10.1518/001872097778543886",
+    "urls": [
+      "https://doi.org/10.1518/001872097778543886"
+    ]
+  },
+  {
+    "id": "bib.bib42",
+    "citation": "(42) R. Parasuraman, T. B. Sheridan, and C. D. Wickens, “A Model for Types and Levels of Human Interaction with Automation,” IEEE Transactions on Systems, Man, and Cybernetics — Part A , vol. 30, no. 3, pp. 286–297, 2000. DOI: https://doi.org/10.1109/3468.844354",
+    "urls": [
+      "https://doi.org/10.1109/3468.844354"
+    ]
+  },
+  {
+    "id": "bib.bib43",
+    "citation": "(43) B. Shneiderman, “Human-Centered Artificial Intelligence: Reliable, Safe & Trustworthy,” International Journal of Human–Computer Interaction , vol. 36, no. 6, pp. 495–504, 2020. DOI: https://doi.org/10.1080/10447318.2020.1741118",
+    "urls": [
+      "https://doi.org/10.1080/10447318.2020.1741118"
+    ]
+  },
+  {
+    "id": "bib.bib44",
+    "citation": "(44) B. Shneiderman, Human-Centered AI . Oxford University Press, 2022. ISBN: 978-0192845290.",
+    "urls": []
+  },
+  {
+    "id": "bib.bib45",
+    "citation": "(45) C. Rudin, “Stop Explaining Black Box Machine Learning Models for High Stakes Decisions and Use Interpretable Models Instead,” Nature Machine Intelligence , vol. 1, pp. 206–215, 2019. DOI: https://doi.org/10.1038/s42256-019-0048-x",
+    "urls": [
+      "https://doi.org/10.1038/s42256-019-0048-x"
+    ]
+  },
+  {
+    "id": "bib.bib46",
+    "citation": "(46) B. Shneiderman, “Direct Manipulation: A Step Beyond Programming Languages,” IEEE Computer , vol. 16, no. 8, pp. 57–69, 1983. DOI: https://doi.org/10.1109/MC.1983.1654471",
+    "urls": [
+      "https://doi.org/10.1109/MC.1983.1654471"
+    ]
+  },
+  {
+    "id": "bib.bib47",
+    "citation": "(47) S. Amershi, D. Weld, M. Vorvoreanu, A. Fourney, B. Nushi, P. Collisson, J. Suh, S. Iqbal, P. N. Bennett, K. Inkpen, J. Teevan, R. Kikin-Gil, and E. Horvitz, “Guidelines for Human-AI Interaction,” CHI 2019 , Article 3, pp. 1–13. ACM, 2019. DOI: https://doi.org/10.1145/3290605.3300233",
+    "urls": [
+      "https://doi.org/10.1145/3290605.3300233"
+    ]
+  },
+  {
+    "id": "bib.bib48",
+    "citation": "(48) M. Zaharia, A. Chen, A. Davidson, A. Ghodsi, S. A. Hong, A. Konwinski, S. Murching, T. Nykodym, P. Ogilvie, M. Parkhe, F. Xie, and C. Zumar, “Accelerating the Machine Learning Lifecycle with MLflow,” IEEE Data Engineering Bulletin , vol. 41, no. 4, pp. 39–45, 2018. Available: https://people.eecs.berkeley.edu/˜matei/papers/2018/ieee_mlflow.pdf",
+    "urls": [
+      "https://people.eecs.berkeley.edu/~matei/papers/2018/ieee_mlflow.pdf"
+    ]
+  },
+  {
+    "id": "bib.bib49",
+    "citation": "(49) L. Enqvist, “‘Human Oversight’ in the EU Artificial Intelligence Act,” The Theory and Practice of Legislation , vol. 11, no. 3, 2023. DOI: https://doi.org/10.1080/17579961.2023.2245683",
+    "urls": [
+      "https://doi.org/10.1080/17579961.2023.2245683"
+    ]
+  },
+  {
+    "id": "bib.bib50",
+    "citation": "(50) C. Novelli, F. Casolari, A. Rotolo, M. Taddeo, and L. Floridi, “Institutionalised Distrust and Human Oversight of Artificial Intelligence,” Digital Society , vol. 3, no. 8, 2024. Available: https://pmc.ncbi.nlm.nih.gov/articles/PMC11614927/",
+    "urls": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC11614927/"
+    ]
+  },
+  {
+    "id": "bib.bib51",
+    "citation": "(51) M. Fink, “Human Oversight under Article 14 of the EU AI Act,” SSRN: 5147196, 2025. Forthcoming in Malgieri et al. (eds.), AI Act Commentary . Hart-Bloomsbury, 2026. DOI: https://doi.org/10.2139/ssrn.5147196",
+    "urls": [
+      "https://doi.org/10.2139/ssrn.5147196"
+    ]
+  },
+  {
+    "id": "bib.bib52",
+    "citation": "(52) A. V. Aho, M. S. Lam, R. Sethi, and J. D. Ullman, Compilers: Principles, Techniques, and Tools , 2nd ed. Addison-Wesley, 2006. ISBN: 978-0-321-48681-3.",
+    "urls": []
+  },
+  {
+    "id": "bib.bib53",
+    "citation": "(53) A. Zeller, Why Programs Fail: A Guide to Systematic Debugging , 2nd ed. Morgan Kaufmann, 2009. ISBN: 978-0-12-374515-6.",
+    "urls": []
+  },
+  {
+    "id": "bib.bib54",
+    "citation": "(54) Anthropic, “Introducing Claude Opus 4.6,” https://www.anthropic.com/news/claude-opus-4-6 , February 2026.",
+    "urls": [
+      "https://www.anthropic.com/news/claude-opus-4-6"
+    ]
+  }
+]
