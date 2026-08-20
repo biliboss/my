@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# PreToolUse (Bash matcher) — refuses `git add -A` / `git add .` before the tool runs.
+#
+# META.md:1087 already says "git add with explicit paths, never -A, never .": a rule in
+# markdown depends on whoever is about to type the command having read it. This is the
+# same rule as a gate that reads it for them — exit 2 on PreToolUse blocks the tool call
+# and puts stderr in front of the model as the reason, measured in notes/2026-08-14T0049Z.
+#
+# depends_on: .claude/settings.json (PreToolUse/Bash matcher wires this in)
+set -euo pipefail
+
+cmd=$(jq -r '.tool_input.command // ""')
+
+if [[ "$cmd" =~ git[[:space:]]+add([[:space:]]+-[A-Za-z]*[Aa][A-Za-z]*|[[:space:]]+\.($|[[:space:]])) ]]; then
+  echo "git add -A / git add . nesta casa não — o índice é compartilhado entre ciclos e um commit largo já varreu 43 arquivos de outra sessão pra dentro (16/08). Adicione arquivo por arquivo: git add <caminho>" >&2
+  exit 2
+fi
+
+exit 0

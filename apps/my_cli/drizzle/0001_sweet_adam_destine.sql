@@ -1,0 +1,5 @@
+CREATE TABLE `pref` (
+	`key` text PRIMARY KEY NOT NULL,
+	`value` text NOT NULL,
+	`at` text DEFAULT CURRENT_TIMESTAMP NOT NULL
+);

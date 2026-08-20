@@ -1,0 +1,24 @@
+{
+  "name": "@biliboss/my-cli",
+  "version": "0.1.0",
+  "description": "The CLI of the my house: the directory tree IS the command surface — a folder is a verb, a file is a subverb, and nothing declares a command anywhere.",
+  "license": "MIT",
+  "author": "Gabriel (biliboss)",
+  "private": true,
+  "type": "module",
+  "bin": { "my": "./src/cli/my.ts" },
+  "dependencies": {
+    "@biliboss/interfaces": "workspace:*",
+    "commander": "^15.0.0",
+    "drizzle-orm": "^0.45.2",
+    "surrealdb": "^2.0.8"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^0.31.10",
+    "typescript": "catalog:"
+  },
+  "scripts": {
+    "check": "bun run src/home/check.ts",
+    "test": "bun test ./src/"
+  }
+}

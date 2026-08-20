@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent } from "@heroui/react";
-import { Arrow, Button, familyLinks, LpCarousel, LpFamilyShowcase, LpFoldNav, LpFooter, LpHero, LpNav, type LpSlide, LpTicker, Mark, Page } from "@biliboss/my-ui";
+import { Arrow, Button, familyLinks, LpCarousel, LpFamilyShowcase, LpFinalCta, LpFoldNav, LpFooter, LpHero, LpNav, type LpSlide, LpTicker, Mark, Page } from "@biliboss/my-ui";
 
 const BASE = import.meta.env.BASE_URL;
 
@@ -215,12 +215,13 @@ function App() {
         }
       />
 
-      <section className="shell final-cta" data-fold>
-        <span className="section-kicker">A FIGURA CERTA É A LIDA</span>
-        <h2>Pare de desenhar arquitetura.<br />Comece a lê-la.</h2>
-        <p>Open source, MIT. Aponte para a sua árvore e veja o que ela realmente é — não o que o diagrama de terça-feira dizia.</p>
-        <Button href="https://github.com/biliboss/my-graph">Apontar para o meu código <Arrow /></Button>
-      </section>
+      <LpFinalCta
+        kicker="A FIGURA CERTA É A LIDA"
+        title={<>Pare de desenhar arquitetura.<br />Comece a lê-la.</>}
+        action={{ label: "Apontar para o meu código", href: "https://github.com/biliboss/my-graph" }}
+      >
+        Open source, MIT. Aponte para a sua árvore e veja o que ela realmente é — não o que o diagrama de terça-feira dizia.
+      </LpFinalCta>
 
       <LpFooter
         brand="my-graph"

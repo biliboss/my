@@ -1,0 +1,150 @@
+[
+	{
+		"createSurface": {
+			"surfaceId": "run-{{slug}}",
+			"title": "run · {{slug}}",
+			"columns": 1
+		}
+	},
+	{
+		"updateDataModel": {
+			"surfaceId": "run-{{slug}}",
+			"contents": {
+				"slug": "{{slug}}",
+				"pasta": "/doc/_step_runs/{{slug}}",
+				"input": "/doc/_step_runs/{{slug}}/input.yaml",
+				"template_input": "/doc/templates/input.yaml",
+				"template_output": "/doc/templates/output.yaml",
+				"steps": "/doc/steps",
+				"estado": "—",
+				"node": "—",
+				"projeto": "—",
+				"linhas": [
+					"abra pelo hook e o `me` preenche — estas linhas saem do próprio YAML"
+				]
+			}
+		}
+	},
+	{
+		"updateComponents": {
+			"surfaceId": "run-{{slug}}",
+			"components": [
+				{
+					"id": "run-slug",
+					"column": 0,
+					"componentProperties": {
+						"Metric": {
+							"value": {
+								"path": "slug"
+							},
+							"label": "_step_runs/",
+							"linha": true
+						}
+					}
+				},
+				{
+					"id": "run-estado",
+					"column": 0,
+					"componentProperties": {
+						"Metric": {
+							"value": {
+								"path": "estado"
+							},
+							"label": "estado",
+							"linha": true
+						}
+					}
+				},
+				{
+					"id": "run-node",
+					"column": 0,
+					"componentProperties": {
+						"Metric": {
+							"value": {
+								"path": "node"
+							},
+							"label": "node",
+							"linha": true
+						}
+					}
+				},
+				{
+					"id": "run-projeto",
+					"column": 0,
+					"componentProperties": {
+						"Metric": {
+							"value": {
+								"path": "projeto"
+							},
+							"label": "projeto",
+							"linha": true
+						}
+					}
+				},
+				{
+					"id": "run-linhas",
+					"style": {
+						"font-family": "ui-monospace, monospace",
+						"font-size": "0.75rem"
+					},
+					"componentProperties": {
+						"List": {
+							"items": {
+								"path": "linhas"
+							}
+						}
+					}
+				},
+				{
+					"id": "run-tabs",
+					"style": {
+						"flex": "1",
+						"min-height": "0",
+						"overflow": "hidden"
+					},
+					"componentProperties": {
+						"Tabs": {
+							"items": [
+								{
+									"label": "os artefatos",
+									"src": {
+										"path": "pasta"
+									}
+								},
+								{
+									"label": "input.yaml",
+									"src": {
+										"path": "input"
+									}
+								},
+								{
+									"label": "a forma do input",
+									"src": {
+										"path": "template_input"
+									}
+								},
+								{
+									"label": "a forma do output",
+									"src": {
+										"path": "template_output"
+									}
+								},
+								{
+									"label": "os steps",
+									"src": {
+										"path": "steps"
+									}
+								}
+							]
+						}
+					}
+				}
+			]
+		}
+	},
+	{
+		"focusSurface": {
+			"surfaceId": "run"
+		}
+	}
+]

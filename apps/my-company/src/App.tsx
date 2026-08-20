@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent } from "@heroui/react";
-import { Arrow, Button, familyLinks, LpFamilyShowcase, LpFoldNav, LpFooter, LpHero, LpNav, LpTicker, Mark, Page } from "@biliboss/my-ui";
+import { Arrow, Button, familyLinks, LpFamilyShowcase, LpFinalCta, LpFoldNav, LpFooter, LpHero, LpNav, LpTicker, Mark, Page } from "@biliboss/my-ui";
 import { GraphStory } from "./GraphStory";
 
 function App() {
@@ -109,12 +109,13 @@ function App() {
         }
       />
 
-      <section className="shell final-cta" data-fold>
-        <span className="section-kicker">A PÁGINA É O PRIMEIRO ARTEFATO</span>
-        <h2>Comece pela promessa.<br />O projeto nasce em público.</h2>
-        <p>my-company começou como esta landing — antes do primeiro processo escrito. A teoria vira método aqui, commit a commit.</p>
-        <Button href="https://github.com/biliboss/my-company">Acompanhar a construção <Arrow /></Button>
-      </section>
+      <LpFinalCta
+        kicker="A PÁGINA É O PRIMEIRO ARTEFATO"
+        title={<>Comece pela promessa.<br />O projeto nasce em público.</>}
+        action={{ label: "Acompanhar a construção", href: "https://github.com/biliboss/my-company" }}
+      >
+        my-company começou como esta landing — antes do primeiro processo escrito. A teoria vira método aqui, commit a commit.
+      </LpFinalCta>
 
       <LpFooter
         brand="my-company"

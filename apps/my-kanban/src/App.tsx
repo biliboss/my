@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent } from "@heroui/react";
 import { BoardStory } from "./BoardStory";
-import { Arrow, Button, familyLinks, LpFamilyShowcase, LpFoldNav, LpFooter, LpHero, LpNav, LpTicker, Mark, Page } from "@biliboss/my-ui";
+import { Arrow, Button, familyLinks, LpFamilyShowcase, LpFinalCta, LpFoldNav, LpFooter, LpHero, LpNav, LpTicker, Mark, Page } from "@biliboss/my-ui";
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -129,12 +129,13 @@ function App() {
         }
       />
 
-      <section className="shell final-cta" data-fold>
-        <span className="section-kicker">A PÁGINA É O PRIMEIRO ARTEFATO</span>
-        <h2>Um quadro só.<br />Todas as perguntas.</h2>
-        <p>my-kanban nasce em público, como o resto da família: a promessa primeiro, o código commit a commit.</p>
-        <Button href="https://github.com/biliboss/my-kanban">Acompanhar a construção <Arrow /></Button>
-      </section>
+      <LpFinalCta
+        kicker="A PÁGINA É O PRIMEIRO ARTEFATO"
+        title={<>Um quadro só.<br />Todas as perguntas.</>}
+        action={{ label: "Acompanhar a construção", href: "https://github.com/biliboss/my-kanban" }}
+      >
+        my-kanban nasce em público, como o resto da família: a promessa primeiro, o código commit a commit.
+      </LpFinalCta>
 
       <LpFooter
         brand="my-kanban"

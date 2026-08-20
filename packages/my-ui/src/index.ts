@@ -28,4 +28,5 @@ export * from "./LpFooter";
 export * from "./LpParallax";
 export * from "./LpCarousel";
 export * from "./LpFamilyShowcase";
+export * from "./LpFinalCta";
 export * from "./LpFoldNav";

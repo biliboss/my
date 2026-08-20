@@ -1,0 +1,206 @@
+[
+	{
+		"createSurface": {
+			"surfaceId": "features",
+			"title": "agent-sessions-integration — features",
+			"columns": 1,
+			"x": 0,
+			"y": 5
+		}
+	},
+	{
+		"updateDataModel": {
+			"surfaceId": "features",
+			"contents": {
+				"projeto": "agent-sessions-integration",
+				"pasta": "/doc/01_projects/agent-sessions-integration/features",
+				"n_ideias": 9,
+				"n_aceitas": 9,
+				"ultima": "009_idea_output_montado_do_diff",
+				"desde": "2026-08-14T09:40:00Z",
+				"lista": [
+					"001 — agentes[] grava session id e transcript",
+					"002 — todo agente nasce de um fork de quem delega",
+					"003 — blame: do arquivo de volta ao pedido",
+					"004 — fan-out: N forks do mesmo pai, uma consolidação",
+					"005 — o loop gera run, e ganha meta-step com evidência",
+					"006 — a consolidação é o gatilho da morte",
+					"007 — a notificação carrega o que o agente descobriu",
+					"008 — varredura de segredo antes de forkar",
+					"009 — o output.yaml é montado do diff, não de memória"
+				]
+			}
+		}
+	},
+	{
+		"updateComponents": {
+			"surfaceId": "features",
+			"components": [
+				{
+					"id": "split",
+					"style": {
+						"flex": "1",
+						"min-height": "0",
+						"display": "grid",
+						"grid-template-columns": "repeat(auto-fit, minmax(24rem, 1fr))",
+						"gap": "0.75rem"
+					},
+					"componentProperties": {
+						"Box": {}
+					},
+					"children": [
+						{
+							"id": "resumo",
+							"style": {
+								"min-width": "0",
+								"min-height": "0",
+								"display": "flex",
+								"flex-direction": "column",
+								"overflow": "auto"
+							},
+							"componentProperties": {
+								"Box": {}
+							},
+							"children": [
+								{
+									"id": "faixa-num",
+									"style": {
+										"display": "flex",
+										"gap": "1.5rem",
+										"align-items": "baseline"
+									},
+									"componentProperties": {
+										"Box": {}
+									},
+									"children": [
+										{
+											"id": "m-ideias",
+											"componentProperties": {
+												"Metric": {
+													"value": {
+														"path": "n_ideias"
+													},
+													"label": "ideias no loop"
+												}
+											}
+										},
+										{
+											"id": "m-aceitas",
+											"componentProperties": {
+												"Metric": {
+													"value": {
+														"path": "n_aceitas"
+													},
+													"label": "viraram arquivo"
+												}
+											}
+										},
+										{
+											"id": "t-desde",
+											"componentProperties": {
+												"Timer": {
+													"since": {
+														"path": "desde"
+													},
+													"label": "desde a última",
+													"compact": true
+												}
+											}
+										}
+									]
+								},
+								{
+									"id": "h-lista",
+									"componentProperties": {
+										"Heading": {
+											"text": "o que já virou arquivo"
+										}
+									}
+								},
+								{
+									"id": "l-lista",
+									"componentProperties": {
+										"List": {
+											"items": {
+												"path": "lista"
+											}
+										}
+									}
+								},
+								{
+									"id": "fonte",
+									"componentProperties": {
+										"Text": {
+											"text": {
+												"path": "pasta"
+											}
+										}
+									}
+								}
+							]
+						},
+						{
+							"id": "tabs-features",
+							"style": {
+								"min-width": "0",
+								"min-height": "0",
+								"overflow": "hidden"
+							},
+							"componentProperties": {
+								"Tabs": {
+									"items": [
+										{
+											"label": "pasta",
+											"src": "/doc/01_projects/agent-sessions-integration/features"
+										},
+										{
+											"label": "001",
+											"src": "/doc/01_projects/agent-sessions-integration/features/001_idea_agentes_session_id.md"
+										},
+										{
+											"label": "002",
+											"src": "/doc/01_projects/agent-sessions-integration/features/002_idea_fork_do_pai.md"
+										},
+										{
+											"label": "003",
+											"src": "/doc/01_projects/agent-sessions-integration/features/003_idea_blame_de_decisao.md"
+										},
+										{
+											"label": "004",
+											"src": "/doc/01_projects/agent-sessions-integration/features/004_idea_fanout_de_forks.md"
+										},
+										{
+											"label": "005",
+											"src": "/doc/01_projects/agent-sessions-integration/features/005_idea_loop_gera_run_e_meta_step.md"
+										},
+										{
+											"label": "006",
+											"src": "/doc/01_projects/agent-sessions-integration/features/006_idea_morte_no_consolidar.md"
+										},
+										{
+											"label": "007",
+											"src": "/doc/01_projects/agent-sessions-integration/features/007_idea_notificacao_com_conteudo.md"
+										},
+										{
+											"label": "008",
+											"src": "/doc/01_projects/agent-sessions-integration/features/008_idea_varredura_de_segredo_pre_fork.md"
+										},
+										{
+											"label": "009",
+											"src": "/doc/01_projects/agent-sessions-integration/features/009_idea_output_montado_do_diff.md"
+										}
+									]
+								}
+							}
+						}
+					]
+				}
+			]
+		}
+	},
+	{
+		"focusSurface": {
+			"surfaceId": "features"
+		}
+	}
+]

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Card, CardContent, Chip, Input } from "@heroui/react";
-import { Arrow, Button, familyLinks, LpFamilyShowcase, LpFoldNav, LpFooter, LpHero, LpNav, LpTicker, Mark, Page } from "@biliboss/my-ui";
+import { Arrow, Button, familyLinks, LpFamilyShowcase, LpFinalCta, LpFoldNav, LpFooter, LpHero, LpNav, LpTicker, Mark, Page } from "@biliboss/my-ui";
 import linksJson from "./data/icm-links.json";
 import bibliography from "./data/icm-bibliography.json";
 
@@ -260,12 +260,13 @@ function App() {
         }
       />
 
-      <section className="shell final-cta" data-fold>
-        <span className="section-kicker">O SISTEMA COMEÇA VISÍVEL</span>
-        <h2>Não terceirize sua memória<br />para uma caixa-preta.</h2>
-        <p>O my está sendo aberto, parte por parte. Acompanhe o código, leia as decisões e veja o sistema nascer.</p>
-        <Button href="https://github.com/biliboss/my">Ver o projeto no GitHub <Arrow /></Button>
-      </section>
+      <LpFinalCta
+        kicker="O SISTEMA COMEÇA VISÍVEL"
+        title={<>Não terceirize sua memória<br />para uma caixa-preta.</>}
+        action={{ label: "Ver o projeto no GitHub", href: "https://github.com/biliboss/my" }}
+      >
+        O my está sendo aberto, parte por parte. Acompanhe o código, leia as decisões e veja o sistema nascer.
+      </LpFinalCta>
 
       <LpFooter
         brand="my"
