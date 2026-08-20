@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Button, Card, CardContent, Chip, Input } from "@heroui/react";
+import { FoldNav } from "./foldnav";
 import linksJson from "./data/icm-links.json";
 import bibliography from "./data/icm-bibliography.json";
 
@@ -62,6 +63,7 @@ function App() {
     <main>
       <div className="ambient ambient-one" />
       <div className="ambient ambient-two" />
+      <FoldNav />
       <nav className="nav shell" aria-label="Navegação principal">
         <a className="brand" href="#top" aria-label="my, início">
           <span className="brand-mark">m</span><span>my</span>
@@ -82,7 +84,7 @@ function App() {
         </div>
       </nav>
 
-      <header className="hero shell" id="top">
+      <header className="hero shell" id="top" data-fold>
         <div className="eyebrow"><span className="pulse" /> local-first · open source · human-in-the-loop</div>
         <h1>A IA não precisa de<br /><em>mais um framework.</em></h1>
         <p className="hero-line">Precisa saber onde está.</p>
@@ -109,7 +111,7 @@ function App() {
         <div>ONE STAGE, ONE JOB <b>✦</b> PLAIN TEXT AS INTERFACE <b>✦</b> EVERY OUTPUT IS AN EDIT SURFACE <b>✦</b> CONFIGURE THE FACTORY, NOT THE PRODUCT <b>✦</b></div>
       </section>
 
-      <section className="shell section problem" id="metodo">
+      <section className="shell section problem" id="metodo" data-fold>
         <div className="section-kicker">01 / o problema real</div>
         <div className="split-heading">
           <h2>Frameworks resolvem<br />concorrência.</h2>
@@ -143,7 +145,7 @@ function App() {
         </div>
       </section>
 
-      <section className="layers-section" aria-labelledby="layers-title">
+      <section className="layers-section" aria-labelledby="layers-title" data-fold>
         <div className="shell section">
           <div className="section-kicker">02 / o mecanismo</div>
           <div className="split-heading">
@@ -166,7 +168,7 @@ function App() {
         </div>
       </section>
 
-      <section className="shell section evidence" id="evidencia">
+      <section className="shell section evidence" id="evidencia" data-fold>
         <div className="section-kicker">03 / evidência, sem fantasia</div>
         <div className="split-heading">
           <h2>Promissor.<br />Ainda não conclusivo.</h2>
@@ -184,7 +186,7 @@ function App() {
         </div>
       </section>
 
-      <section className="fit-section">
+      <section className="fit-section" data-fold>
         <div className="shell section fit-grid">
           <div>
             <div className="section-kicker">04 / a escolha certa</div>
@@ -204,13 +206,13 @@ function App() {
         </div>
       </section>
 
-      <section className="shell section principle">
+      <section className="shell section principle" data-fold>
         <div className="principle-mark">“</div>
         <blockquote>Editar a saída conserta esta rodada.<br /><em>Editar a fonte conserta todas as próximas.</em></blockquote>
         <p>O princípio mais forte do estudo também é a aposta do my: recorrência não vira remendo. Vira melhoria durável no sistema.</p>
       </section>
 
-      <section className="shell section videos" aria-labelledby="videos-title">
+      <section className="shell section videos" aria-labelledby="videos-title" data-fold>
         <div className="section-kicker">05 / assista ao ecossistema</div>
         <div className="split-heading">
           <h2 id="videos-title">A ideia já está<br />ganhando voz.</h2>
@@ -231,7 +233,7 @@ function App() {
         </div>
       </section>
 
-      <section className="source-section" id="fontes">
+      <section className="source-section" id="fontes" data-fold>
         <div className="shell section">
           <div className="section-kicker">06 / integridade da fonte</div>
           <div className="split-heading">
@@ -279,15 +281,15 @@ function App() {
         </div>
       </section>
 
-      <section className="fit-section" id="familia">
+      <section className="fit-section" id="familia" data-fold>
         <div className="shell section fit-grid">
           <div>
             <div className="section-kicker">07 / da mesma família</div>
-            <h2>my é o sistema.<br />my-graph é a radiografia.<br />my-company é a teoria.</h2>
+            <h2>my é o sistema.<br />my-graph é a radiografia.<br />my-company é a teoria.<br />my-kanban é o quadro.</h2>
             <p className="lead">Mesma casa, mesma disciplina: texto puro como interface, cada saída é superfície de edição, o humano é o portão.</p>
             <a href="https://biliboss.github.io/my-graph/" target="_blank" rel="noreferrer" className="family-link">Conhecer o my-graph <Arrow /></a>
           </div>
-          <div className="fit-columns three">
+          <div className="fit-columns four">
             <div className="fit-column yes">
               <span>MY — O SISTEMA</span>
               <p>Sistema operacional pessoal local-first</p>
@@ -309,11 +311,17 @@ function App() {
               <p>O grafo vivo desenha a empresa enquanto você rola</p>
               <p><a href="https://biliboss.github.io/my-company/" target="_blank" rel="noreferrer">biliboss.github.io/my-company</a></p>
             </div>
+            <div className="fit-column fam">
+              <span>MY-KANBAN — O QUADRO</span>
+              <p>O mesmo conjunto de cards, várias perguntas</p>
+              <p>Rótulo chave:valor vira coluna, sem mover card</p>
+              <p><a href="https://biliboss.github.io/my-kanban/" target="_blank" rel="noreferrer">biliboss.github.io/my-kanban</a></p>
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="shell final-cta">
+      <section className="shell final-cta" data-fold>
         <span className="section-kicker">O SISTEMA COMEÇA VISÍVEL</span>
         <h2>Não terceirize sua memória<br />para uma caixa-preta.</h2>
         <p>O my está sendo aberto, parte por parte. Acompanhe o código, leia as decisões e veja o sistema nascer.</p>
