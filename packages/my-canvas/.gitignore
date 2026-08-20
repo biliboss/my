@@ -1,0 +1,3 @@
+# 72 MB por build, e ele é 100% derivado: `bun run build` reconstrói.
+build/
+node_modules/

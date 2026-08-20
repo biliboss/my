@@ -1,0 +1,18 @@
+{
+  "name": "@biliboss/my-canvas",
+  "version": "0.1.0",
+  "description": "A surface an agent draws on: a native window that opens a URL or pushed HTML.",
+  "license": "MIT",
+  "author": "Gabriel (biliboss)",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "electrobun": "1.18.1"
+  },
+  "scripts": {
+    "build": "electrobun build && ./scripts/allow-local-http.sh",
+    "check": "tsc --noEmit --strict --target es2022 src/bun/*.ts"
+  }
+}
