@@ -254,7 +254,7 @@ export function scanRuns(root: string): Run[] {
   // por run — 46 runs × 2 `git log` = 92 processos sequenciais, 15,7s medidos em
   // 19/08 na thread do extension host. Agora é um processo, 0,83s.
   // Por POSIÇÃO, não por id: dois runs podem ter o mesmo id em mains diferentes
-  // (`975_soulperuibe` está em `01_coding` e em `02_product` hoje).
+  // (`975_litoral` está em `01_coding` e em `02_product` hoje).
   const porRun = commitsForMany(root, runs)
   runs.forEach((run, i) => {
     run.commits = porRun[i] ?? []

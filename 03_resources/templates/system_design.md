@@ -135,4 +135,4 @@ próximos; número ocupado nunca é reciclado (mesma regra de sprint/task).
 
 - `my meta resources system_design` — o porquê, e como normalizar projeto antigo
 - `my meta resources callstack_notation` · `my meta resources outline_notation`
-- @01_projects/_parked/cannabr-v1/docs/ — o exemplo vivo
+- @01_projects/_parked/nimbus-v1/docs/ — o exemplo vivo

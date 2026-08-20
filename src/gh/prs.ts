@@ -1,7 +1,7 @@
 #!/usr/bin/env bun
 //! Existe PR aberto pra este branch? — a pergunta que faz o ciclo ser idempotente.
 //!
-//!     my gh prs staging/U1 --repo viacorretor/viacorretor
+//!     my gh prs staging/U1 --repo acme/acme
 //!     my gh prs --repo <slug>                 todos os abertos
 //!     my gh prs staging/U1 staging/U2 --repo <slug> --tsv
 //!

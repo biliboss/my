@@ -397,7 +397,7 @@ test('inline marks render instead of printing themselves', () => {
 test('a bold mark that spans a line break still renders — the file is hard-wrapped', () => {
   // Measured on the QA summary: `**` opened on one line and closed on the next, so four
   // pairs of asterisks printed themselves on screen. Consecutive lines are ONE paragraph.
-  const html = markdownLite('o motivo é um só: **`galgal.kernel` não tem\nmarca `py.typed`.** A U3 não errou\n')
+  const html = markdownLite('o motivo é um só: **`acme-mono.kernel` não tem\nmarca `py.typed`.** A U3 não errou\n')
 
   assert.match(html, /<strong[^>]*>/)
   assert.ok(!html.includes('**'), 'nenhum asterisco cru pode sobrar')

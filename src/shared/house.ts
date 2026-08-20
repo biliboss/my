@@ -153,7 +153,7 @@ const CATRACA: { check: string; medidas: Record<string, (j: any) => number> }[] 
 		medidas: {
 			// `dangling_path` NÃO conta, e é a mesma razão do `~/` no `citations`: a regra
 			// pergunta se o `repo_local` de um projeto existe NESTA MÁQUINA, e o runner
-			// nunca terá `~/src/galgal`. O mesmo commit dava 86 no clone limpo e 88 no CI,
+			// nunca terá `~/src/acme-mono`. O mesmo commit dava 86 no clone limpo e 88 no CI,
 			// e a catraca reprovava por uma diferença de máquina — o portão precisa medir
 			// o REPO, não o laptop.
 			findings: (j) => j.findings.filter((f: any) => f.rule !== "dangling_path").length,

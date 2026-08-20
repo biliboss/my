@@ -67,7 +67,7 @@ export type Estado = (typeof ESTADOS)[number]
  *  `estado:` num CONTEXT.md é a segunda fonte que ninguém atualiza — o `ls` mostra
  *  o campo velho e a pessoa acredita nele. Aqui `ls sprints/inprogress` É a
  *  pergunta "o que está rodando agora", sem parser nenhum. O `done/` já existia por
- *  convenção no `biliboss_corretor` antes de qualquer verbo escrever nele. */
+ *  convenção no `acme-corretor` antes de qualquer verbo escrever nele. */
 export function sprints(slugProjeto: string): Sprint[] {
   const raiz = sprintsDir(slugProjeto)
   if (!existsSync(raiz)) return []

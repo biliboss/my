@@ -1,13 +1,13 @@
 #!/usr/bin/env bun
 //! O estado de uma issue no GitHub — aberta, fechada, e o que ela virou.
 //!
-//!     my gh issues 284 --repo viacorretor/viacorretor
-//!     my gh issues https://github.com/viacorretor/viacorretor/issues/284
+//!     my gh issues 284 --repo acme/acme
+//!     my gh issues https://github.com/acme/acme/issues/284
 //!     my gh issues 284 285 286 --repo <slug> --tsv
 //!
 //! O ciclo de código lê o PLANO do disco e o ESTADO daqui. Uma fonte sozinha
 //! mente: o `sprints.yaml` não sabe que a 284 fechou, e a issue não sabe qual é a
-//! prova da task — @01_projects/_parked/viacorretor/features/share_external/callstack_do_sprint.md.
+//! prova da task — @01_projects/_parked/acme/features/share_external/callstack_do_sprint.md.
 //!
 //! `--repo` É EXPLÍCITO, sempre. `gh` sem `--repo` resolve pelo `origin` do
 //! diretório atual, e agente roda de worktree, de `~/src/me`, de onde o harness

@@ -712,7 +712,7 @@ export function readRun(dir: string) {
     // `projeto:` — o esforço de `01_projects/` que a run serve, ou null. Estava
     // no disco em 12 de 14 runs e NINGUÉM lia; #run_state_pointer previu isso no
     // próprio CEILING e disse o que o tiraria de lá: um quadro perguntando o que
-    // está rodando para um projeto. `just meta runs viacorretor` é a pergunta.
+    // está rodando para um projeto. `just meta runs acme` é a pergunta.
     projeto: merged.projeto ?? null,
     deliverables: (final.deliverables ?? final.entregas ?? []).map((d: any) => d?.id).filter(Boolean),
     pending: (merged.pending ?? merged.pendente ?? []).map((p: any) => p?.id).filter(Boolean),
@@ -783,7 +783,7 @@ export function janelas(): Map<string, { abriu: Date | null; ciclo: number | nul
     // AGRUPA PELO NÚMERO, NÃO PELO NOME. #run_folder_name: o número é a
     // identidade e a pasta pode ser renomeada à vontade — e nove foram, em
     // 16/08. `git log --follow` NÃO atravessa renomeação de diretório: pelo
-    // caminho novo, `_meta/008_interview_galgal_quatro_pastas/` começa no commit
+    // caminho novo, `_meta/008_interview_acme-mono_quatro_pastas/` começa no commit
     // que renomeou, e a run passa a alegar que abriu às 10:59 de 16/08 quando
     // abriu às 22:34 de 15/08. O histórico antigo está lá, sob `_meta/008_run/`;
     // só o nome mudou. Três dígitos acham os dois.
@@ -1248,9 +1248,9 @@ class Cli {
     const sub = this.args[0];
     const j = janelas();
     // UM ARGUMENTO NÃO-NUMÉRICO É FILTRO DE PROJETO, e o número segue sendo a
-    // run. `viacorretor` casa por PREFIXO, então alcança
-    // `viacorretor-refatoracao` também — são dois esforços contra a mesma
-    // árvore, e quem pergunta "o que rodou pro viacorretor" quer os dois.
+    // run. `acme` casa por PREFIXO, então alcança
+    // `acme-refatoracao` também — são dois esforços contra a mesma
+    // árvore, e quem pergunta "o que rodou pro acme" quer os dois.
     if (sub && !/^\d/.test(sub)) {
       const rs = allRuns().filter((r) => (r.projeto ?? "").startsWith(sub));
       if (this.json) return this.out(rs);

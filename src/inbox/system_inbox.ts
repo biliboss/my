@@ -142,7 +142,7 @@ export declare namespace InboxSystem {
 			archive: "archive";
 		};
 
-		/** Who an inbox, or one item in it, is FOR — `qa-workflow`, `blue-omie`,
+		/** Who an inbox, or one item in it, is FOR — `qa-workflow`, `zenit`,
 		 *  `gabriel`. The same name the fleet bus addresses by (`my agents send <name>`)
 		 *  and the same one an agent knows itself by (`MY_AGENT`).
 		 *
@@ -246,7 +246,7 @@ export declare namespace InboxSystem {
 			 *  it, in one object. */
 			answer?: ValueObjects.Answer;
 			/** Who THIS request is for, when it is not whoever owns the inbox — a request
-			 *  dropped in the house inbox that is plainly the `blue-omie`'s.
+			 *  dropped in the house inbox that is plainly the `zenit`'s.
 			 *
 			 *  RESOLUTION, and it lives here so it is written once: **item, then folder,
 			 *  then the house.** Two places naming a destination is how two truths start;

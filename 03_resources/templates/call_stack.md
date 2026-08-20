@@ -166,5 +166,5 @@ método mora na pasta do próprio componente. Isso é teto conhecido, e vai escr
 
 ## Exemplo vivo
 
-- @01_projects/_parked/viacorretor/sprints/991_share_external_v1/callstack_mermaid.md — quatro
-  seções, seis componentes, e o `check.ts` que as afere contra o galgal
+- @01_projects/_parked/acme/sprints/991_share_external_v1/callstack_mermaid.md — quatro
+  seções, seis componentes, e o `check.ts` que as afere contra o acme-mono

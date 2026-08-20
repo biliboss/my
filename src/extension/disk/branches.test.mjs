@@ -50,7 +50,7 @@ test('unitsOf returns nothing for a run that declares no units', () => {
 })
 
 test('resolveRef finds the hyphen twin when the declared slash branch cannot exist', () => {
-  const repo = join(homedir(), 'src', 'galgal')
+  const repo = join(homedir(), 'src', 'acme-mono')
   if (!existsSync(join(repo, '.git'))) return // o repo de trabalho pode não estar aqui
 
   // Whichever spelling the yaml carries, a ref must be found for a live unit.

@@ -206,7 +206,7 @@ export function index(raiz?: string): Resource[] {
 	//
 	// SALVO QUANDO NÃO HÁ O QUE MAPEAR. Um `CONTEXT.md` sozinho na subárvore é a página,
 	// não o mapa dela, e medido em 20/08 são três: `references/scripts/system`,
-	// `references/skills/drip` e `references/viacorretor/contracts` — a última é a ÚNICA
+	// `references/skills/drip` e `references/acme/contracts` — a última é a ÚNICA
 	// página de promessa a cliente que esta casa tem, e a regra cega fazia
 	// `my resources hustler promises` devolver zero com o arquivo ali. Entra pelo nome da
 	// PASTA, como um processo.

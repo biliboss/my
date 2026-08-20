@@ -42,7 +42,7 @@ function fixture() {
       "um ponteiro numerado que morreu: @03_resources/sumiu.md",   // error
       "um ponteiro numerado que vive: @03_resources/vivo.md",      // resolve
       "",
-      "e-mail nao e ponteiro: gabriel@devmagic.com.br",
+      "e-mail nao e ponteiro: alguem@example.com",
       "handle nao e ponteiro: @biliboss abriu a issue",
       "css nao e ponteiro: @media (min-width: 40rem)",
       "decorator nao e ponteiro: @verb(\"a frase\")",
@@ -88,7 +88,7 @@ test("um ponteiro que começa com DÍGITO é verificado como qualquer outro", as
 // porta pra tudo que usa arroba e não é caminho. Nenhum destes pode virar achado.
 test("e-mail, handle, @media, decorator, escopo npm e arroba de URL não são ponteiros", async () => {
   const { out } = await run([fixture()]);
-  for (const falso of ["devmagic", "biliboss", "media", "verb", "anthropic-ai", "1/shot"]) {
+  for (const falso of ["example.com", "biliboss", "media", "verb", "anthropic-ai", "1/shot"]) {
     expect(out).not.toContain(falso);
   }
 });

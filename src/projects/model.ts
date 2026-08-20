@@ -44,7 +44,7 @@ export const hoje = () => new Date().toISOString().slice(0, 10);
  *  `name` e `description` porque um cartão não mostra `**Resultado:**` sem
  *  adivinhar marcador de negrito; `repo` e `repo_local` porque esta casa é o
  *  REGISTRO e o código mora em outro repositório, e o nome da pasta local não é
- *  derivável da URL (`viacorretor` mora em `~/src/galgal`); `main_branch` porque
+ *  derivável da URL (`acme` mora em `~/src/acme-mono`); `main_branch` porque
  *  nem todo repo integra em `main`, e quem assume errado abre PR no lugar errado.
  *
  *  `current_local_branch` NÃO está aqui de propósito: muda a cada `git switch`,
@@ -95,7 +95,7 @@ export type Finding = {
 };
 
 /** `~/x` → `/Users/…/x`. Front matter é escrito por humano e humano escreve `~`;
- *  `existsSync("~/src/galgal")` é sempre falso e falha calado. */
+ *  `existsSync("~/src/acme-mono")` é sempre falso e falha calado. */
 export const expandir = (p: string) =>
 	p.startsWith("~/") ? join(homedir(), p.slice(2)) : p;
 
@@ -109,7 +109,7 @@ export const expandir = (p: string) =>
  *  alguém digitou a chave e parou.
  *
  *  MEDIDO em 19/08 contra `Bun.YAML`, porque a intuição erra em dois pontos:
- *  `~/src/galgal` NÃO vira null (só um `~` sozinho vira), e `2024-01-01` sai
+ *  `~/src/acme-mono` NÃO vira null (só um `~` sozinho vira), e `2024-01-01` sai
  *  string, não `Date`. Os dois casos que assustam no papel estão cobertos.
  *
  *  ponytail: `0817` vira número 817 — o zero à esquerda MORRE, e nenhum `String()`
@@ -125,7 +125,7 @@ export const campo = (fm: Record<string, any>, k: string): string | undefined =>
 	// passando por resposta: a chave existe, então todo consumidor acredita nela e
 	// vai buscar um repositório chamado literalmente `<owner>/<name>`.
 	//
-	// Medido 19/08: 2 projetos (`auto-system`, `cannabr-v1`), e o check os dava
+	// Medido 19/08: 2 projetos (`auto-system`, `nimbus-v1`), e o check os dava
 	// como tendo `repo`. Tratar como AUSENTE não inventa achado novo — os dois já
 	// caíam em `missing_frontmatter` por outras chaves; agora a mensagem lista
 	// `repo` junto, que é a verdade. O número não muda; o que muda é ele não
@@ -150,8 +150,8 @@ export const slugs = () =>
  *
  *  O run não declara o projeto num campo — ele menciona o caminho
  *  `01_projects/<slug>` no pedido, no guardrail, na saída. Casar pelo NOME da
- *  pasta do run daria falso negativo em `2026-08-13T2355Z-usar-o-pipeline-do-galgal`,
- *  que é do `viacorretor-refatoracao` e não tem o slug no nome. */
+ *  pasta do run daria falso negativo em `2026-08-13T2355Z-usar-o-pipeline-do-acme-mono`,
+ *  que é do `acme-refatoracao` e não tem o slug no nome. */
 export function citados(): Set<string> {
 	const achados = new Set<string>();
 

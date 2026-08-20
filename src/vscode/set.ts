@@ -98,7 +98,7 @@ import { db } from "../shared/db.ts";
 import { folder, folderTag, sidebarHistory } from "../shared/schema.ts";
 
 /** A barra é relativa a `~/src`, não à raiz deste repo: ela mostra pastas de vários
- *  repositórios (`me/…`, `fonseca-mono/…`), e é o que o `main.code-workspace` já usa. */
+ *  repositórios (`me/…`, `orion-mono/…`), e é o que o `main.code-workspace` já usa. */
 const SRC_ROOT = join(process.env.HOME!, "src");
 
 /** Overridável pra o teste rodar contra um arquivo descartável — escrever o

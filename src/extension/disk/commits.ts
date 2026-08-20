@@ -54,7 +54,7 @@ export function gitCommits(cwd: string, revisions: string[], limit = 20): Commit
 /**
  * `[S2/T3]` no fim do assunto — a marca que diz QUAL task o commit fechou.
  *
- * MEASURED 17/08 in `~/src/galgal`: 13 commits of the live fan-out carry it, 10 distinct
+ * MEASURED 17/08 in `~/src/acme-mono`: 13 commits of the live fan-out carry it, 10 distinct
  * ids across S1..S4. It sits in the SUBJECT and not in a trailer, which is why reading only
  * `Task:` found nothing and the tree kept saying "3 commits" while the plan knew about nine
  * tasks. Both are read now: the trailer wins when present, because it is the explicit form.
@@ -167,7 +167,7 @@ export function scanCommits(cwd: string): Scanned[] {
  * the repo root, so they are relativised here rather than at every comparison.
  *
  * RETURNS BY POSITION, not by id, and that is not a style choice: two runs can
- * carry the SAME id under different mains — `975_soulperuibe` exists in both
+ * carry the SAME id under different mains — `975_litoral` exists in both
  * `01_coding` and `02_product` today. Keying the result by id merged their two
  * buckets and handed each run the other's commits; the first version of this
  * function did exactly that, and the diff against `commitsFor` caught it. It is

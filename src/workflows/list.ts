@@ -10,7 +10,7 @@
 //! `padEnd(26)` eram os dois valores daqui, e os dois estouraram com nome que já existe
 //! no disco (medido 19/08):
 //!
-//!     05_biliboss_corretor1                        ← 20 chars + a contagem, colados
+//!     05_acme-corretor1                        ← 20 chars + a contagem, colados
 //!     01_territorial_intelligenceCarteira própria… ← 26 chars + a descrição
 //!
 //! Coluna colada não é feiura: quem lê por coluna — `awk`, `cut`, ou o olho — soma o

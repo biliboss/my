@@ -1,7 +1,7 @@
 #!/usr/bin/env bun
 //! A sprint-PASTA vira as `units` que o workflow de coding consome.
 //!
-//!   my sprints units -P my_check_v1 --work-repo ~/src/galgal --base staging
+//!   my sprints units -P my_check_v1 --work-repo ~/src/acme-mono --base staging
 //!   my sprints units 999 -P my_check_v1 --work-repo … --base …   # uma sprint só
 //!
 //! É a fronteira entre o DISCO e o workflow dinâmico. `.claude/workflows/cycle.js`

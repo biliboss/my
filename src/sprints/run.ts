@@ -24,7 +24,7 @@
 //! produto, e plano não muda porque o trabalho andou.
 //!
 //! O desenho inteiro em
-//! @01_projects/_parked/viacorretor/features/share_external/callstack_do_sprint.md.
+//! @01_projects/_parked/acme/features/share_external/callstack_do_sprint.md.
 //!
 //! depends_on: src/runs.ts · src/gh/issues.ts · src/gh/prs.ts · src/shared/resolve.ts
 //! impacts:    02_areas/00_workflows/00_main/01_coding/CONTEXT.md

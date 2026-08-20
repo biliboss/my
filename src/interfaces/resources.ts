@@ -102,12 +102,12 @@ export const LENSES = {
 		},
 	},
 	hustler: {
-		reads: ["references/hustler", "references/viacorretor"],
+		reads: ["references/hustler", "references/acme"],
 		/** Empty ON PURPOSE: nobody on this fleet sells. */
 		roles: [] as string[],
 		asks: {
 			offers: { in: ["references/hustler"] },
-			promises: { in: ["references/viacorretor"] },
+			promises: { in: ["references/acme"] },
 		},
 	},
 } as const;

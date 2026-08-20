@@ -1,7 +1,7 @@
 //! Quem está torto, e como — a MEDIDA agregada dos projetos.
 //!
 //!   my projects check                    alinhado, pro humano
-//!   my projects check --project viacorretor    um projeto só
+//!   my projects check --project acme    um projeto só
 //!   my projects check --json              tudo de uma vez, pro `jq`
 //!   my projects check --jsonl             uma LINHA por achado, pra filtrar
 //!   my projects check --tsv               idem, pro corte com `cut`
@@ -21,7 +21,7 @@
 //!
 //! `--watch` existe pelo mesmo motivo do poll de 4s do deck: um achado é uma
 //! afirmação sobre o disco AGORA, e o objetivo de imprimir o achado é que alguém
-//! conserte. Cartão acusando `viacorretor.md` depois do `git mv` é pior que
+//! conserte. Cartão acusando `acme.md` depois do `git mv` é pior que
 //! cartão nenhum — parece atual.
 //!
 //! exit 1 quando há achado, 0 quando não há — é o que faz isto servir de gate.

@@ -272,7 +272,7 @@ type Repair = { finding: Finding; to: string; how: string } | { finding: Finding
  *  A markdown link resolves against the file's own directory, while a field and a
  *  prose pointer are root-relative by convention (03_resources/references/CONTEXT.md). Handing a
  *  root path to a link is how a "fix" breaks a link that was merely pointing at the
- *  wrong place — caught before the first `--write`, on the viacorretor doc. */
+ *  wrong place — caught before the first `--write`, on the acme doc. */
 const shape = (kind: Kind, file: string, repoRel: string) =>
   kind === "link" ? relative(dirname(join(ROOT, file)), join(ROOT, repoRel)) : repoRel;
 

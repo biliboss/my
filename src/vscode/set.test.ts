@@ -44,7 +44,7 @@ test("a barra sai na ordem de `position`, com as tags de cada pasta", () => {
     .insert(folder)
     .values([
       { path: "me/02_areas/00_workflows", label: "workflows", position: 20 },
-      { path: "fonseca-mono", position: 10 },
+      { path: "orion-mono", position: 10 },
       // CONTROLE NEGATIVO: escondida não aparece, e é o `--drop` funcionando.
       { path: "me/00_inbox", position: 5, hidden: true },
     ])
@@ -52,15 +52,15 @@ test("a barra sai na ordem de `position`, com as tags de cada pasta", () => {
   db()
     .insert(folderTag)
     .values([
-      { path: "fonseca-mono", tag: "trabalho" },
-      { path: "fonseca-mono", tag: "sistema" },
+      { path: "orion-mono", tag: "trabalho" },
+      { path: "orion-mono", tag: "sistema" },
     ])
     .run();
 
   const list = current();
 
   // Ordem por `position`, não por inserção nem alfabética.
-  expect(list.map((f) => f.path)).toEqual(["fonseca-mono", "me/02_areas/00_workflows"]);
+  expect(list.map((f) => f.path)).toEqual(["orion-mono", "me/02_areas/00_workflows"]);
   // 0..N: a pasta com duas tags traz as duas, a sem tag traz lista vazia —
   // é o `leftJoin` que garante a segunda, e um `inner` a apagaria.
   expect(list[0]!.tags.sort()).toEqual(["sistema", "trabalho"]);
@@ -71,14 +71,14 @@ test("a barra sai na ordem de `position`, com as tags de cada pasta", () => {
 });
 
 test("a chave natural do par recusa tag repetida na criação", () => {
-  expect(() => db().insert(folderTag).values({ path: "fonseca-mono", tag: "trabalho" }).run()).toThrow();
+  expect(() => db().insert(folderTag).values({ path: "orion-mono", tag: "trabalho" }).run()).toThrow();
 });
 
 test("o token separa caminho, rótulo e as N tags", () => {
   expect(parseToken("me/00_inbox")).toEqual({ path: "me/00_inbox", label: null, tags: [] });
   expect(parseToken('me/00_inbox:"inbox"')).toEqual({ path: "me/00_inbox", label: "inbox", tags: [] });
-  expect(parseToken("fonseca-mono@trabalho@sistema")).toEqual({
-    path: "fonseca-mono",
+  expect(parseToken("orion-mono@trabalho@sistema")).toEqual({
+    path: "orion-mono",
     label: null,
     tags: ["trabalho", "sistema"],
   });
@@ -118,7 +118,7 @@ test("reescreve só o `folders`, preserva as escondidas e as settings", () => {
   );
 
   writeWorkspace([
-    { path: "fonseca-mono", label: null, tags: [] },
+    { path: "orion-mono", label: null, tags: [] },
     { path: "me/02_areas/00_workflows", label: "workflows", tags: [] },
   ]);
 
@@ -135,7 +135,7 @@ test("reescreve só o `folders`, preserva as escondidas e as settings", () => {
 
   // Sem rótulo o nome é o da PASTA; com override, o texto digitado.
   expect(ws.folders).toEqual([
-    { name: "▸ fonseca-mono", path: "fonseca-mono" },
+    { name: "▸ orion-mono", path: "orion-mono" },
     { name: "▸ workflows", path: "me/02_areas/00_workflows" },
   ]);
   // CONTROLE NEGATIVO: a barra anterior não pode sobreviver ao redesenho.

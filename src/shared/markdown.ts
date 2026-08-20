@@ -55,7 +55,7 @@ const TYPES: [RegExp, string][] = [
 	// O nível do meio é o ESTADO da sprint (`inprogress/`, `done/`), e uma sprint
 	// fechada continua sprint. O regex aceita UM nível opcional de estado em vez de
 	// listar os nomes, porque listar já falhou duas vezes: primeiro `done/` (as duas
-	// sprints arquivadas do biliboss_corretor viraram `task`), depois `inprogress/`
+	// sprints arquivadas do acme-corretor viraram `task`), depois `inprogress/`
 	// no minuto em que o verbo `my sprints move` nasceu. `_parked/` fez o mesmo com
 	// projeto. Esta casa cria pasta de agrupamento toda semana — a regra tem que
 	// aceitar a próxima sem edição.

@@ -47,7 +47,7 @@ import { Command } from "commander";
 import { PROJETOS, RAIZ } from "./model.ts";
 
 /** O slug aceita `_`, e isso é medição e não gosto: `agent_evals`,
- *  `biliboss_corretor` e `system-hooks` convivem no disco desde antes do script, e
+ *  `acme-corretor` e `system-hooks` convivem no disco desde antes do script, e
  *  um regex que só aceita hífen recusaria renomear pro padrão que a casa já usa. */
 const SLUG = /^[a-z0-9][a-z0-9_-]{1,48}$/;
 

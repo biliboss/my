@@ -2,10 +2,10 @@
 //! O que foi PROMETIDO a um cliente, e onde está escrito.
 //!
 //!   my resources hustler promises
-//!   my resources hustler promises viacorretor
+//!   my resources hustler promises acme
 //!
 //! É a única pergunta desta lente que custa dinheiro quando a resposta é "alguém
-//! lembra". O que existe hoje é o contrato do viacorretor — o que o gerador ASSUME sem
+//! lembra". O que existe hoje é o contrato do acme — o que o gerador ASSUME sem
 //! dizer, descoberto numa venda à vista que tropeçou em cláusula de compra financiada.
 //!
 //! depends_on: src/resources/store.ts · src/interfaces/resources.ts

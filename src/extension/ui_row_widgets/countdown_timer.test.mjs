@@ -108,7 +108,7 @@ test('the task mark in a commit subject is what closes a task', () => {
   const branches = require('../out/disk/branches.js')
   const count = require('../out/ui_row_widgets/task_count.js')
 
-  // Measured in ~/src/galgal on 17/08: the mark sits at the END of the subject, not in a
+  // Measured in ~/src/acme-mono on 17/08: the mark sits at the END of the subject, not in a
   // trailer, which is why reading only `Task:` found nothing.
   assert.equal(commits.taskMark('fix(listing): cluster galleries by directory [S2/T2]'), 'S2/T2')
   assert.equal(commits.taskMark('test(share): prove it settles as failed [s3/t1]'), 'S3/T1')

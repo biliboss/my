@@ -14,7 +14,7 @@
 //!
 //! O ciclo de código começa CONSULTANDO O OUTPUT do produto: o plano, o repo, a
 //! base, e o link da issue de cada sprint. Era esse passo que existia só na
-//! cabeça de quem rodava — @01_projects/_parked/viacorretor/features/share_external/callstack_do_sprint.md.
+//! cabeça de quem rodava — @01_projects/_parked/acme/features/share_external/callstack_do_sprint.md.
 //!
 //! FALA OS DOIS DIALETOS, e isso não é gentileza: o leitor antigo (`meta.ts
 //! plan`) só entende `sprint_001:` como CHAVE DE TOPO e `command:` por task, e

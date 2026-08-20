@@ -64,8 +64,10 @@ test("NNN ganha de substring", () => {
 });
 
 test("substring é a última peneira, e só quando nada acima pegou", () => {
-	expect(acha(["999_viacorretor"], "corretor")).toEqual({ hit: "999_viacorretor" });
-	expect(acha(["999_viacorretor", "998_corretora"], "corretor")).toHaveProperty("erro");
+	// A agulha é do MEIO do nome de propósito: prefixo já foi peneirado acima, e
+	// substring só ganha o que sobra. `cme` não é prefixo de `999_acme` nem NNN.
+	expect(acha(["999_acme"], "cme")).toEqual({ hit: "999_acme" });
+	expect(acha(["999_acme", "998_acmex"], "cme")).toHaveProperty("erro");
 });
 
 test("rótulo com caminho casa pelo último segmento E pelo caminho inteiro", () => {

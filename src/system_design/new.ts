@@ -1,7 +1,7 @@
 //! Cria `docs/00_system_design_big_picture.md` + `01_system_design_layers.md`
 //! num projeto — a forma de @03_resources/rules/design/system_design.md.
 //!
-//!   my system_design new cannabr-v1
+//!   my system_design new nimbus-v1
 //!
 //! Só escreve os DOIS docs fixos. `NN_system_design_<fluxo>.md` (02 em
 //! diante) é sempre escrito à mão — o corte de fluxo é julgamento, a mesma

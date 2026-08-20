@@ -22,9 +22,9 @@ test("`_parked` é gaveta, não projeto — `_` na frente é namespace", () => {
 	// E não varreu junto quem é projeto de verdade. A prova é que a pasta que
 	// SOBRA em `01_projects/` aparece — não uma contagem.
 	//
-	// Aqui morava `length > 20` e `toContain("viacorretor")`, e as duas caíram em
+	// Aqui morava `length > 20` e `toContain("acme")`, e as duas caíram em
 	// 19/08 quando 21 projetos foram estacionados de uma vez: sobraram DOIS, e o
-	// viacorretor era um dos que saíram. Censo dentro de teste é bomba-relógio —
+	// acme era um dos que saíram. Censo dentro de teste é bomba-relógio —
 	// ele não mede a regra, mede quantos projetos existiam no dia em que alguém
 	// escreveu o número.
 	expect(todos.length).toBeGreaterThan(0);
@@ -35,11 +35,11 @@ test("`_parked` é gaveta, não projeto — `_` na frente é namespace", () => {
 const fm = (corpo: string) => frontMatter(`---\n${corpo}\n---\n# título\n`).fm;
 
 test("o `~` de um caminho sobrevive — só um `~` sozinho é null no YAML", () => {
-	// O caso que mais assusta no papel: `repo_local: ~/src/galgal` é o valor mais
+	// O caso que mais assusta no papel: `repo_local: ~/src/acme-mono` é o valor mais
 	// comum do repo inteiro. Se o YAML o lesse como null, todo projeto perderia a
 	// chave de uma vez.
-	expect(campo(fm("repo_local: ~/src/galgal"), "repo_local")).toBe("~/src/galgal");
-	expect(expandir(campo(fm("repo_local: ~/src/galgal"), "repo_local")!)).toMatch(/^\/.*\/src\/galgal$/);
+	expect(campo(fm("repo_local: ~/src/acme-mono"), "repo_local")).toBe("~/src/acme-mono");
+	expect(expandir(campo(fm("repo_local: ~/src/acme-mono"), "repo_local")!)).toMatch(/^\/.*\/src\/acme-mono$/);
 
 	// E o `~` pelado É null — vira ausência, que é o achado certo pra ele.
 	expect(campo(fm("repo_local: ~"), "repo_local")).toBeUndefined();
@@ -60,7 +60,7 @@ test("valor que o YAML coagiria sai STRING — `expandir()` chama `.startsWith`"
 test("placeholder do molde não é declaração", () => {
 	// `repo: <owner>/<name>` é o template passando por resposta: a chave existe,
 	// então o consumidor acredita e vai procurar um repositório chamado
-	// literalmente `<owner>/<name>`. Medido 19/08 em `auto-system` e `cannabr-v1`.
+	// literalmente `<owner>/<name>`. Medido 19/08 em `auto-system` e `nimbus-v1`.
 	expect(campo(fm("repo: <owner>/<name>"), "repo")).toBeUndefined();
 	expect(campo(fm("repo_local: <slug>"), "repo_local")).toBeUndefined();
 

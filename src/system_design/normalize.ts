@@ -2,7 +2,7 @@
 //! ganha `docs/` — @03_resources/rules/design/system_design.md, seção
 //! "Normalizar um projeto antigo".
 //!
-//!   my system_design normalize cannabr-v1
+//!   my system_design normalize nimbus-v1
 //!
 //! PROPÕE, não decide sozinho: cria os dois docs fixos (vazios, prontos pra
 //! preencher) e IMPRIME o que existe pra migrar — nunca corta fluxo em

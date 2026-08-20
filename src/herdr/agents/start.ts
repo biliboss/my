@@ -26,7 +26,7 @@
 //!
 //! **`--cwd` NÃO vai pro herdr, vai pro PANE.** `herdr agent start` não tem essa
 //! flag: quem tem é `tab create` e `workspace create`. O agente herda o cwd de
-//! onde o shell está — e em 17/08 um agente de QA subiu na pasta do `blu-omie2`
+//! onde o shell está — e em 17/08 um agente de QA subiu na pasta do `zenit2`
 //! porque o pane raiz veio de um workspace criado sem cwd. Com `--pane` o cwd já
 //! está decidido por quem abriu o pane, e passar `--cwd` ali é mentira: por isso
 //! o par é recusado.

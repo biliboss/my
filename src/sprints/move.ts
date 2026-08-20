@@ -13,7 +13,7 @@
 //! `ls sprints/inprogress` É a pergunta "o que está rodando agora", sem parser.
 //!
 //! O `done/` já existia por convenção — as duas sprints fechadas do
-//! `biliboss_corretor` estão nele desde antes de qualquer verbo escrever ali. Este
+//! `acme-corretor` estão nele desde antes de qualquer verbo escrever ali. Este
 //! arquivo só deu nome ao que a casa já fazia à mão, e acrescentou o estado do meio.
 //!
 //! ## `git mv`, e o NNN continua sendo endereço

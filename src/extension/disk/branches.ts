@@ -10,7 +10,7 @@ import { listOfMaps } from './eta.js'
 import { gitCommits, taskMark } from './commits.js'
 import type { Commit, Unit } from './runs.js'
 
-/** `~/src/galgal` as written in `work_repo:` — the tilde is the house's own shorthand. */
+/** `~/src/acme-mono` as written in `work_repo:` — the tilde is the house's own shorthand. */
 function expandHome(target: string): string {
   return target.startsWith('~') ? path.join(os.homedir(), target.slice(1)) : target
 }
@@ -45,7 +45,7 @@ export function unitsOf(state: Record<string, string>, stateYaml: string): Unit[
     if (repo && ref) {
       // `origin/<base>` first: a work repo driven by agents often has no LOCAL
       // base branch at all — measured, `staging` exists only as `origin/staging`
-      // in ~/src/galgal, which is also why `staging/U1` was impossible as a
+      // in ~/src/acme-mono, which is also why `staging/U1` was impossible as a
       // branch name and why the agents fell back to `staging-U1`.
       for (const reference of [`origin/${base}`, base]) {
         const commits = commitsRange(repo, `${reference}..${ref}`)
