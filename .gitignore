@@ -12,12 +12,6 @@ landing/dist/
 landing/vite.config.js
 landing/vite.config.d.ts
 
-# `src/extension/out/` — build da extensão do VS Code; o fonte é o registro.
-src/extension/out/
-
-# `src/extension/media/` — CSS compilado do Tailwind; o fonte é `webview/issue.css`.
-src/extension/media/
-
 # ESTADO DE MÁQUINA NUNCA ENTRA NUM REPOSITÓRIO DE CÓDIGO, e esta linha é a
 # lembrança de um bug real: `_data/agents.json` e `_data/workspaces.json` — o roster
 # de panes e a cerca de workspaces — gravavam DENTRO do checkout. Enquanto código e

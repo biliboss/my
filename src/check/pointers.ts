@@ -28,7 +28,7 @@
 import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { emit } from "../shared/findings.ts";
-import { home } from "../shared/file.ts";
+import { home, trees } from "../shared/file.ts";
 
 const ROOT = home();
 const MAINS = join(ROOT, "02_areas", "00_workflows", "00_main");
@@ -54,6 +54,8 @@ type Finding = {
   field: string;
   target: string;
   exists: boolean;
+  /** O run já foi PROVADO. Um ponteiro morto num run fechado é registro, não bug. */
+  closed: boolean;
 };
 
 function runFolders(): { main: string; id: string; dir: string }[] {
@@ -97,6 +99,27 @@ function pointersOf(yaml: string): { field: string; target: string }[] {
   return found;
 }
 
+/** UM RUN FECHADO É REGISTRO, e registro não tem obrigação de continuar
+ *  resolvendo. `prova:` no `state.yaml` é o carimbo de fechamento desta casa — um
+ *  run só a ganha quando alguém provou o resultado.
+ *
+ *  A DISTINÇÃO NASCEU DE UM CASO REAL, 20/08: a extensão do VS Code foi removida
+ *  por decisão, e três runs de `02_product` que a construíram passaram a apontar
+ *  pro vazio. Os ponteiros estão CERTOS — aquele run trabalhou em `src/extension`,
+ *  e naquele dia ele existia. Reescrevê-los seria falsificar o registro, e manter o
+ *  check vermelho seria dizer que nenhum código desta casa pode ser deletado sem
+ *  reescrever a história.
+ *
+ *  O ACHADO QUE IMPORTA continua sendo o do run ABERTO: ali o alvo mudou de lugar
+ *  enquanto o trabalho corre, e quem moveu não estava editando o arquivo que
+ *  aponta. Foi assim que o `desenho:` do 980 ficou pro vazio por horas em 17/08,
+ *  com uma seção de view sumindo como único sinal. */
+function fechado(dir: string): boolean {
+  const state = join(dir, "state.yaml");
+  if (!existsSync(state)) return false;
+  return /^prova:\s*\S/m.test(readFileSync(state, "utf8"));
+}
+
 const findings: Finding[] = [];
 
 for (const run of runFolders()) {
@@ -104,19 +127,30 @@ for (const run of runFolders()) {
     const file = join(run.dir, name);
     if (!existsSync(file)) continue;
     for (const { field, target } of pointersOf(readFileSync(file, "utf8"))) {
-      // Três formas aparecem em disco e as três valem: relativo à RAIZ da casa (como a
-      // casa escreve), relativo ao próprio run, e ABSOLUTO — um `projeto:` pode apontar
-      // pra fora daqui (`/Users/…/src/cockpit`), e `join(ROOT, "/abs")` engoliria a raiz
-      // e reprovaria um caminho que existe. Foi o primeiro falso positivo deste check.
+      // Quatro formas aparecem em disco e as quatro valem: relativo à RAIZ da casa
+      // (como a casa escreve), relativo ao próprio run, relativo ao CHECKOUT DO
+      // CÓDIGO, e ABSOLUTO — um `projeto:` pode apontar pra fora daqui
+      // (`/Users/…/src/cockpit`), e `join(ROOT, "/abs")` engoliria a raiz e
+      // reprovaria um caminho que existe. Foi o primeiro falso positivo deste check.
+      //
+      // A DO CÓDIGO ENTROU EM 20/08, e o segundo falso positivo é o que a pediu: o
+      // código saiu desta casa pro `biliboss/my`, e três runs de 02_product apontam
+      // `projeto: src/extension`. Os ponteiros estão CERTOS — aquele projeto era
+      // `src/extension` — e reescrevê-los pra caber num resolvedor de uma raiz só
+      // seria falsificar registro. Quem estava errado era o resolvedor.
       const exists = target.startsWith("/")
         ? existsSync(target)
-        : existsSync(join(ROOT, target)) || existsSync(join(run.dir, target));
-      findings.push({ run: `${run.main}/${run.id}`, file: name, field, target, exists });
+        : trees().some((t) => existsSync(join(t, target))) || existsSync(join(run.dir, target));
+      findings.push({ run: `${run.main}/${run.id}`, file: name, field, target, exists, closed: fechado(run.dir) });
     }
   }
 }
 
-const dead = findings.filter((finding) => !finding.exists);
+// Só o run ABERTO derruba. O fechado sai na lista com a marca, porque silêncio se
+// lê como "não achei" — e alguém vai querer saber que aquele run aponta pra código
+// que não existe mais.
+const dead = findings.filter((finding) => !finding.exists && !finding.closed);
+const arquivados = findings.filter((finding) => !finding.exists && finding.closed);
 
 // O ACHADO é o ponteiro MORTO, não todo ponteiro: `--jsonl`/`--tsv` saem só com os
 // mortos, e o total de ponteiros lidos fica no `--json` como contexto. Emitir os vivos
@@ -126,7 +160,7 @@ const dead = findings.filter((finding) => !finding.exists);
 // Sai 1 quando algo aponta pro vazio: é o que faz disto um portão e não um relatório.
 process.exit(
   emit(argv, {
-    json: { total: findings.length, dead: dead.length },
+    json: { total: findings.length, dead: dead.length, arquivados: arquivados.length },
     findings: dead,
     cols: (f) => [f.run, f.file, f.field, f.target],
     human: () => {
@@ -135,7 +169,14 @@ process.exit(
         console.log(`  ${finding.field}: ${finding.target}`);
         console.log("  ✗ não existe");
       }
-      console.log(`${findings.length} ponteiros · ${dead.length} pro vazio`);
+      // O ARQUIVADO APARECE, e não derruba. Silêncio se lê como "não achei", e
+      // alguém vai querer saber que um run fechado aponta pra código que não
+      // existe mais — só não é isso que segura um commit.
+      for (const f of arquivados) console.log(`· ${f.run}/${f.file}  ${f.field}: ${f.target}  (run fechado)`);
+      console.log(
+        `${findings.length} ponteiros · ${dead.length} pro vazio` +
+          (arquivados.length ? ` · ${arquivados.length} em run fechado (não derruba)` : ""),
+      );
     },
   }),
 );

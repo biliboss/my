@@ -6,17 +6,18 @@
 //! é o que faz o grafo desenhar TODOS os sistemas em vez dos que alguém lembrou de
 //! listar. O código vai pra `packages/my-vscode/`; a declaração fica com as irmãs.
 //!
-//! ── UMA INTERFACE, E A PRIMEIRA VERSÃO TINHA TRÊS ────────────────────────────
+//! ── UMA INTERFACE, E A EXTENSÃO NÃO ESTÁ AQUI ───────────────────────────────
 //!
-//! Ela nasceu com `Bar`, `Tree` e `Feed`, dobrando a extensão do Explorer aqui
-//! dentro porque as duas coisas dizem "vscode". Estava errado, e o erro é de
-//! FRONTEIRA, não de tamanho: a árvore do Explorer roda no extension host, é um
-//! `package.json` próprio, compila pra `out/` e nada dela é alcançável por `my …`.
+//! Este arquivo nasceu com TRÊS — `Bar`, `Tree` e `Feed` — dobrando a árvore do
+//! Explorer aqui dentro porque as duas coisas dizem "vscode". Era erro de
+//! FRONTEIRA e não de tamanho: a árvore rodava no extension host, com
+//! `package.json` próprio e `out/` próprio, e nada dela era alcançável por `my …`.
 //! O workspace é um ARQUIVO JSON que este CLI escreve e o editor relê sozinho.
 //!
-//! Elas não se falam. `open()` não redesenha árvore nenhuma, e um clique na árvore
-//! não mexe no workspace. O dia em que precisarem é o dia em que a extensão ganha o
-//! contrato DELA — não um namespace dentro deste.
+//! A EXTENSÃO FOI REMOVIDA no mesmo dia (20/08), então a fronteira deixou de ser
+//! discussão. Fica escrita porque ela volta: no dia em que alguém quiser a árvore
+//! de novo, o lugar dela é um contrato PRÓPRIO — não um namespace dentro deste,
+//! pelo mesmo motivo que já valia quando ela existia.
 //!
 //! ── UM ESCRITOR, E O TEMPO VERBAL QUE MATOU O OUTRO ─────────────────────────
 //!

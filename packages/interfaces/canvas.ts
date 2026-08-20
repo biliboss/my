@@ -10,7 +10,7 @@
 //!
 //! QUATRO JANELAS EXISTIAM, e TER QUATRO era o problema, nunca qual delas: `askuser`
 //! (Neutralino), `popuper` (Electron), `agent-deck` (Tauri) e um namespace `Window`
-//! desenhado em `packages/interfaces/src/tools.ts` que nunca virou código. Este arquivo só se
+//! desenhado em `packages/interfaces/tools.ts` que nunca virou código. Este arquivo só se
 //! paga se os quatro morrerem — enquanto não morrerem, ele é o quinto.
 //!
 //! O CORTE VEM DO `askuser`, e estava escrito lá antes de existir canvas: *"a janela

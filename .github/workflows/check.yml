@@ -53,13 +53,6 @@ jobs:
       # CI não quer dizer verde aqui.
       - run: bun install --frozen-lockfile
 
-      # A extensão do VS Code compila pra `out/`, e nove `.test.mjs` importam de lá.
-      # Sem este passo eles não falham com asserção — falham com `Cannot find
-      # module`, que se lê como teste quebrado em vez de build faltando.
-      - name: compila a extensão
-        run: bun install && bun run compile
-        working-directory: src/extension
-
       - name: a suíte
         run: bun test ./src/
 

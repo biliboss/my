@@ -12,11 +12,14 @@ import { dirname, join, resolve } from "node:path";
 
 export const SRC = join(import.meta.dir, "../..");
 
-/** Pastas que não são verbo: a própria CLI não se expõe como comando, e
- *  `extension/` é uma extensão do VS Code — TypeScript que roda no extension
- *  host, com `package.json` e `out/` próprios. Sem esta linha ela virava
- *  `my extension` com "6 subcomandos" que ninguém pode executar. */
-const NOT_A_VERB = new Set(["cli", "extension", "node_modules"]);
+/** Pastas que não são verbo: a própria CLI não se expõe como comando.
+ *
+ *  `extension` SAIU DESTA LISTA em 20/08, junto com a pasta. Ela era a exceção
+ *  original — TypeScript que roda no extension host, com `package.json` e `out/`
+ *  próprios, e sem a linha virava `my extension` com "6 subcomandos" que ninguém
+ *  podia executar. A extensão foi removida; exceção sem alvo é regra que o próximo
+ *  leitor tenta entender e não consegue. */
+const NOT_A_VERB = new Set(["cli", "node_modules"]);
 
 export type Node = { name: string; file?: string; children: Node[] };
 

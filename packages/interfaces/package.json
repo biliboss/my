@@ -6,13 +6,13 @@
   "author": "Gabriel (biliboss)",
   "type": "module",
   "exports": {
-    "./*.ts": "./src/*.ts",
-    "./*": "./src/*.ts"
+    "./*.ts": "./*.ts",
+    "./*": "./*.ts"
   },
   "devDependencies": {
     "typescript": "catalog:"
   },
   "scripts": {
-    "check": "tsc --noEmit --strict --target es2022 src/*.ts"
+    "check": "tsc --noEmit --strict --target es2022 *.ts"
   }
 }

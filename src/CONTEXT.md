@@ -45,7 +45,6 @@ src/
   system_design/   big picture · layers · um doc por fluxo
   vscode/          set decide o que a barra lateral mostra
   system/          hooks · metrics — o sistema medindo a si mesmo
-  extension/       a extensão do VS Code · NÃO é verbo (ver `cli/core/scan.ts`)
   shared/          primitiva com DOIS chamadores · `schema.ts`+`db.ts`: o banco
   resources/       tudo que a casa SABE · `index.ts` é o verbo pelado · 3 lentes
   meta.ts · runs.ts   soltos: o META e o run
