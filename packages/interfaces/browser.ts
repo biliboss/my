@@ -51,6 +51,65 @@
 //! confere primeiro, e se não existir, ou sai daqui ou entra por FFI com o custo
 //! escrito ao lado. É o único membro deste arquivo nesse estado.
 //!
+//! ── CDP EXISTE AQUI, E É UMA CAPACIDADE, NUNCA UM DADO ───────────────────────
+//!
+//! A pergunta que abriu isto foi *"não é CDP, e eu não sei se tem protocolo pra
+//! listener"*. Tem, e a resposta é mais estreita do que "tem": **Electrobun escolhe o
+//! MOTOR por webview** — `renderer: "native"` (WKWebView no macOS, WebView2 no
+//! Windows, WebKitGTK no Linux) ou `renderer: "cef"` (Chromium embarcado). Verificado
+//! no fonte em 20/08, não presumido:
+//!
+//!   COM `cef`  a inicialização varre **9222–9232** por uma porta livre e a passa em
+//!              `CefSettings.remote_debugging_port` (caindo em 9222 se nenhuma). É
+//!              CDP de verdade: `Page`, `Network`, `Fetch`, `Runtime`, `DOM` — o
+//!              mesmo protocolo que o pydoll fala, e por isso um driver pronto
+//!              ATACA esta janela sem nós escrevermos driver nenhum.
+//!   COM `native` NÃO HÁ CDP. O WKWebView fala o Web Inspector da Apple, que não é
+//!              TCP e não é este protocolo. Toda automação abaixo RECUSA com
+//!              `reason: "unsupported"`, e recusar é o contrato — um verbo que
+//!              devolve vazio num motor sem CDP é indistinguível de uma página vazia.
+//!
+//! A PORTA NÃO CHEGA AO PROCESSO BUN. Ela mora numa global do lado nativo
+//! (`g_remoteDebugPort`), usada só pra abrir o DevTools; nada a exporta. Então quem
+//! implementar `drive()` DESCOBRE: varre 9222–9232 por `/json/version`, e casa o
+//! alvo pela `url` da superfície em `/json/list`. Está escrito aqui porque é o
+//! primeiro lugar onde uma implementação vai supor que existe um getter e não existe.
+//!
+//! ── TRÊS CAMADAS DE LISTENER, E ELAS NÃO SE SUBSTITUEM ───────────────────────
+//!
+//!   RPC / `host-message`   a página COOPERA. É o caminho das nossas telas, é tipado,
+//!                          e é o único que funciona em `native`. É o `Event` daqui.
+//!   eventos do webview     `dom-ready`, `did-navigate`, `did-navigate-in-page`,
+//!                          `did-commit-navigation`. Sem cooperação, mas GROSSOS:
+//!                          dizem que navegou, nunca o que a página fez.
+//!   CDP                    tudo o mais — requisição, resposta, corpo, console,
+//!                          exceção, mutação de DOM, diálogo nativo. Só em `cef`.
+//!
+//! Automação usa a terceira. `listen()` continua sendo a primeira, e as duas convivem
+//! porque respondem perguntas diferentes: uma é o que NOSSA página emitiu, a outra é
+//! o que QUALQUER página fez.
+//!
+//! ── POR QUE UM `Driver` FINO E NÃO UM PYDOLL EM TYPESCRIPT ───────────────────
+//!
+//! O que este pacote deve é o ENDEREÇO — `Opened.cdp`, a porta e o alvo. Com ele,
+//! pydoll, Playwright e a `qa-drive` desta casa atacam a janela hoje, sem uma linha
+//! nossa. Reescrever localizador, humanização de mouse e HAR aqui seria reconstruir
+//! um projeto inteiro pra ter a mesma coisa pior.
+//!
+//! O `Driver` abaixo é o que sobra depois disso: os verbos que um agente usa numa
+//! frase — achar, clicar, digitar, ler, esperar, interceptar, tirar foto — sem subir
+//! um segundo runtime pra pedir um `innerText`. Passou disso, `cdp` está ali.
+//!
+//! DUAS ARMADILHAS MEDIDAS QUE ESTE DESENHO EVITA:
+//!
+//!   `executeJavascript` do Electrobun é FIRE-AND-FORGET: não devolve valor. Então
+//!   `eval()` aqui é `Runtime.evaluate` do CDP, e em `native` a volta só existe se a
+//!   página chamar `window.__electrobunSendToHost` — cooperação, de novo.
+//!
+//!   DIÁLOGO NATIVO CONGELA A SESSÃO INTEIRA (medido na `qa-drive`, contra CDP): um
+//!   `confirm()` aberto trava TODO comando na aba até alguém responder. Por isso
+//!   `dialog()` é ARMADO ANTES do ato que abre o diálogo, e não depois.
+//!
 //! ── COMO ELE SE ATUALIZA ─────────────────────────────────────────────────────
 //!
 //! Uma base de desktop tem que responder isso, senão cada app inventa o seu. O
@@ -76,10 +135,11 @@
 //! couber, uma superfície de leitura só. Quando passar, isso é uma pergunta pro
 //! dono, não uma decisão de quem está escrevendo.
 //!
-//! external:    Electrobun · WKWebView (macOS) · WebView2 (Windows) · CEF (opcional)
+//! external:    Electrobun · WKWebView (macOS) · WebView2 (Windows) · CEF (CDP) ·
+//!              Chrome DevTools Protocol · pydoll/Playwright como drivers de fora
 //! implemented: nada
 //! planned:     packages/my-browser/
-//! usado_por:   apps/my-graph · apps/my-kanban · apps/my
+//! usado_por:   apps/my-graph · apps/my-kanban · apps/my · skills/qa-drive
 //! substitui:   o namespace `Window` de src/interfaces/tools.ts (Neutralino), que
 //!              SAI no mesmo commit em que este nascer — não depois
 
@@ -110,7 +170,13 @@ export declare namespace BrowserSystem {
 	 *  chamada. Um app com servidor que manda `html` está duplicando a própria tela. */
 	export type Content = { url: Url } | { html: Html };
 
-	/** COMO a janela se comporta, e não que tamanho ela tem. `panel` é a de DECISÃO —
+	/** O MOTOR. `native` é o padrão do Electrobun e o barato: zero MB extras, é o
+	 *  WebKit/Edge que a máquina já tem. `cef` embarca Chromium — pesa, e compra a
+	 *  ÚNICA coisa que o outro não dá: CDP. Escolher `cef` "por garantia" é pagar
+	 *  centenas de MB por uma janela que só mostra um grafo. */
+	export type Renderer = "native" | "cef";
+
+	/** COMO A JANELA SE COMPORTA, e não que tamanho ela tem. `panel` é a de DECISÃO —
 	 *  pequena, acima de tudo, sem entrar no Exposé; é a forma que uma pergunta
 	 *  precisa pra não ser respondida por um agente desatento. */
 	export type Mode = "fullscreen" | "window" | "panel";
@@ -145,6 +211,8 @@ export declare namespace BrowserSystem {
 		title?: string;
 		mode?: Mode;
 		titleBar?: TitleBar;
+		/** Padrão `native`. `cef` é o que liga `drive()` — ver o cabeçalho. */
+		renderer?: Renderer;
 		/** Ausente = o monitor onde está o FOCO, não o primário. A diferença é a
 		 *  pergunta na cara ou a pergunta atrás. */
 		monitor?: string;
@@ -164,11 +232,28 @@ export declare namespace BrowserSystem {
 		timeout?: Millis;
 	}
 
+	/** ONDE UM DRIVER DE FORA SE PLUGA. `port` é o que a varredura 9222–9232 achou;
+	 *  `target` é o alvo desta superfície dentro dela, porque uma porta atende TODAS as
+	 *  webviews CEF do processo — atacar a porta sem o alvo é dirigir a janela do
+	 *  vizinho, e o erro é silencioso. `webSocketDebuggerUrl` vem do `/json/list` e é o
+	 *  que pydoll e Playwright aceitam direto. */
+	export interface Cdp {
+		port: number;
+		target: string;
+		webSocketDebuggerUrl: string;
+	}
+
 	export interface Opened {
 		ok: true;
 		id: SurfaceId;
 		title?: string;
 		mode: Mode;
+		/** O motor que de fato subiu — não o que foi pedido. Um pedido de `cef` sem o
+		 *  bundle CEF presente cai pra `native`, e quem não conferir vai chamar
+		 *  `drive()` achando que tem CDP. */
+		renderer: Renderer;
+		/** Presente SÓ em `cef`. A ausência é a resposta pra "dá pra automatizar?". */
+		cdp?: Cdp;
 		at: Instant;
 	}
 
@@ -176,11 +261,26 @@ export declare namespace BrowserSystem {
 	 *  instalando, `spawn` é máquina cheia, `unreachable` é o servidor da URL que não
 	 *  subiu, `not_found` é id que não existe mais, e `no_display` é sessão sem tela —
 	 *  o caso do agente em SSH, onde abrir janela nunca vai funcionar e insistir é
-	 *  laço infinito. */
+	 *  laço infinito.
+	 *
+	 *  `unsupported` é a SEXTA e chegou com a automação: o verbo existe, a superfície
+	 *  existe, e o MOTOR dela não fala CDP. Não é erro de quem chamou nem falha de
+	 *  execução — é uma capacidade ausente, e devolver vazio no lugar dela faria
+	 *  "página sem esse elemento" e "janela sem protocolo" se parecerem iguais.
+	 *
+	 *  `detached` é o alvo que sumiu por baixo: a superfície navegou, o webview
+	 *  recarregou, e o handle aponta pro que não está mais lá. */
 	export type Fail = {
 		ok: false;
 		error: string;
-		reason: "not_installed" | "spawn" | "unreachable" | "no_display" | "not_found";
+		reason:
+			| "not_installed"
+			| "spawn"
+			| "unreachable"
+			| "no_display"
+			| "not_found"
+			| "unsupported"
+			| "detached";
 	};
 
 	/** COMO A SUPERFÍCIE TERMINOU. São QUATRO, e o segundo é o motivo do `askuser`
@@ -219,6 +319,84 @@ export declare namespace BrowserSystem {
 	export interface Update {
 		current: { version: string; hash: string; channel: Channel };
 		available?: { version: string; hash: string; bytes: number };
+	}
+
+	// ── AUTOMAÇÃO ───────────────────────────────────────────────────────────────
+
+	/** COMO SE ACHA UM NÓ. Três formas porque três coisas diferentes: `css` é o que se
+	 *  escreve, `xpath` é o que resolve texto e eixo que CSS não alcança, e `role` é a
+	 *  árvore de acessibilidade — que é a única que sobrevive a um refactor de classe.
+	 *  Preferir `role` quando existir nome acessível é o que separa um teste que
+	 *  documenta intenção de um que documenta markup. */
+	export type Selector =
+		| { css: string }
+		| { xpath: string }
+		| { role: string; name?: string };
+
+	/** UM NÓ ACHADO, E ELE É LOCALIZADOR, NUNCA PONTEIRO. O `objectId` do CDP vale só
+	 *  pra conexão que o criou e morre a cada navegação; guardar um handle assim é
+	 *  como uma suíte começa a agir no nó errado sem reclamar (medido na `qa-drive`).
+	 *  Então o nó carrega COMO se reachar, e quem reachar diferente do que achou marca
+	 *  `stale` em vez de agir calado. */
+	export interface Node {
+		ref: string;
+		selector: Selector;
+		/** Assinatura de quando foi achado — tag, papel, nome. É o que faz `stale` ser
+		 *  detectável em vez de teórico. */
+		fingerprint: string;
+		stale?: boolean;
+	}
+
+	/** O QUE ESPERAR, e o padrão errado é `visible` pra tudo: um nó que existe e está
+	 *  desabilitado passa em `visible` e engole o clique. */
+	export type Until = "present" | "visible" | "hidden" | "gone" | "enabled";
+
+	/** UMA REGRA DE REDE. `when` casa a URL (glob, como o `setNavigationRules` do
+	 *  Electrobun já usa); `then` decide o destino dela.
+	 *
+	 *  `observe` é o modo que a maioria quer e quase ninguém pede: não muda nada, só
+	 *  faz a requisição APARECER em `wire()`. Interceptar pra não modificar é o jeito
+	 *  caro de olhar. */
+	export interface NetRule {
+		when: string;
+		then:
+			| { observe: true }
+			| { block: true }
+			| { fulfill: { status?: number; headers?: Record<string, string>; body: string } }
+			| { modify: { headers?: Record<string, string>; body?: string } };
+	}
+
+	/** UMA TROCA NA REDE. `body` só vem quando foi PEDIDO — o CDP manda contagem de
+	 *  bytes nos eventos e o corpo exige um comando à parte, feito enquanto a página
+	 *  ainda o segura. Pedir corpo de tudo é gravar a internet inteira em RAM. */
+	export interface Wire {
+		surface: SurfaceId;
+		method: string;
+		url: string;
+		status?: number;
+		headers?: Record<string, string>;
+		bytes?: number;
+		body?: string;
+		at: Instant;
+	}
+
+	/** O QUE A PÁGINA FALOU SOZINHA — `console.*` e exceção não capturada. É o que um
+	 *  agente precisa pra dizer "quebrou" em vez de "a tela ficou branca". */
+	export interface Log {
+		surface: SurfaceId;
+		level: "log" | "info" | "warn" | "error" | "debug" | (string & {});
+		text: string;
+		stack?: string;
+		at: Instant;
+	}
+
+	/** UM DIÁLOGO NATIVO. Armado ANTES do ato que o abre — ver o cabeçalho: um diálogo
+	 *  aberto congela toda a sessão CDP daquela aba, não só o comando que o disparou. */
+	export interface Dialog {
+		kind: "alert" | "confirm" | "prompt" | "beforeunload" | (string & {});
+		message: string;
+		accept: boolean;
+		text?: string;
 	}
 }
 
@@ -264,11 +442,21 @@ export interface Browser {
 	/** O que a página emitiu, conforme emite. Termina quando a superfície fecha. */
 	listen(id: BrowserSystem.SurfaceId): AsyncIterable<BrowserSystem.Event>;
 
+	/** O CONTROLE DA SUPERFÍCIE, quando ela tem CDP. `Fail{unsupported}` num motor
+	 *  `native`, e isso é a resposta inteira: não existe caminho degradado: sem
+	 *  Chromium não há protocolo, e emular um por injeção de script seria uma
+	 *  automação que só funciona em página que colabora — que é o `listen()` que já
+	 *  existe, com outro nome. */
+	drive(id: BrowserSystem.SurfaceId): Promise<Driver | BrowserSystem.Fail>;
+
 	/** PNG do que está na tela. É como um agente VÊ a própria superfície — sem isto,
 	 *  ele afirma que desenhou e ninguém, nem ele, conferiu.
 	 *
-	 *  NÃO VERIFICADO NA API (20/08). Confira antes de implementar; se não existir,
-	 *  este membro sai ou ganha o custo do FFI escrito ao lado. */
+	 *  RESOLVIDO EM 20/08, e era o único membro não verificado deste arquivo: é
+	 *  `Page.captureScreenshot` do CDP, então **existe em `cef` e não existe em
+	 *  `native`** — Electrobun não expõe captura própria. Em `native` isto devolve
+	 *  `Fail{unsupported}`; quem precisar de foto de uma janela nativa paga FFI, e
+	 *  paga de propósito. */
 	shot(
 		id: BrowserSystem.SurfaceId,
 		out: string,
@@ -285,4 +473,85 @@ export interface Browser {
 	/** Tem versão nova no canal deste bundle? Ler é separado de aplicar porque
 	 *  reiniciar é decisão de quem está usando, nunca do updater. */
 	update(): Promise<BrowserSystem.Update | BrowserSystem.Fail>;
+}
+
+/** O QUE UM AGENTE FAZ COM UMA SUPERFÍCIE que fala CDP: QA, automação, raspagem.
+ *
+ *  É DE PROPÓSITO MENOR QUE O PYDOLL. O que este pacote deve é o `cdp` do `Opened` —
+ *  com ele, pydoll, Playwright e a `qa-drive` desta casa dirigem a janela hoje, com
+ *  localizador, humanização de mouse e HAR que já existem e que reescrever aqui seria
+ *  reconstruir um projeto inteiro pra ter pior. O que fica é o que se usa numa frase,
+ *  sem subir um segundo runtime pra pedir um `innerText`.
+ *
+ *  Ver `escape()` no fim: quando a frase não bastar, o protocolo cru está ali, e é
+ *  isso que impede este contrato de crescer verbo a verbo até virar o que ele recusou
+ *  ser. */
+export interface Driver {
+	readonly surface: BrowserSystem.SurfaceId;
+	/** O endereço, pra entregar a um driver de fora. */
+	readonly cdp: BrowserSystem.Cdp;
+
+	goto(url: BrowserSystem.Url): Promise<{ ok: true; url: string } | BrowserSystem.Fail>;
+	reload(): Promise<{ ok: true } | BrowserSystem.Fail>;
+	url(): Promise<string>;
+
+	/** Acha UM. `Fail{not_found}` quando não acha — nunca `null`: `null` obriga todo
+	 *  chamador a inventar a mesma checagem, e metade esquece. */
+	find(sel: BrowserSystem.Selector): Promise<BrowserSystem.Node | BrowserSystem.Fail>;
+	all(sel: BrowserSystem.Selector): Promise<BrowserSystem.Node[]>;
+
+	/** Espera até a condição valer, ou desiste. SEM ISTO todo assert é uma corrida:
+	 *  numa página com `fetch`, timer ou `IntersectionObserver`, uma leitura de um
+	 *  tiro só consegue ver o valor de ANTES do render — medido, e é a causa nº 1 de
+	 *  teste que passa na máquina de quem escreveu. */
+	wait(
+		sel: BrowserSystem.Selector,
+		until: BrowserSystem.Until,
+		timeout?: BrowserSystem.Millis,
+	): Promise<BrowserSystem.Node | BrowserSystem.Fail>;
+
+	click(node: BrowserSystem.Node): Promise<{ ok: true } | BrowserSystem.Fail>;
+	/** Tecla de verdade, pelo `Input` do CDP, não `el.value = …`: um framework que
+	 *  ouve `keydown` não vê atribuição, e o campo fica preenchido na tela e vazio no
+	 *  estado. `clear` decide se substitui ou concatena. */
+	type(node: BrowserSystem.Node, text: string, opts?: { clear?: boolean; delay?: BrowserSystem.Millis }): Promise<{ ok: true } | BrowserSystem.Fail>;
+	press(key: string): Promise<{ ok: true } | BrowserSystem.Fail>;
+	scroll(to: BrowserSystem.Node | { x: number; y: number }): Promise<{ ok: true } | BrowserSystem.Fail>;
+	upload(node: BrowserSystem.Node, paths: string[]): Promise<{ ok: true } | BrowserSystem.Fail>;
+
+	text(node: BrowserSystem.Node): Promise<string | BrowserSystem.Fail>;
+	attrs(node: BrowserSystem.Node): Promise<Record<string, string> | BrowserSystem.Fail>;
+	/** COM valor de volta, e é a diferença pro `executeJavascript` do Electrobun, que é
+	 *  fire-and-forget. Isto é `Runtime.evaluate`. */
+	eval<T = unknown>(js: string): Promise<T | BrowserSystem.Fail>;
+
+	/** A ÁRVORE DE ACESSIBILIDADE, podada. Poda não é enfeite: a árvore crua de uma
+	 *  página real passa das centenas de nós — cada `StaticText`, cada wrapper de
+	 *  layout — e fica MAIOR que a captura de tela que ela existe pra substituir. Cada
+	 *  nó volta já como `Node`, então dá pra agir sem um `find` no meio. */
+	snapshot(): Promise<BrowserSystem.Node[] | BrowserSystem.Fail>;
+
+	/** As regras valem daqui pra frente; requisição já em voo não volta atrás. */
+	intercept(rules: BrowserSystem.NetRule[]): Promise<{ ok: true } | BrowserSystem.Fail>;
+	/** A rede, conforme acontece. `bodies` custa: sem ele vêm bytes, com ele vem o
+	 *  corpo, buscado enquanto a página ainda o segura. */
+	wire(opts?: { bodies?: boolean }): AsyncIterable<BrowserSystem.Wire>;
+	logs(): AsyncIterable<BrowserSystem.Log>;
+
+	/** ARMA a resposta do PRÓXIMO diálogo. Chamar DEPOIS de abrir é tarde: a sessão já
+	 *  está congelada e esta chamada não chega. */
+	dialog(answer: BrowserSystem.Dialog): Promise<{ ok: true } | BrowserSystem.Fail>;
+
+	cookies(): Promise<Array<{ name: string; value: string; domain: string; path: string; expires?: number }>>;
+	setCookies(cookies: Array<{ name: string; value: string; domain: string; path?: string }>): Promise<{ ok: true } | BrowserSystem.Fail>;
+
+	pdf(out: string): Promise<{ ok: true; path: string } | BrowserSystem.Fail>;
+
+	/** O PROTOCOLO CRU. Um método CDP e seus parâmetros, sem tradução.
+	 *
+	 *  Está aqui pra este contrato PODER ficar pequeno: sem escotilha, todo domínio
+	 *  que faltar vira pedido de verbo novo, e em seis meses isto é um pydoll pior. O
+	 *  preço está escrito: quem chama `escape()` amarra no protocolo, não em nós, e
+	 *  uma versão de Chromium que mova o método quebra o chamador — não este arquivo. */
+	escape<T = unknown>(method: string, params?: Record<string, unknown>): Promise<T>;
 }
