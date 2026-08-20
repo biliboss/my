@@ -122,7 +122,15 @@ export function extract(): Graph {
 			methods: (src.match(/^\t{1,2}[a-zA-Z]+[(<]/gm) ?? []).length,
 			draft: !/THIS ONE IS NOT A DRAFT/.test(src),
 			implemented: (src.match(/^\/\/! implemented:\s*(.+)$/m)?.[1] ?? "")
-				.split("·").map(t => t.trim()).filter(Boolean),
+				.split("·").map(t => t.trim())
+				// A PALAVRA "NADA" É NADA. Três contratos escreveram `implemented: nothing`
+				// pra serem explícitos e apareceram CHEIOS — o node dizia que existe código
+				// atrás de algo que ninguém escreveu, que é o oposto do que o autor quis
+				// dizer. Medido 20/08 em `labels`, `canvas` e `company`.
+				//
+				// Consertado AQUI e não em cada arquivo: avisar autor por autor é a regra
+				// que ninguém cumpre, e o próximo contrato repetiria. Quem lê é um só.
+				.filter(t => t && !/^(nothing|nada|none|nenhum|n\/a|-|—)$/i.test(t)),
 			tool: /^\/\/! external:/m.test(src),
 		});
 
