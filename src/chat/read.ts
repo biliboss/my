@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 //! Lê um canal inteiro, do jeito que um humano lê — `View.read`
-//! (@packages/interfaces/src/chat.ts). NUNCA consome nada: ver `seen.ts` pra mover cursor.
+//! (@packages/interfaces/chat.ts). NUNCA consome nada: ver `seen.ts` pra mover cursor.
 //!
 //!     my chat read plantao-coding                # tudo, oldest first
 //!     my chat read plantao-coding --thread 022    # só aquele assunto

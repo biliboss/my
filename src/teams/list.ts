@@ -7,7 +7,7 @@
 //!     my teams list --pressure               waiting vs listening vs idle, per kind
 //!     my teams list --json | --jsonl | --tsv
 //!
-//! `View` (@packages/interfaces/src/teams.ts) lives here: `all`, `find`, `idle`, `subs`,
+//! `View` (@packages/interfaces/teams.ts) lives here: `all`, `find`, `idle`, `subs`,
 //! `queue`, `next`, `wip`, `pressure`, `unserved`. They are ALL the same two reads
 //! — the lineups on disk and herdr's live list — sliced differently, and splitting
 //! them into nine files would be nine copies of one join.

@@ -1,5 +1,5 @@
 #!/usr/bin/env bun
-//! Move o MEU cursor, explicitamente — `Chat.seen` (@packages/interfaces/src/chat.ts).
+//! Move o MEU cursor, explicitamente — `Chat.seen` (@packages/interfaces/chat.ts).
 //! NUNCA é efeito colateral de `read`/`inbox`: um agente que estoura no meio do
 //! trabalho tem que achar a MESMA mensagem quando voltar. `listen.ts` chama isto
 //! sozinho, só depois que o handler retorna — aqui é a porta pra quem quiser

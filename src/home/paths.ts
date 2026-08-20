@@ -5,7 +5,7 @@
 //!     my home paths --json          pro jq
 //!     my home paths root            só uma, crua — pro `$(...)` de um script
 //!
-//! `Home.root/code/machine/area/store/ensure/resolve` (@packages/interfaces/src/home.ts).
+//! `Home.root/code/machine/area/store/ensure/resolve` (@packages/interfaces/home.ts).
 //!
 //! TUDO É FUNÇÃO, NUNCA CONSTANTE DE MÓDULO. `import` é içado acima de qualquer
 //! `process.env.MY_HOME = …` no arquivo que importa, então uma constante calculada

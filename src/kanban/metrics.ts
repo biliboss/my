@@ -12,7 +12,7 @@
 //! TODOS lidos de `.kanban/moves/`, que só existe a PARTIR de hoje — nenhum card
 //! fechado antes desta task tem história de coluna. `sample: 0` (ou `days: 3650`,
 //! o teto da simulação) É a resposta honesta pra isso, não um bug: é o MESMO buraco
-//! que @packages/interfaces/src/tasks.ts já documentou pra `Metrics.measure`, e a resposta é
+//! que @packages/interfaces/tasks.ts já documentou pra `Metrics.measure`, e a resposta é
 //! a mesma — não inventar história que não foi gravada.
 //!
 //! depends_on: src/kanban/model.ts

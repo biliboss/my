@@ -16,7 +16,7 @@
 //! escreveu. Um registro paralelo de "quem clonou quem" seria a segunda fonte, e
 //! ela envelheceria no primeiro pane fechado à mão.
 //!
-//! `all()` (@packages/interfaces/src/agents.ts `View.all`) lives HERE: this module already
+//! `all()` (@packages/interfaces/agents.ts `View.all`) lives HERE: this module already
 //! does the one join it needs — the herdr-raw agent joined with the NAME family
 //! the `-N` suffix encodes. `View.check` is `./check.ts`, DELIBERATELY a separate
 //! file — this one imports herdr statically for `all()`, which taints it async

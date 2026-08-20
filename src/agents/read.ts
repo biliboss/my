@@ -3,7 +3,7 @@
 //! <agente>` está citado e usado pela frota AGORA (mesma razão de
 //! `src/agents/send.ts`, @CLAUDE.md: a chamada antiga não pode quebrar).
 //!
-//! O CONTRATO NOVO (@packages/interfaces/src/chat.ts:186) diz que `seen` nunca é efeito
+//! O CONTRATO NOVO (@packages/interfaces/chat.ts:186) diz que `seen` nunca é efeito
 //! de leitura — e é verdade pro SISTEMA. Mas o CALL SITE velho, `my agents read
 //! <quem>`, sempre foi "leia o que chegou E marque como lido" numa chamada só: é
 //! assim que a frota evita reprocessar a mesma mensagem a cada poll. Preservar a

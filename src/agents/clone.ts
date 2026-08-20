@@ -54,7 +54,7 @@
 //! 20/08 três clones viraram cinco panes sem ninguém pedir. `--max` recusa a
 //! partir do quarto.
 //!
-//! `clone(name, as)` — `Agents.clone` (@packages/interfaces/src/agents.ts), abaixo, é o
+//! `clone(name, as)` — `Agents.clone` (@packages/interfaces/agents.ts), abaixo, é o
 //! MESMO mecanismo apontado pra qualquer agente do roster em vez de só o pane de
 //! quem chama: onde `main()` acima parte a PRÓPRIA sessão (`HERDR_PANE_ID`), a
 //! função resolve `name` pelo roster e parte O PANE DELE. Reusa `esperaTUI` — só

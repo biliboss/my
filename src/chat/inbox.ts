@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 //! O que chegou pra MIM, depois do meu cursor — `View.inbox`
-//! (@packages/interfaces/src/chat.ts). Endereçado, ao contrário de `read.ts`: é o que um
+//! (@packages/interfaces/chat.ts). Endereçado, ao contrário de `read.ts`: é o que um
 //! agente que acordou lê em vez de reler um canal que divide com três outros.
 //!
 //! NÃO avança cursor nenhum — o contrato é explícito (`chat.ts:187`): `seen`

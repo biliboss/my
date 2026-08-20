@@ -7,7 +7,7 @@
 //! MATA `src/agents/bus.ts`, E O FORMATO MUDA — essa é a decisão central desta
 //! migração. O arquivo velho (`.my_agents_chat.tsv`, 4 colunas: `at·from·to·texto`)
 //! não tinha `seq`, `channel`, `thread` nem `answers`; o contrato
-//! (@packages/interfaces/src/chat.ts) pede os oito. `migrar()` roda sozinha na primeira
+//! (@packages/interfaces/chat.ts) pede os oito. `migrar()` roda sozinha na primeira
 //! leitura — se `.my_chat.tsv` ainda não existe e o arquivo velho existe, ela
 //! nasce a partir dele:
 //!

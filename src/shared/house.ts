@@ -1,5 +1,5 @@
 #!/usr/bin/env bun
-//! A CASA SE MEDINDO: os quatro verbos de `House` (@packages/interfaces/src/shared.ts).
+//! A CASA SE MEDINDO: os quatro verbos de `House` (@packages/interfaces/shared.ts).
 //!
 //!   bun run src/shared/house.ts            # check() + coverage(), o que é barato
 //!   bun run src/shared/house.ts --all      # + ratchet() e metrics(), que rodam os checks
@@ -35,7 +35,7 @@ export const BASELINE = join(ROOT, "ci/baseline.json");
 
 /** O que um sistema achou de podre em si mesmo. Declarado aqui de novo, e não
  *  importado de um contrato de sistema: quem lê a forma não pode depender de quem a
- *  tem. É a mesma frase que cada `packages/interfaces/src/<sistema>.ts` escreve no próprio. */
+ *  tem. É a mesma frase que cada `packages/interfaces/<sistema>.ts` escreve no próprio. */
 export type Finding = { path: string; says: string };
 
 /** `require` e não `import()`: `House.check()` é SÍNCRONO no contrato, e em Bun o

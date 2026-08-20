@@ -1,5 +1,5 @@
 #!/usr/bin/env bun
-//! Fala e ESPERA — `Chat.ask` (@packages/interfaces/src/chat.ts). Uma pergunta e um
+//! Fala e ESPERA — `Chat.ask` (@packages/interfaces/chat.ts). Uma pergunta e um
 //! recado não podem ler igual num canal: a resposta carrega `answers`, e
 //! `unanswered.ts` é o que isso compra.
 //!

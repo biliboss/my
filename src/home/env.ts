@@ -5,7 +5,7 @@
 //!     my home env --set            só as que estão setadas AGORA, com o valor
 //!     my home env --json | --tsv
 //!
-//! `Home.vars()` (@packages/interfaces/src/home.ts).
+//! `Home.vars()` (@packages/interfaces/home.ts).
 //!
 //! POR QUE UMA TABELA ESCRITA À MÃO NÃO APODRECE AQUI: `my home check` varre o
 //! fonte atrás de `process.env.X` e acusa toda leitura que não estiver nesta lista.

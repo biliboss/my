@@ -66,7 +66,7 @@ export async function pass(seen: Map<string, Set<string>>, quiet = false): Promi
 	return woken;
 }
 
-/** `Teams.watch()` (@packages/interfaces/src/teams.ts): the loop, and the handle that stops
+/** `Teams.watch()` (@packages/interfaces/teams.ts): the loop, and the handle that stops
  *  it. Returned rather than kept, because otherwise the only off switch is killing
  *  the process that also keeps the teams. */
 export async function watch(everyS = DEFAULT_EVERY_S): Promise<TeamsSystem.Entities.Watch> {

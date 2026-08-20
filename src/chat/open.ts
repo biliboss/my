@@ -1,5 +1,5 @@
 #!/usr/bin/env bun
-//! Abre um canal — `Chat.open` (@packages/interfaces/src/chat.ts). Não é obrigatório
+//! Abre um canal — `Chat.open` (@packages/interfaces/chat.ts). Não é obrigatório
 //! antes de `say`: `say` registra o canal sozinho na primeira mensagem. Isto
 //! existe pra declarar `members` de antemão, quando alguém quer que `to: "all"`
 //! signifique algo antes da primeira linha ser escrita.

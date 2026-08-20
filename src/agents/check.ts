@@ -1,5 +1,5 @@
 #!/usr/bin/env bun
-//! `View.check` (@packages/interfaces/src/agents.ts) — SÓ o que `~/.me/agents.json` sozinho
+//! `View.check` (@packages/interfaces/agents.ts) — SÓ o que `~/.me/agents.json` sozinho
 //! consegue provar: nenhum nome lembrado aponta pro MESMO pane que outro.
 //!
 //!     my agents check

@@ -1,5 +1,5 @@
 #!/usr/bin/env bun
-//! `Agents.start` (@packages/interfaces/src/agents.ts) — start one, named, and REMEMBER it.
+//! `Agents.start` (@packages/interfaces/agents.ts) — start one, named, and REMEMBER it.
 //!
 //!     bun run src/agents/start.ts alice --workspace cockpit --prompt "afira a #178"
 //!     bun run src/agents/start.ts qa --pane w3K:p4 --prompt "roda os testes"

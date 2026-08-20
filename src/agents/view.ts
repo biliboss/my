@@ -1,5 +1,5 @@
 #!/usr/bin/env bun
-//! `View` (@packages/interfaces/src/agents.ts): `find`, `health`, `screen`, `log`, `caps` —
+//! `View` (@packages/interfaces/agents.ts): `find`, `health`, `screen`, `log`, `caps` —
 //! everything that ANSWERS about the fleet without touching it. `all()` and the
 //! entity mapper live in `list.ts` (it already owned the herdr↔name join); this
 //! file is the rest of `View` plus the two verbs measured instead of declared.

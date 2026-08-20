@@ -1,5 +1,5 @@
 #!/usr/bin/env bun
-//! `Agents.restart · interrupt · stop · tune` (@packages/interfaces/src/agents.ts) — the
+//! `Agents.restart · interrupt · stop · tune` (@packages/interfaces/agents.ts) — the
 //! four verbs that MUTATE a live agent, grouped because each one is small and
 //! none of them owns enough to earn its own file.
 //!

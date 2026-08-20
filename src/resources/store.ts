@@ -164,7 +164,7 @@ function stackResource(): Resource {
 	const body = [
 		"# stack",
 		"",
-		"O que esta casa usa quando ninguém disse o contrário. Mora em `packages/interfaces/src/resources.ts`.",
+		"O que esta casa usa quando ninguém disse o contrário. Mora em `packages/interfaces/resources.ts`.",
 		"",
 		...Object.entries(STACK).map(([k, v]) => `- **${k}** — ${v}`),
 		"",
@@ -176,7 +176,7 @@ function stackResource(): Resource {
 		// checkout do código — e depois da migração pro `biliboss/my` os dois deixam
 		// de ser a mesma pasta. Um recurso apontando pro `src/` da casa apontaria pro
 		// vazio no dia seguinte.
-		path: join(repoRoot(), "packages/interfaces/src/resources.ts"),
+		path: join(repoRoot(), "packages/interfaces/resources.ts"),
 		body,
 		mentions: [],
 		aliases: [],

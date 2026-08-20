@@ -1,5 +1,5 @@
 #!/usr/bin/env bun
-//! Fala num canal. `Chat.say` do contrato (@packages/interfaces/src/chat.ts) — o único
+//! Fala num canal. `Chat.say` do contrato (@packages/interfaces/chat.ts) — o único
 //! verbo que escreve sem esperar resposta.
 //!
 //!     my chat say plantao-coding qa-workflow "afira a #179, mesmo contrato"

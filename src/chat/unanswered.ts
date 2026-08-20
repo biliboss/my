@@ -1,5 +1,5 @@
 #!/usr/bin/env bun
-//! As perguntas abertas de um canal — `View.unanswered` (@packages/interfaces/src/chat.ts).
+//! As perguntas abertas de um canal — `View.unanswered` (@packages/interfaces/chat.ts).
 //! Hoje é a única razão pra alguém rolar um canal na mão; isto responde direto.
 //!
 //! UMA MENSAGEM CONTA COMO PERGUNTA quando ela mesma não é resposta de ninguém

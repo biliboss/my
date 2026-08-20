@@ -7,7 +7,7 @@
 //! `--who` do jeito velho filtrava `from OU to`, sem endereçamento nenhum —
 //! `chat --monitor` é a tela do HUMANO, que quer ver a frota inteira conversar,
 //! e `Chat.listen` do contrato é endereçado (`to === me`). Os dois têm público
-//! diferente por desenho (@packages/interfaces/src/chat.ts:121), então o `--monitor`
+//! diferente por desenho (@packages/interfaces/chat.ts:121), então o `--monitor`
 //! velho NÃO vira `listen`: continua um poll direto no disco, igual sempre foi,
 //! só que lendo `store.allMessages()` em vez do `.my_agents_chat.tsv` que
 //! morreu.

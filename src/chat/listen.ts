@@ -1,5 +1,5 @@
 #!/usr/bin/env bun
-//! O verbo difícil — `Chat.listen` (@packages/interfaces/src/chat.ts). Absorve o
+//! O verbo difícil — `Chat.listen` (@packages/interfaces/chat.ts). Absorve o
 //! `--monitor` de `src/agents/chat.ts`, que fazia poll de 2s SEM debounce, SEM
 //! `max_wait`, SEM lote, e sem endereçamento: acordava pra cada linha nova do
 //! arquivo inteiro. Aqui as quatro faltas viram as quatro regras do contrato:

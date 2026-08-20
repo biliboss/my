@@ -18,7 +18,7 @@
 //! POR QUE ELE PODE EXISTIR E O `Metrics.measure()` NÃO: as três perguntas são
 //! sobre o AGORA, e o disco de agora responde as três. Medir duração, retomada e
 //! quantas vezes a prova rodou precisaria do PASSADO, e o `output.md` guarda só o
-//! último valor de cada campo — @packages/interfaces/src/tasks.ts diz o que faltaria.
+//! último valor de cada campo — @packages/interfaces/tasks.ts diz o que faltaria.
 //!
 //! depends_on: src/tasks/model.ts · src/tasks/claim.ts
 //! impacts:    —
@@ -31,7 +31,7 @@ import { CRACHA, TRAVA, crachaDe } from './claim.ts'
 import { RODANDO, lembra, ler, pastasDeTask, placeDe, projetoCorrente, projetos, rel, stateDe } from './model.ts'
 
 /** O que este sistema achou de podre. A forma é a do contrato
- *  (@packages/interfaces/src/tasks.ts): `path` e `says`, e nada mais — o runner do
+ *  (@packages/interfaces/tasks.ts): `path` e `says`, e nada mais — o runner do
  *  `House.check()` lê pela FORMA, então campo a mais aqui é campo que só este
  *  arquivo entende. */
 export type Finding = { path: string; says: string }

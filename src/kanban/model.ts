@@ -1,7 +1,7 @@
 //! `kanban` em disco — Board é o PROJETO, Column é o PLACE da task, Card é a task
 //! DERIVADA (não uma segunda entidade que possa ficar sem par).
 //!
-//! O CONTRATO (@packages/interfaces/src/kanban.ts) foi escrito ANTES do código e erra em um
+//! O CONTRATO (@packages/interfaces/kanban.ts) foi escrito ANTES do código e erra em um
 //! ponto medido aqui: o cabeçalho dizia `projects → uma LABEL. Deleted 20/08` como se
 //! já tivesse acontecido. Não aconteceu — `01_projects/`, `src/projects/`,
 //! `src/sprints/` continuam no disco e são o que `my projects check`, `my sprints
@@ -26,7 +26,7 @@
 //!   `board.json`      labels declaradas, limites por coluna, o grupo do swimlane
 //!   `moves/<rotulo>.json`  o histórico de coluna de UM card, APENSADO a partir de
 //!                          agora — não existe história anterior a isto (o mesmo
-//!                          buraco que @packages/interfaces/src/tasks.ts já documentou pra
+//!                          buraco que @packages/interfaces/tasks.ts já documentou pra
 //!                          `Metrics.measure`), então os números de `Metrics` abaixo
 //!                          nascem com `sample: 0` pra tudo que fechou antes de hoje.
 //!
@@ -433,7 +433,7 @@ export function limit(boardName: string, column: string, n: number): KanbanSyste
 //
 // `moves/` só existe a partir de HOJE: nenhum card fechado antes desta task tem
 // história de coluna, porque a história não existia. É o MESMO buraco que
-// @packages/interfaces/src/tasks.ts já documentou pra `Metrics.measure` — "este arquivo
+// @packages/interfaces/tasks.ts já documentou pra `Metrics.measure` — "este arquivo
 // grava só a posição, nunca a transição" — e a resposta é a mesma: os números
 // abaixo são REAIS sobre o que `moves/` viu, e `sample: 0` é a resposta honesta
 // pra tudo que fechou antes. Fabricar história a partir do `mtime` da pasta
