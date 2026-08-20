@@ -21,14 +21,7 @@
     "build": "bun run --filter './apps/*' build",
     "check": "bun run --filter '*' check"
   },
-  "dependencies": {
-    "@biliboss/interfaces": "workspace:*",
-    "commander": "^15.0.0",
-    "drizzle-orm": "^0.45.2",
-    "surrealdb": "^2.0.8"
-  },
   "devDependencies": {
-    "drizzle-kit": "^0.31.10",
     "typescript": "5.9.3"
   }
 }

@@ -51,19 +51,24 @@ jobs:
       # `bun.lock` É versionado, então `--frozen-lockfile`: instalação que resolve
       # versão nova no runner mede outra árvore que a da máquina, e aí um verde no
       # CI não quer dizer verde aqui.
+      # `bun install` na RAIZ, sempre: o workspace resolve os membros de uma vez, e
+      # instalar de dentro de um pacote é o que produzia um lockfile por pasta.
       - run: bun install --frozen-lockfile
 
       - name: a suíte
         run: bun test ./src/
+        working-directory: apps/my_cli
 
       # As três raízes, impressas antes de qualquer coisa: um check que leu a árvore
       # errada reporta zero achados, e zero achados é o que uma casa limpa também
       # reporta. Uma linha de log responde "contra o que isso rodou?".
       - name: contra que árvore
         run: bun run src/home/paths.ts
+        working-directory: apps/my_cli
 
       # Toda `process.env` lida no fonte está declarada em `src/home/env.ts`, e toda
       # declarada é lida por alguém. É o que impede a tabela de virar uma lista que
       # apodrece — regra que ninguém verifica não é regra.
       - name: env declarada bate com env lida
         run: bun run src/home/check.ts
+        working-directory: apps/my_cli

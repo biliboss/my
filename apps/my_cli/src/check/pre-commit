@@ -44,10 +44,17 @@ while [[ -L "$self" ]]; do
 done
 code="$(cd "$(dirname "$self")/../.." && pwd)"
 
-# A CASA é o repo que está sendo commitado — a menos que ele SEJA o código, e aí a
-# casa continua sendo a de sempre. Sem isto, commitar em `my` faria todo check ler
-# uma casa vazia, e casa vazia é indistinguível de casa limpa.
-[[ "$repo" != "$code" ]] && export MY_HOME="$repo"
+# O CHECKOUT do código, que desde 20/08 NÃO é o pacote: o CLI virou `apps/my_cli/`
+# dentro do monorepo, então `$code` é o pacote e `$coderepo` é o `.git` que o contém.
+# Comparar `$repo` com `$code` fazia um commit no próprio monorepo cair no `!=` e
+# apontar `MY_HOME` pra raiz do monorepo — a casa vira o repositório do código, e
+# todo check lê uma árvore que não tem `01_projects/`.
+coderepo="$(cd "$code" && git rev-parse --show-toplevel 2>/dev/null || echo "$code")"
+
+# A CASA é o repo que está sendo commitado — a menos que ele seja o repositório do
+# CÓDIGO, e aí a casa continua sendo a de sempre. Sem isto, commitar em `my` faria
+# todo check ler uma casa vazia, e casa vazia é indistinguível de casa limpa.
+[[ "$repo" != "$coderepo" ]] && export MY_HOME="$repo"
 
 # Added/copied/modified/renamed only: a deleted path cannot be scanned, and `-z` plus
 # `--diff-filter` keeps a filename with spaces intact.
@@ -126,7 +133,7 @@ fi
 # a suíte de outro repositório, e rodá-la ali seria o gate desta casa reprovando
 # por linha que ninguém escreveu aqui — a mesma razão pela qual a catraca não
 # atravessou junto.
-if [[ "$repo" == "$code" ]] && printf '%s\0' "${existing[@]}" | grep -qz '\.ts$'; then
+if [[ "$repo" == "$coderepo" ]] && printf '%s\0' "${existing[@]}" | grep -qz '\.ts$'; then
   mapfile -t suite < <(cd "$code" && find src -name '*.test.ts' -not -path 'src/extension/*' -not -path '*/node_modules/*')
   if ! out=$(cd "$code" && bun test "${suite[@]}" 2>&1); then
     echo "$out" | tail -25
