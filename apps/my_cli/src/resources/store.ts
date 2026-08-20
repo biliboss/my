@@ -172,10 +172,10 @@ function stackResource(): Resource {
 	return {
 		name: "stack",
 		kind: "references",
-		// `repoRoot()` e NÃO `home()`: este ponteiro é pro CONTRATO, que mora no
-		// checkout do código — e depois da migração pro `biliboss/my` os dois deixam
-		// de ser a mesma pasta. Um recurso apontando pro `src/` da casa apontaria pro
-		// vazio no dia seguinte.
+		// TRÊS RAÍZES E ESTA É A DO CHECKOUT. `home()` é a casa, `code()` é o pacote
+		// (`apps/my_cli/`), e `packages/interfaces/` não está em nenhuma das duas: ela
+		// é irmã do pacote, na raiz do monorepo. É o único lugar do fonte que precisa
+		// da terceira, e é por isso que `repoRoot()` continua existindo.
 		path: join(repoRoot(), "packages/interfaces/resources.ts"),
 		body,
 		mentions: [],

@@ -3,19 +3,12 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "dependencies": {
-        "@biliboss/interfaces": "workspace:*",
-        "commander": "^15.0.0",
-        "drizzle-orm": "^0.45.2",
-        "surrealdb": "^2.0.8",
-      },
       "devDependencies": {
-        "drizzle-kit": "^0.31.10",
         "typescript": "5.9.3",
       },
     },
-    "apps/my": {
-      "name": "@my/my",
+    "apps/lp_my": {
+      "name": "@my/lp_my",
       "version": "0.1.0",
       "dependencies": {
         "@biliboss/my-ui": "workspace:*",
@@ -32,8 +25,8 @@
         "vite": "catalog:",
       },
     },
-    "apps/my-company": {
-      "name": "@my/my-company",
+    "apps/lp_my-company": {
+      "name": "@my/lp_my-company",
       "version": "0.1.0",
       "dependencies": {
         "@biliboss/my-ui": "workspace:*",
@@ -52,8 +45,8 @@
         "vite": "catalog:",
       },
     },
-    "apps/my-graph": {
-      "name": "@my/my-graph",
+    "apps/lp_my-graph": {
+      "name": "@my/lp_my-graph",
       "version": "0.1.0",
       "dependencies": {
         "@biliboss/my-ui": "workspace:*",
@@ -70,8 +63,8 @@
         "vite": "catalog:",
       },
     },
-    "apps/my-kanban": {
-      "name": "@my/my-kanban",
+    "apps/lp_my-kanban": {
+      "name": "@my/lp_my-kanban",
       "version": "0.1.0",
       "dependencies": {
         "@biliboss/my-ui": "workspace:*",
@@ -86,6 +79,23 @@
         "@vitejs/plugin-react": "catalog:",
         "typescript": "catalog:",
         "vite": "catalog:",
+      },
+    },
+    "apps/my_cli": {
+      "name": "@biliboss/my-cli",
+      "version": "0.1.0",
+      "bin": {
+        "my": "./src/cli/my.ts",
+      },
+      "dependencies": {
+        "@biliboss/interfaces": "workspace:*",
+        "commander": "^15.0.0",
+        "drizzle-orm": "^0.45.2",
+        "surrealdb": "^2.0.8",
+      },
+      "devDependencies": {
+        "drizzle-kit": "^0.31.10",
+        "typescript": "catalog:",
       },
     },
     "packages/interfaces": {
@@ -188,6 +198,8 @@
 
     "@biliboss/interfaces": ["@biliboss/interfaces@workspace:packages/interfaces"],
 
+    "@biliboss/my-cli": ["@biliboss/my-cli@workspace:apps/my_cli"],
+
     "@biliboss/my-hacker": ["@biliboss/my-hacker@workspace:packages/my-hacker"],
 
     "@biliboss/my-ui": ["@biliboss/my-ui@workspace:packages/my-ui"],
@@ -282,13 +294,13 @@
 
     "@jridgewell/trace-mapping": ["@jridgewell/trace-mapping@0.3.31", "", { "dependencies": { "@jridgewell/resolve-uri": "^3.1.0", "@jridgewell/sourcemap-codec": "^1.4.14" } }, "sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw=="],
 
-    "@my/my": ["@my/my@workspace:apps/my"],
+    "@my/lp_my": ["@my/lp_my@workspace:apps/lp_my"],
 
-    "@my/my-company": ["@my/my-company@workspace:apps/my-company"],
+    "@my/lp_my-company": ["@my/lp_my-company@workspace:apps/lp_my-company"],
 
-    "@my/my-graph": ["@my/my-graph@workspace:apps/my-graph"],
+    "@my/lp_my-graph": ["@my/lp_my-graph@workspace:apps/lp_my-graph"],
 
-    "@my/my-kanban": ["@my/my-kanban@workspace:apps/my-kanban"],
+    "@my/lp_my-kanban": ["@my/lp_my-kanban@workspace:apps/lp_my-kanban"],
 
     "@napi-rs/lzma-linux-x64-gnu": ["@napi-rs/lzma-linux-x64-gnu@1.5.1", "", { "os": "linux", "cpu": "x64" }, "sha512-oTXEIha4SsuXdTA4Iyskj0kpdx2yVXdhd75c2v3xGrHFfVMsbhTPZU/nMPL4sWKo4pBHm3aucLaqGlF696dTyQ=="],
 

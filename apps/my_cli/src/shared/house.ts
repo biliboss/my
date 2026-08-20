@@ -27,9 +27,13 @@ import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { createRequire } from "node:module";
 import { join } from "node:path";
 import type { House, Shared } from "@biliboss/interfaces/shared.ts";
-import { repoRoot } from "./file.ts";
+import { repoRootOf as code } from "./file.ts";
 
-const ROOT = repoRoot();
+// `code()` E NÃO `repoRoot()`: este arquivo varre `src/` pra achar os sistemas, e
+// `src/` é do PACOTE. Desde 20/08 o CLI mora em `apps/my_cli/` e o `.git` é do
+// monorepo — a âncora antiga devolvia `~/src/my`, e `readdirSync` estourava com
+// ENOENT em `~/src/my/src`. As duas perguntas passaram a ter respostas diferentes.
+const ROOT = code();
 const SRC = join(ROOT, "src");
 export const BASELINE = join(ROOT, "ci/baseline.json");
 

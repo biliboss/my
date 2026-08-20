@@ -59,7 +59,7 @@ jobs:
         with: { name: sites, path: sites }
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
-        with: { path: sites/my/dist }
+        with: { path: sites/lp_my/dist }
       - id: deployment
         uses: actions/deploy-pages@v4
 
@@ -69,16 +69,22 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        app: [my-graph, my-company, my-kanban]
+        # `dir` é a pasta no monorepo, `repo` é o dono da URL publicada. Os dois
+        # divergiram quando as apps ganharam o prefixo `lp_`, e confundir um com
+        # o outro publica o site certo no repositório errado.
+        include:
+          - { dir: lp_my-graph, repo: my-graph }
+          - { dir: lp_my-company, repo: my-company }
+          - { dir: lp_my-kanban, repo: my-kanban }
     steps:
       - uses: actions/download-artifact@v4
         with: { name: sites, path: sites }
-      - name: Push to ${{ matrix.app }}
+      - name: Push to ${{ matrix.repo }}
         env:
           TOKEN: ${{ secrets.FAMILY_PAGES_TOKEN }}
         run: |
           test -n "$TOKEN" || { echo "::error::falta o segredo FAMILY_PAGES_TOKEN"; exit 1; }
-          cd sites/${{ matrix.app }}/dist
+          cd sites/${{ matrix.dir }}/dist
           # `.nojekyll` senão o Pages engole todo diretório que começa com `_`
           touch .nojekyll
           git init -q -b gh-pages
@@ -87,4 +93,4 @@ jobs:
           git add -A
           git commit -q -m "build de biliboss/my@${GITHUB_SHA::7}"
           git push -q --force \
-            "https://x-access-token:$TOKEN@github.com/biliboss/${{ matrix.app }}.git" gh-pages
+            "https://x-access-token:$TOKEN@github.com/biliboss/${{ matrix.repo }}.git" gh-pages
