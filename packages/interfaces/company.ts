@@ -23,6 +23,35 @@
 //!
 //! Three processes, THREE seams. The third is the one nobody staffs.
 //!
+//! ── THE SECOND AXIS: HIPSTER · HUSTLER · HACKER ──────────────────────────────
+//!
+//! The README calls the trio *lineage* and says this project moves "one level over,
+//! from the profiles of the PEOPLE to the processes of the COMPANY". Read as a
+//! replacement, that sentence throws the trio away. Read as a rotation, it does not —
+//! and the rotation is the useful reading:
+//!
+//!     the three processes are what a company DOES.
+//!     the three H are what every one of them is MADE OF.
+//!
+//! Orthogonal, so it is a 3×3 and never a list of six. `vender` still needs a hacker —
+//! somebody has to be able to build the thing being promised — and `entregar` still
+//! needs a hipster or it ships correct and unloved.
+//!
+//! AND THIS IS WHAT MAKES THE TRIO LOAD-BEARING INSTEAD OF DECORATIVE: every tear at
+//! every seam is an ABSENCE of one area. `Tear` and `Area` are the same fact read from
+//! two sides — which is why `Gap` carries `missing` and it is not optional.
+//!
+//! AN AREA IS NOT A TEAM, A FOLDER OR A PACKAGE. `resources.ts` already refused this
+//! one level down — *"three READINGS of one store, never three stores"* — and the
+//! refusal holds here for the same reason: split the company BY audience and the same
+//! promise gets written three times and drifts twice.
+//!
+//! `packages/my-hacker` was that mistake, made and buried on the same day (20/08): a
+//! lens had become a package, with its own `package.json` and its own store. It is
+//! deleted, not deprecated — zero consumers, and the experiment it carried (Resource
+//! addressed by the SHA-1 of its own text) belongs to `resources`, not to a trio
+//! member. `git show 1531af7` is where it lives now.
+//!
 //! ── WHAT IS CLOSED, AND WHY THAT IS THE CLAIM ────────────────────────────────
 //!
 //! `Trio` is a CLOSED union — the only closed one in this file. Refusing a fourth member
@@ -43,7 +72,9 @@
 //! external:    nothing — the theory runs on files this house writes
 //! implemented: nothing
 //! planned:     apps/my-company/
-//! depends_on:  packages/interfaces/shared.ts · packages/interfaces/kanban.ts
+//! depends_on:  packages/interfaces/shared.ts · packages/interfaces/kanban.ts ·
+//!              packages/interfaces/resources.ts
+//! buries:      packages/my-hacker/ — a lens that had become a package (20/08)
 //! checks:      declared HERE, never imported. `check()` returns `Finding[]` and the
 //!              runner reads the shape, so owning a check costs no dependency.
 
@@ -62,6 +93,14 @@ export declare namespace CompanySystem {
 	 *  anything and becomes a list of departments. */
 	export type Trio = "vender" | "entregar" | "amar";
 
+	/** THE SECOND AXIS, and closed for the same reason `Trio` is: three is the claim.
+	 *  Credit is Reid Hoffman's; the rotation from people to processes is this project's.
+	 *
+	 *  · `hustler` — what it is worth, and to whom. The offer, the price, the promise.
+	 *  · `hacker`  — whether it can be built, and why it broke last time.
+	 *  · `hipster` — whether it is worth building, and how it should feel. */
+	export type Area = "hustler" | "hacker" | "hipster";
+
 	/** Anything below the trio. Open, because the sub-processes are the part each company
 	 *  owns; a closed set here would tell a house its way of working is invalid. */
 	export type ProcessId = string;
@@ -71,6 +110,11 @@ export declare namespace CompanySystem {
 		label: string;
 		/** Absent only on the three. Everything else hangs off something. */
 		parent?: ProcessId;
+		/** WHICH AREA CARRIES IT. One, not a list: a sub-process that leans on all three
+		 *  equally has not been cut finely enough, and "everyone owns it" is the shape
+		 *  ownership takes right before nobody does. Absent on the three — a process is
+		 *  made of all three by definition, which is the whole 3×3. */
+		area?: Area;
 		/** Written by this house rather than adopted from the shipped set. These are the
 		 *  ones worth reading first — the rest are everybody's. */
 		own: boolean;
@@ -119,12 +163,14 @@ export declare namespace CompanySystem {
 	/** THE FOUR WAYS A SEAM TEARS. Each belongs to exactly one seam, and the fourth is the
 	 *  reason the ring exists:
 	 *
-	 *  · `oversold`   claimed more than was delivered — `vender→entregar`
-	 *  · `undersold`  delivered more than was claimed — the value is real and invisible,
-	 *                 so it never becomes a reason to buy
-	 *  · `unfelt`     delivered, closed, and nobody felt it — `entregar→amar`
-	 *  · `unclaimed`  loved, and never sold again — `amar→vender`, the tear that reads
-	 *                 like nothing is wrong, because nothing broke */
+	 *  · `oversold`   claimed more than was delivered — `vender→entregar`, and the area
+	 *                 that was absent is `hacker`: the promise outran what is buildable
+	 *  · `undersold`  delivered more than was claimed — `hustler` missing: the value is
+	 *                 real, invisible, and never becomes a reason to buy
+	 *  · `unfelt`     delivered, closed, and nobody felt it — `entregar→amar`, `hipster`
+	 *                 missing: correct and unloved is a shipped product with no second sale
+	 *  · `unclaimed`  loved, and never sold again — `amar→vender`, `hustler` missing. The
+	 *                 tear that reads like nothing is wrong, because nothing broke */
 	export type Tear = "oversold" | "undersold" | "unfelt" | "unclaimed";
 
 	/** ONE TEAR, WITH THE THREE SENTENCES SIDE BY SIDE. The evidence is quoted, never
@@ -133,6 +179,10 @@ export declare namespace CompanySystem {
 	export interface Gap {
 		seam: Seam;
 		tear: Tear;
+		/** WHICH AREA WAS ABSENT. Required, and derivable from `tear` — it is stated
+		 *  anyway because the name of the tear says what happened and this says who was
+		 *  not in the room, and only the second one can be fixed on Monday. */
+		missing: Area;
 		claim: Claim["id"];
 		promised: string;
 		delivered?: string;
