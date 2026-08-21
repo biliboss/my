@@ -115,7 +115,14 @@ export declare namespace ChatSystem {
 		export interface Channel {
 			name: ValueObjects.ChannelName;
 			/** Who is expected to read it. Not enforcement — anybody can post — but the
-			 *  list `to: "all"` means. */
+			 *  list `to: "all"` means, and the list a silent channel is measured against.
+			 *
+			 *  IT ONLY GROWS. A join UNIONS: the names handed in are added to whoever is
+			 *  already there, and nothing takes a name out. No writer knows the whole
+			 *  list — a team member joining declares ONE name, its own, and a replace
+			 *  would evict the other three. Same rule as `seen()` and for the same
+			 *  reason: every writer knows only its own half. Leaving means editing the
+			 *  registry by hand, and there is no verb for it, on purpose. */
 			members: ValueObjects.Addressee[];
 			created_at: ValueObjects.Instant;
 		}
@@ -180,6 +187,10 @@ export interface Chat extends View {
 		},
 	): { stop(): void };
 
+	/** Find-or-create the channel, and JOIN `members` to it — twice with one name
+	 *  each leaves both, and a name already there costs nothing. The membership is
+	 *  the SUBSCRIPTION: `_today` kept the same mapping in a `crew:` block of its
+	 *  own YAML with a regex to read it, which is this field in a second place. */
 	open(
 		name: ChatSystem.ValueObjects.ChannelName,
 		members?: ChatSystem.ValueObjects.Addressee[],

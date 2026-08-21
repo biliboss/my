@@ -169,12 +169,44 @@ test("the file being replaced by a shorter one is re-read from zero", () => {
 	expect(allMessages().map((m) => m.text)).toEqual(["depois"]);
 });
 
-test("registerChannel: chave natural é o nome — a segunda chamada não duplica", () => {
-	registerChannel("plantao", ["gabriel", "bob"]);
-	registerChannel("plantao", ["ninguem-devia-entrar"]);
+test("registerChannel: chave natural é o nome — a segunda chamada não duplica o CANAL", () => {
+	const criado = registerChannel("plantao", ["gabriel", "bob"]);
+	registerChannel("plantao", ["gabriel"]);
 	const canais = listChannels().filter((c) => c.name === "plantao");
 	expect(canais).toHaveLength(1);
+	// Entrar de novo com o mesmo nome não duplica o membro nem move o created_at.
 	expect(canais[0]!.members).toEqual(["gabriel", "bob"]);
+	expect(canais[0]!.created_at).toBe(criado.created_at);
+});
+
+test("registerChannel: membro é UNIÃO — a segunda chamada ACRESCENTA, nunca substitui", () => {
+	registerChannel("plantao", ["gabriel", "bob"]);
+	const depois = registerChannel("plantao", ["qa"]);
+	expect(depois.members).toEqual(["gabriel", "bob", "qa"]);
+	expect(listChannels().find((c) => c.name === "plantao")!.members).toEqual(["gabriel", "bob", "qa"]);
+});
+
+test("registerChannel: a ORDEM contra `append` deixou de importar — o join depois do primeiro `say` sobrevive", () => {
+	// A regressão que o find-or-create custava: `append` cria o canal com lista
+	// VAZIA na primeira mensagem, e daí em diante todo join virava no-op silencioso
+	// — as 13 linhas `join` do `_today` e o membro de time entrando em `teams up`.
+	append({ channel: "novo", from: "gabriel", to: "all", text: "primeira" });
+	registerChannel("novo", ["designer"]);
+	append({ channel: "novo", from: "designer", to: "all", text: "segunda" });
+	registerChannel("novo", ["qa"]);
+	expect(listChannels().find((c) => c.name === "novo")!.members).toEqual(["designer", "qa"]);
+});
+
+test("registerChannel: vírgula no nome viraria DOIS membros — vira espaço na escrita", () => {
+	const c = registerChannel("plantao", ["bob,eve"]);
+	expect(c.members).toEqual(["bob eve"]);
+	expect(listChannels().find((x) => x.name === "plantao")!.members).toEqual(["bob eve"]);
+});
+
+test("registerChannel: slot em branco sobrevive à união — é o achado NO NAME do check", () => {
+	registerChannel("plantao", ["bob", ""]);
+	registerChannel("plantao", ["qa"]);
+	expect(listChannels().find((c) => c.name === "plantao")!.members).toEqual(["bob", "", "qa"]);
 });
 
 test("migração: 4 colunas velhas viram 8, com seq=ordem da linha e channel/thread/answers vazios", () => {

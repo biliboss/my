@@ -541,9 +541,10 @@ function row(m: Msg): string {
 }
 
 export function write(p: Plan): { rows: number; cursors: number; channels: number } {
-	// Members BEFORE the first row: `store.append` find-or-creates the channel with
-	// an EMPTY member list, and find-or-create never updates. Registering second
-	// would lose all 13 join lines without a sound.
+	// Members BEFORE the first row, and no longer because it is the only order that
+	// works: `registerChannel` unions since 21/08, so registering after the rows
+	// keeps the 13 join lines too. It stays first because the channel a reader finds
+	// should already name who was in it, never messages in a room with no roster.
 	for (const c of p.perChannel) registerChannel(c.channel, c.members);
 
 	const lines = p.pending.map((q) => row(q as unknown as Msg));

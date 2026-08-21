@@ -40,6 +40,11 @@
 //!                         hours later by a reader, never by the writer.
 //!   CURSORS FOLD WITH max `setCursor` never writes an absolute — a stale
 //!                         acknowledgement would rewind the cursor and re-deliver.
+//!   MEMBERS ONLY GROW     `registerChannel` UNIONS the names it is handed into
+//!                         the ones already registered, and appends a row instead
+//!                         of rewriting one. Find-or-create dropped them without a
+//!                         sound: `append` creates the channel with an EMPTY list
+//!                         on the first `say`, so every later join was a no-op.
 //!   THE PARSE IS A TAIL   `allMessages` keeps the byte it parsed up to. The
 //!                         full parse cost 20.7ms at 60k lines and 194ms at 607k,
 //!                         and `listen` polls 5×/s — one listener alone was 10%
@@ -335,11 +340,20 @@ export function setCursor(channel: string, who: string, upto: number): void {
 // =============================================================================
 // canais — registro leve, só pra `channels()`/`open()`; `say()` nunca exige um
 // canal já aberto, do jeito que o barramento velho nunca exigiu destinatário
-// cadastrado.
+// cadastrado. `members` é a ASSINATURA: quem se espera que leia o canal.
 // =============================================================================
 
 type ChannelRow = { name: string; members: string; created_at: string };
 
+/** Vírgula é o separador desta coluna: um nome que a contivesse viraria DOIS
+ *  membros sem ninguém notar. Vira espaço na ESCRITA, mesma regra do `clean()` do
+ *  texto — na leitura o estrago já aconteceu. */
+const memberCell = (m: string) => clean(m).replace(/,/g, " ");
+
+const splitMembers = (s: string): string[] => (s ? s.split(",") : []);
+
+/** As LINHAS CRUAS do registro, na ordem em que foram escritas. Um canal pode ter
+ *  VÁRIAS — cada join escreve a sua — e quem responde por um canal é `fold()`. */
 function readChannels(): ChannelRow[] {
 	if (!existsSync(channelsFile())) return [];
 	return readFileSync(channelsFile(), "utf8")
@@ -351,17 +365,45 @@ function readChannels(): ChannelRow[] {
 		});
 }
 
-/** Cria o canal se ninguém tiver criado ainda — chave natural é o NOME, e o
- *  find-or-create acontece aqui, na escrita, nunca depois por deduplicação. */
+/** O canal que um conjunto de linhas descreve: a UNIÃO dos membros na ordem em que
+ *  apareceram, e o `created_at` da PRIMEIRA linha — a que de fato criou o canal. */
+function fold(name: string, rows: ChannelRow[]): Channel {
+	const members: string[] = [];
+	for (const r of rows) for (const m of splitMembers(r.members)) if (!members.includes(m)) members.push(m);
+	return { name, members, created_at: rows[0]?.created_at ?? now() };
+}
+
+/** Cria o canal se ninguém tiver criado ainda — chave natural é o NOME — e ENTRA
+ *  `members` nele. O canal é find-or-create; a lista de membros NÃO: ela cresce.
+ *
+ *  ANTES DE 21/08 A SEGUNDA CHAMADA ERA UM NO-OP, e isso perdia membro calado:
+ *  `append()` faz find-or-create do canal com lista VAZIA na primeira mensagem, e
+ *  daí em diante todo join — as 13 linhas `join` que o importador do `_today`
+ *  traduz, um membro de time entrando no canal em `teams up` — sumia sem erro. O
+ *  importador só sobrevivia porque registrava ANTES da primeira linha, que é uma
+ *  restrição de ORDEM que nenhum chamador deveria precisar conhecer.
+ *
+ *  SUBSTITUIR SERIA PIOR QUE PERDER: nenhum escritor conhece a lista inteira. Um
+ *  membro entrando declara UM nome, o dele, e um replace despejaria os outros
+ *  três. Mesma forma do `setCursor` acima — cada escritor só conhece a própria
+ *  metade, então o campo só cresce. Sair é editar `.my_chat_channels.tsv` na mão,
+ *  e não tem verbo pra isso de propósito.
+ *
+ *  ACRESCENTA UMA LINHA, nunca reescreve a antiga: dois membros entrando no mesmo
+ *  instante escrevem uma linha cada e os dois sobrevivem, onde um
+ *  ler-modificar-escrever guardaria só quem escreveu por último. */
 export function registerChannel(name: string, members: string[] = []): Channel {
-	const rows = readChannels();
-	const existing = rows.find((r) => r.name === name);
-	if (existing) return { name: existing.name, members: existing.members ? existing.members.split(",") : [], created_at: existing.created_at };
-	const row: ChannelRow = { name, members: members.join(","), created_at: now() };
-	appendFileSync(channelsFile(), [row.name, row.members, row.created_at].join("\t") + "\n");
-	return { name, members, created_at: row.created_at };
+	const rows = readChannels().filter((r) => r.name === name);
+	const known = fold(name, rows);
+	const novos = members.map(memberCell).filter((m, i, a) => a.indexOf(m) === i && !known.members.includes(m));
+	if (rows.length && !novos.length) return known;
+	const created_at = rows[0]?.created_at ?? now();
+	appendFileSync(channelsFile(), [name, novos.join(","), created_at].join("\t") + "\n");
+	return { name, members: [...known.members, ...novos], created_at };
 }
 
 export function listChannels(): Channel[] {
-	return readChannels().map((r) => ({ name: r.name, members: r.members ? r.members.split(",") : [], created_at: r.created_at }));
+	const byName = new Map<string, ChannelRow[]>();
+	for (const r of readChannels()) byName.set(r.name, [...(byName.get(r.name) ?? []), r]);
+	return [...byName].map(([name, rows]) => fold(name, rows));
 }

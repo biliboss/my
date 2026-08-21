@@ -42,6 +42,7 @@ export type Team = TeamsSystem.Entities.Team;
 export type Member = TeamsSystem.Entities.Member;
 export type Lineup = TeamsSystem.ValueObjects.Lineup;
 export type Subscription = TeamsSystem.ValueObjects.Subscription;
+export type ChannelName = TeamsSystem.ValueObjects.Chat.ChannelName;
 export type WorkPath = TeamsSystem.ValueObjects.WorkPath;
 export type TeamName = TeamsSystem.ValueObjects.TeamName;
 export type Claim = TeamsSystem.ValueObjects.Claim;
@@ -82,6 +83,17 @@ export function write(s: Stored): void {
 export const forget = (name: TeamName): void => rmSync(FILE(name), { force: true });
 
 export const memberName = (team: TeamName, role: string) => `${team}-${role}`;
+
+/** THE TEAM'S ROOM, and it defaults to the TEAM NAME — the same string that is
+ *  the workspace label in herdr and the prefix of every member's agent name. One
+ *  string, three worlds, which is the trick `memberName` already plays.
+ *
+ *  IT IS DERIVED AND NEVER STORED. Writing the minted name into the lineup would
+ *  make a second truth the day a team is renamed, and the default is one `??`.
+ *
+ *  It takes the team and not the `Subscription` because the fallback needs the
+ *  NAME, and a subscription does not carry one. */
+export const channelOf = (t: { name: TeamName; listens: Subscription }): ChannelName => t.listens.channel ?? t.name;
 
 /** The name minted when the lineup omits one — `plantao-coding`, off the first
  *  role, which is also the first cell it will be drawn in. */

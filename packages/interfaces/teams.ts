@@ -127,6 +127,16 @@ export declare namespace TeamsSystem {
 		export interface Subscription {
 			monitors: MonitorTarget.Any;
 			kinds: Inbox.WorkKind[];
+			/** The room the team is briefed in, woken in and answers in. Omitted, it is
+			 *  the TEAM NAME — every team has a room without anybody naming one, and the
+			 *  same string finds its workspace in herdr. Named explicitly when several
+			 *  teams talk in one PROJECT room, which is the shape the fleet actually
+			 *  used: one channel per project, one manager writing, N agents reading.
+			 *
+			 *  BESIDE THE QUEUE, NEVER INSTEAD OF IT: the queue is what a member PULLS,
+			 *  the room is what it is TOLD. A team with a queue and no room is a team
+			 *  nobody can ask a question, and every member of it is a pane again. */
+			channel?: Chat.ChannelName;
 		}
 
 		/** The four counts are meaningless apart: five waiting is fine with three idle
@@ -315,6 +325,16 @@ export declare namespace TeamsSystem {
 			 *  what a request NEEDS and comes from outside. Open, so an undeclared kind
 			 *  arrives as itself. */
 			export type WorkKind = string;
+		}
+
+		/** @see chat.ts — a team's room, and `Channel.members` is the subscription
+		 *  itself: who is expected to read it. */
+		export namespace Chat {
+			/** A `ChatSystem.ValueObjects.ChannelName`. Declared and not imported, like
+			 *  every other borrowed word here — the contract between two systems is the
+			 *  VALUE, and `src/teams/` reaching into `src/chat/` for a string would be a
+			 *  dependency bought for nothing. */
+			export type ChannelName = string;
 		}
 
 		/** @see src/sprints/CONTEXT.md */
