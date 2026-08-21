@@ -45,6 +45,34 @@
 //!                 REFUSES rather than pretend a column exists with no folder behind
 //!                 it — see `src/kanban/model.ts`'s header for the reasoning.
 //!
+//! THE SECOND BOARD, DECIDED 21/08: `kanban` learns GitHub Projects v2. It is not a
+//! sixth column on the folders and it is not a mirror of them — it is a board of its
+//! own, LINKED to a local one, and every verb says which of the two it answers about.
+//! The folders are where a task's work lives; the project is where a HUMAN looks at it,
+//! and neither is derivable from the other. Three facts drove the shape, all measured:
+//!
+//!   `Human Review`  the flow is `Inbox → Todo → In Progress → Human Review → Done`,
+//!                   and the fourth column is the one only Gabriel moves a card OUT of.
+//!                   It has no folder and never will — `tasks.Place` is what a directory
+//!                   can be named, and a human gate is not a directory. This is the
+//!                   whole reason the remote board was worth adopting instead of read.
+//!   the budget      Projects v2 is GraphQL-only (REST has no board and no Status
+//!                   field) and the 5000 points/hour are SHARED with every agent and the
+//!                   dashboard. It hit zero on 21/08 with 30-second polling on three
+//!                   boards, so no board read is implicit: `--remote` or a `gh:` address
+//!                   is required, and `check()` — which `my check all` runs — stays on
+//!                   disk. One board read is 1 point, measured.
+//!   the wipe        `updateProjectV2Field` RECREATES the Status options with new ids
+//!                   and every item pointing at the old ones loses its column in
+//!                   silence. It took two boards on 21/08. The client REFUSES to send
+//!                   it, and every read merges a local item→column snapshot so the loss
+//!                   is nameable afterwards.
+//!
+//! NO ID IS CACHED but owner and number. `_today/.gh_projects.jsonl` — the registry this
+//! replaces — stored the project id, the field id and the five option ids, and its own
+//! header admitted the option ids rot whenever anybody edits the field.
+//!
+//! implemented: src/kanban/remote.ts (the Projects v2 client) · src/kanban/model.ts (link, `Human Review` policy, remote findings)
 //! implemented: src/kanban/  (my kanban · open·capture·close·add·move·tag·label·limit·list·check·metrics·rename)
 //! depends_on: src/projects/ · src/sprints/ · src/tasks/
 //! checks:      declared HERE, never imported. `check()` returns `Finding[]` and

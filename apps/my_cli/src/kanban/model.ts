@@ -46,6 +46,20 @@ import { appendFileSync, existsSync, mkdirSync, readFileSync, readdirSync, renam
 import { dirname, join } from "node:path";
 import type { KanbanSystem } from "@biliboss/interfaces/kanban.ts";
 import type { TaskSystem } from "@biliboss/interfaces/tasks.ts";
+import {
+	FLOW,
+	HUMAN_REVIEW,
+	DONE as REMOTE_DONE,
+	INTAKE as REMOTE_INTAKE,
+	type RemoteBoard,
+	type RemoteRef,
+	byColumn,
+	itemByIssue,
+	parseRef,
+	readBoard,
+	readSnapshot,
+	refToString,
+} from "./remote.ts";
 import { PROJETOS, slugs as boardSlugs } from "../projects/model.ts";
 import { main as renameProject } from "../projects/rename.ts";
 import { criar as criarTask } from "../tasks/new.ts";
@@ -617,3 +631,148 @@ export function rework(): { label: string; rate: number }[] {
 }
 
 export { findTask };
+
+// ============================================================================
+// THE REMOTE BOARD — GitHub Projects v2 beside the folders
+// ============================================================================
+//
+// TWO BOARDS, AND THEY ARE NOT THE SAME BOARD. A local board is `01_projects/<slug>/`
+// and its columns ARE the four `Place` folders on disk. A remote board is a GitHub
+// Projects v2 project and its columns are the options of the `Status` field —
+// `Inbox → Todo → In Progress → Human Review → Done`. Merging them into one column
+// vocabulary would be the second truth this file's header already refuses: the folders
+// have no `Human Review` and GitHub has no `backlog/` directory.
+//
+// So they are LINKED, not fused. A local board may declare which project it appears on
+// (`.kanban/board.json#remote`), and every verb below says which of the two it is
+// answering about. Nothing is mirrored: a card is not copied from one to the other,
+// and there is no sync. A sync between two boards is a dual-write, and this house's
+// migration rule says one path must die — but neither of these has: the folders are
+// where a task's work lives, and the project is where a HUMAN looks at it.
+//
+// THE ONE THING THAT ONLY EXISTS REMOTELY IS `Human Review`, and it is the reason this
+// module exists at all. It is the column only Gabriel moves a card out of. `guardMove`
+// below is where that rule is code instead of prose.
+//
+// BUDGET: every function here whose name starts with `remote` spends GraphQL points.
+// The cost is on each one. None of them may be called from a loop or a timer.
+
+export { FLOW, HUMAN_REVIEW, REMOTE_INTAKE, REMOTE_DONE, byColumn, itemByIssue, readBoard, refToString };
+export type { RemoteBoard, RemoteRef };
+
+/** The link a local board declares to a GitHub project. ONLY owner and number are ever
+ *  stored — a URL a human can type. Project id, field id and the five option ids are
+ *  deliberately absent: the old `_today/.gh_projects.jsonl` cached all of them and its
+ *  own header admitted that option ids change whenever anyone edits the Status field.
+ *  A cached option id lands a card in a column that no longer exists, so they are
+ *  re-read on every command and trusted from no file. */
+export function linkOf(slug: string): RemoteRef | undefined {
+	const r = (readConfig(slug) as BoardConfig & { remote?: RemoteRef }).remote;
+	return r?.owner && r?.number ? { owner: r.owner, number: Number(r.number) } : undefined;
+}
+
+export function link(slug: string, ref: RemoteRef): RemoteRef {
+	if (!existsSync(join(PROJETOS, slug))) throw new Error(`no board \`${slug}\` — my kanban open ${slug}`);
+	const cfg = readConfig(slug) as BoardConfig & { remote?: RemoteRef };
+	cfg.remote = ref;
+	writeConfig(slug, cfg);
+	return ref;
+}
+
+export const links = (): { slug: string; ref: RemoteRef }[] =>
+	boardSlugs()
+		.map((slug) => ({ slug, ref: linkOf(slug) }))
+		.filter((x): x is { slug: string; ref: RemoteRef } => !!x.ref);
+
+/** WHICH BOARD A NAME MEANS. `gh:24` and `gh:biliboss/24` are always the remote one;
+ *  a local slug is remote only when it declares a link AND the caller asked for it.
+ *  Returning `undefined` for the remote arm rather than falling back to the local board
+ *  is deliberate — a silent fallback would answer a question about GitHub with the
+ *  contents of a folder. */
+export function refOf(name: string, opts: { remote?: boolean } = {}): RemoteRef | undefined {
+	const direct = parseRef(name);
+	if (direct) return direct;
+	return opts.remote ? linkOf(name) : undefined;
+}
+
+/** `soulperuibe#57` · `gh:24#57` — a card on a remote board. The address a human types
+ *  is the ISSUE number, because that is the number printed everywhere else; the
+ *  `PVTI_…` project item id is resolved from it and never typed.
+ *
+ *  FIELD VALUES LIVE ON THE ITEM, not on the issue — which is why the item id has to be
+ *  resolved at all, and why somebody reading only the issue never sees its column. */
+export function parseCardAddress(s: string): { board: string; issue: number } | undefined {
+	const i = s.lastIndexOf("#");
+	if (i <= 0) return undefined;
+	const issue = Number(s.slice(i + 1));
+	return Number.isInteger(issue) && issue > 0 ? { board: s.slice(0, i), issue } : undefined;
+}
+
+/** THE `Human Review` RULE, as code. Called before any remote move, and the only place
+ *  the policy is written down.
+ *
+ *  `gate` is not `refuse`: leaving `Human Review` is Gabriel's to decide, so the answer
+ *  is "ask a human", and `src/kanban/move.ts` turns that into a real question on a real
+ *  screen through `my askuser ask`. An agent cannot satisfy it by passing a flag.
+ *
+ *  Moving INTO `Human Review` is free — that is what an agent does when it is done, and
+ *  making it expensive would just push work around the column. */
+export function guardMove(from: string | undefined, to: string): { ok: true } | { gate: string } | { refuse: string } {
+	if (from === to) return { refuse: `already in \`${to}\`` };
+	if (from === HUMAN_REVIEW)
+		return { gate: `\`${HUMAN_REVIEW}\` → \`${to}\` is Gabriel's call, not an agent's. Nothing leaves this column without a human saying so.` };
+	if (to === REMOTE_DONE && from !== HUMAN_REVIEW)
+		return { refuse: `\`${from ?? "(no status)"}\` → \`${REMOTE_DONE}\` skips \`${HUMAN_REVIEW}\`. Nothing reaches Done without passing it — move it to \`${HUMAN_REVIEW}\` and let Gabriel close it.` };
+	return { ok: true };
+}
+
+// ---------------------------------------------------------------------------
+// What is rotten on a remote board
+// ---------------------------------------------------------------------------
+
+/** THE REMOTE FINDINGS. **COSTS 1 POINT PER BOARD**, which is why it is NOT part of
+ *  `check()` above: `check()` is the function `src/shared/house.ts` finds by FORM and
+ *  runs on every `my check all`, and a network call in there would spend the shared
+ *  GraphQL budget on every sweep — the exact shape of the 30-second polling that
+ *  emptied it on 21/08. `my kanban check --remote` asks for this explicitly.
+ *
+ *  `HUMAN REVIEW` is a finding and not an error: it is what `today waiting` printed —
+ *  the queue in front of Gabriel — and a board where it is empty is a board where
+ *  nothing is waiting on him. */
+export function remoteFindings(b: RemoteBoard): Finding[] {
+	const out: Finding[] = [];
+	const at = (i: { number?: number; id: string }) => `${refToString(b.ref)}#${i.number ?? i.id}`;
+	const known = new Set(b.columns.map((c) => c.name));
+
+	if (b.truncated)
+		out.push({ path: refToString(b.ref), says: `TRUNCATED: the board holds more than 100 items and everything read here is a prefix of it` });
+
+	const snap = readSnapshot(b.ref)?.status ?? {};
+	for (const i of b.items) {
+		if (i.parent)
+			out.push({ path: at(i), says: `SUB-ISSUE of #${i.parent}: it nests under the parent and shows in NO column — invisible on the board` });
+
+		if (!i.status) {
+			const was = snap[i.id];
+			// A card that HAD a column and now has none is the silent wipe:
+			// `updateProjectV2Field` recreated the options and orphaned every item that
+			// pointed at the old ids. The snapshot is the only remaining record of where
+			// it was, so the finding carries the command that puts it back.
+			if (was)
+				out.push({ path: at(i), says: `STATUS LOST: it was in \`${was.column}\` on ${was.seen_at.slice(0, 16)} and is in no column now — the Status field was recreated. Restore: my kanban move ${refToString(b.ref)}#${i.number} "${was.column}"` });
+			else out.push({ path: at(i), says: `NO STATUS: in no column at all — it does not appear on the board` });
+			continue;
+		}
+
+		if (!known.has(i.status)) out.push({ path: at(i), says: `column \`${i.status}\` is not an option of the Status field any more` });
+		else if (!(FLOW as readonly string[]).includes(i.status))
+			out.push({ path: at(i), says: `column \`${i.status}\` is outside the flow (${FLOW.join(" → ")}) — it is kept as-is, but nothing routes through it` });
+
+		if (i.status === HUMAN_REVIEW)
+			out.push({ path: at(i), says: `HUMAN REVIEW: waiting on Gabriel since ${i.updated_at?.slice(0, 16) ?? "?"} — "${i.title.slice(0, 60)}"` });
+
+		if (i.state === "CLOSED" && i.status !== REMOTE_DONE)
+			out.push({ path: at(i), says: `closed on GitHub but sitting in \`${i.status}\` — it never passed \`${HUMAN_REVIEW}\`` });
+	}
+	return out;
+}
