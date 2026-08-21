@@ -7,6 +7,7 @@
 //!     my chat import_today --distinct pm,pm-app             two names, two agents
 //!     my chat import_today --drop .pm.jsonl:11              a torn line, named by hand
 //!     my chat import_today --from /path/to/_today           where the JSONL lives
+//!     my chat import_today --no-rulings                     what the files say, before the house has an opinion
 //!
 //! IT DIES AT CUTOVER STEP 4 (@_today/001_today_moves_into_my.md). A one-shot
 //! importer left on disk is a second writer into an append-only file, and two
@@ -73,6 +74,70 @@ import { allMessages, busPath, getCursor, type Msg, registerChannel, setCursor }
 const CHANNEL_FILES = [".soulperuibe.jsonl", ".viacorretor.jsonl", ".mukutu.jsonl", ".pm.jsonl"] as const;
 
 const DEFAULT_SOURCE = () => process.env.TODAY_DIR ?? join(homedir(), "src/me/_today");
+
+/** THE RULINGS, taken 21/08, and written HERE rather than typed as flags at the
+ *  cutover. A `--alias` on a command line carries the decision and loses the
+ *  reason, and the reason is the whole of it: six months from now the question is
+ *  never "which flag" but "why that way round".
+ *
+ *  THEY ARE STILL CHECKED, all of them. A ruling that names a line which parses
+ *  fine becomes a STALE DROP and blocks the write — nothing here is a default that
+ *  can pass in silence. That is what makes it safe to pin a line number into source
+ *  in a file four agents are appending to this second.
+ *
+ *  `--no-rulings` runs without them, which is how you see what the files say before
+ *  the house has an opinion. */
+export const RULINGS = {
+	/** ONE AGENT, TWO NAMES — and note the direction: `design` is what DIES.
+	 *  `designer` is the name the herdr reports, the name it has signed in the
+	 *  channel since yesterday, and the name `.today.yaml` was corrected to today.
+	 *  Folding the other way would rename the survivor to match the corpse. */
+	alias: [["design", "designer", "`designer` is canonical: herdr, the signature since 20/08, and .today.yaml"]],
+
+	/** TWO NAMES THAT ARE NOT ONE AGENT. Folding either pair erases something the
+	 *  channel actually recorded, and no later reader could tell it was ever there. */
+	distinct: [
+		["pm", "pm-app", "pm-app builds the channel viewer and is the OTHER SIDE of .pm.jsonl — folding erases that the platform had its own owner, and erases an argument where the two disagreed and one corrected the other"],
+		["pm", "pm_owner", "two different Claude Code sessions, in two different panes (w52:p1 and w52:p3)"],
+	],
+
+	/** THE FIVE OF TODAY, and the date is load-bearing. A line number moves with
+	 *  every append and these four files are live, so this is a RECEIPT of what was
+	 *  ruled on 21/08 — never a standing truth. The `--dry-run` that runs immediately
+	 *  before the cutover, in the same session, is what decides: if it names a
+	 *  different line, ITS list wins and this one blocks until somebody re-reads it. */
+	drop: [
+		[".pm.jsonl:11", "torn — a fragment of an object with no end; nothing to recover"],
+		[".pm.jsonl:14", "torn — a fragment of an object with no end; nothing to recover"],
+		[".pm.jsonl:20", "torn — a fragment of an object with no end; nothing to recover"],
+		[".pm.jsonl:24", "torn — a fragment of an object with no end; nothing to recover"],
+		[".soulperuibe.jsonl:168", "parses, and has no author (`from` is {}) — not a message from anybody"],
+	],
+} as const;
+
+export type Ruled = { alias: Map<string, string>; distinct: Set<string>; drop: Set<string>; why: Map<string, string> };
+
+/** The rulings as the three sets `plan()` takes, plus the reason for each, so the
+ *  report can say WHY it dropped a line instead of only that it did. */
+export function ruled(): Ruled {
+	const alias = new Map<string, string>();
+	const distinct = new Set<string>();
+	const drop = new Set<string>();
+	const why = new Map<string, string>();
+	for (const [from, to, reason] of RULINGS.alias) {
+		alias.set(from, to);
+		why.set(`alias ${from}`, reason);
+	}
+	for (const [a, b, reason] of RULINGS.distinct) {
+		distinct.add(`${a} ${b}`);
+		why.set(`distinct ${a} ${b}`, reason);
+	}
+	for (const [line, reason] of RULINGS.drop) {
+		drop.add(line);
+		why.set(`drop ${line}`, reason);
+	}
+	return { alias, distinct, drop, why };
+}
 
 const HEADER = "seq\tchannel\tfrom\tto\tat\ttext\tthread\tanswers";
 
@@ -358,8 +423,21 @@ export function plan(opts: {
 			index.get(bucket)?.push(p);
 		}
 	}
+	// AN ALIAS RENAMES THE AUTHOR, SO IT MUST RENAME THE POINTER TOO. A `re` reads
+	// `<from>@<ts>`, and the `<from>` in it is the name as WRITTEN — fold `design`
+	// into `designer` without folding the pointer and every ack quoting `design@…`
+	// stops resolving, silently, into `thread` text. No `re` in the corpus names
+	// `design` TODAY, which is exactly why this would have gone unnoticed: the first
+	// one to break it would be written after the import was already believed good.
+	// A review id (`soulperuibe#24@…`) has no author in the head and passes through.
+	const aliasRe = (re: string) => {
+		const at = re.indexOf("@");
+		if (at < 0) return re;
+		const mapped = alias.get(re.slice(0, at));
+		return mapped ? mapped + re.slice(at) : re;
+	};
 	const lookup = (channel: string, re: string): { hit?: Pending; why?: "no match" | "ambiguous" } => {
-		const bucket = index.get(`${channel} ${re}`);
+		const bucket = index.get(`${channel} ${aliasRe(re)}`);
 		if (!bucket || bucket.length === 0) return { why: "no match" };
 		if (bucket.length > 1) return { why: "ambiguous" };
 		return { hit: bucket[0] };
@@ -500,10 +578,21 @@ export function write(p: Plan): { rows: number; cursors: number; channels: numbe
 
 const pad = (s: string, n: number) => s.padEnd(n);
 
-function report(p: Plan, drop: Set<string>, willWrite: boolean): void {
+function report(p: Plan, drop: Set<string>, willWrite: boolean, why: Map<string, string>): void {
 	console.log(`source   ${p.source}`);
 	console.log(`target   ${busPath()}   (next seq #${p.firstSeq})`);
 	console.log("");
+
+	// The rulings are printed EVERY run, whether or not they changed anything. A
+	// decision that only shows up when it fires is a decision nobody audits.
+	if (why.size) {
+		console.log(`RULINGS (${why.size}) — carried in the source, still checked every run`);
+		for (const [k, reason] of why) console.log(`  ${pad(k, 30)}${reason}`);
+		console.log("");
+	} else {
+		console.log("RULINGS: none (--no-rulings) — this is what the files say before the house has an opinion");
+		console.log("");
+	}
 
 	const types = ["message", "review", "ack", "join", "protocol"];
 	console.log(`${pad("channel", 14)}${pad("file", 22)}${pad("lines", 7)}${types.map((t) => pad(t, 10)).join("")}refused`);
@@ -524,8 +613,9 @@ function report(p: Plan, drop: Set<string>, willWrite: boolean): void {
 	if (p.refused.length) {
 		console.log(`REFUSED LINES (${p.refused.length}) — nothing is dropped that you did not name`);
 		for (const r of p.refused) {
-			const named = drop.has(`${r.file}:${r.n}`) ? "  [--drop given]" : "";
-			console.log(`  ${pad(`${r.file}:${r.n}`, 24)}${pad(r.kind, 14)}${r.says}${named}`);
+			const key = `${r.file}:${r.n}`;
+			const named = drop.has(key) ? (why.has(`drop ${key}`) ? "  [RULED]" : "  [--drop given]") : "";
+			console.log(`  ${pad(key, 24)}${pad(r.kind, 14)}${r.says}${named}`);
 		}
 		const unnamed = p.refused.filter((r) => !drop.has(`${r.file}:${r.n}`));
 		if (unnamed.length) console.log(`  → to drop them: ${unnamed.map((r) => `--drop ${r.file}:${r.n}`).join(" ")}`);
@@ -542,7 +632,7 @@ function report(p: Plan, drop: Set<string>, willWrite: boolean): void {
 		console.log(`NAME COLLISIONS (${p.collisions.length}) — one agent with two names, or two agents?`);
 		for (const c of p.collisions) {
 			console.log(`  ${pad(`${c.a} (${c.countA})`, 20)}~ ${pad(`${c.b} (${c.countB})`, 20)}channels: ${c.channels.join(", ")}`);
-			console.log(`     same agent → --alias ${c.b}=${c.a}      different → --distinct ${c.a},${c.b}`);
+			console.log(`     same agent → --alias ${c.b}=${c.a} (or ${c.a}=${c.b}; the LEFT name dies)      different → --distinct ${c.a},${c.b}`);
 		}
 		console.log("");
 	}
@@ -586,9 +676,11 @@ function report(p: Plan, drop: Set<string>, willWrite: boolean): void {
 }
 
 export function main(argv: string[]): number {
-	const alias = new Map<string, string>();
-	const distinct = new Set<string>();
-	const drop = new Set<string>();
+	// The rulings come FIRST and the flags layer on top, so a flag can still
+	// override a ruling in the session that finds it wrong. That is the whole point
+	// of them being named: an unnamed default cannot be argued with.
+	const base = argv.includes("--no-rulings") ? { alias: new Map<string, string>(), distinct: new Set<string>(), drop: new Set<string>(), why: new Map<string, string>() } : ruled();
+	const { alias, distinct, drop, why } = base;
 	let source = DEFAULT_SOURCE();
 	const willWrite = argv.includes("--write");
 
@@ -610,7 +702,7 @@ export function main(argv: string[]): number {
 			const v = argv[++i];
 			if (!v) return console.error("usage: --from <dir>"), 2;
 			source = v;
-		} else if (a !== "--write" && a !== "--dry-run") {
+		} else if (a !== "--write" && a !== "--dry-run" && a !== "--no-rulings") {
 			return console.error(`unknown flag: ${a}`), 2;
 		}
 	}
@@ -620,13 +712,22 @@ export function main(argv: string[]): number {
 	if (!found.length) return console.error(`none of the four channel files in ${source}`), 1;
 
 	const p = plan({ source, alias, distinct, drop });
-	report(p, drop, willWrite);
+	report(p, drop, willWrite, why);
 
 	const stop = blockers(p, drop);
 	if (stop.length) return 1;
 	if (!willWrite) return 0;
 
 	const done = write(p);
+	console.log("");
+	// THE RECEIPT, on the write and not only on the dry run. Whoever runs the
+	// cutover sees on screen exactly what did not come over — a discard that only
+	// appears in a rehearsal nobody re-reads is a silent discard with extra steps.
+	console.log(`DISCARDED (${p.refused.length}) — these lines did NOT come over:`);
+	for (const r of p.refused) {
+		const key = `${r.file}:${r.n}`;
+		console.log(`  ${pad(key, 24)}${pad(r.kind, 14)}${why.get(`drop ${key}`) ?? r.says}`);
+	}
 	console.log("");
 	console.log(`written: ${done.rows} rows, ${done.channels} channels, ${done.cursors} cursors moved`);
 	return 0;

@@ -38,7 +38,7 @@ afterAll(() => {
 	rmSync(SOURCE, { recursive: true, force: true });
 });
 
-const { blockers, plan, write } = await import("./import_today.ts");
+const { blockers, plan, RULINGS, ruled, write } = await import("./import_today.ts");
 const { allMessages, busPath, getCursor, listChannels, setCursor } = await import("./store.ts");
 
 const T = (n: number) => `2026-08-21T10:0${n}:00Z`;
@@ -60,6 +60,8 @@ const FIXTURE = [
 	JSON.stringify({ type: "message", from: "pm", ts: "2026-08-21T11:00:00Z", text: "twin a" }), // seq 6
 	JSON.stringify({ type: "message", from: "pm", ts: "2026-08-21T11:00:00Z", text: "twin b" }), // seq 7
 	JSON.stringify({ type: "message", from: "alice", ts: T(9), text: "which twin?", re: "pm@2026-08-21T11:00:00Z" }), // seq 8, ambiguous
+	JSON.stringify({ type: "message", from: "alice2", ts: "2026-08-21T12:00:00Z", text: "the other name speaks" }), // seq 9
+	JSON.stringify({ type: "message", from: "pm", ts: "2026-08-21T12:01:00Z", text: "answering it", re: "alice2@2026-08-21T12:00:00Z" }), // seq 10, answers 9
 ].join("\n");
 
 const RULED = {
@@ -87,7 +89,7 @@ test("a torn line is refused by file and number, never dropped in silence", () =
 	expect(torn[0]).toMatchObject({ file: ".mukutu.jsonl", n: 10 });
 	// And the count it printed proves nothing vanished: 15 lines in, and every one
 	// is either a row, a cursor, a member, the body, or a named refusal.
-	expect(p.perChannel[0]?.lines).toBe(15);
+	expect(p.perChannel[0]?.lines).toBe(17);
 	expect(blockers(p, new Set())).toContain("3 refused line(s) not named with --drop");
 });
 
@@ -136,7 +138,7 @@ test("`re` resolves to a seq where it can, and NEVER invents one where it cannot
 	expect(bySeq.get(8)?.thread).toBe("pm@2026-08-21T11:00:00Z");
 
 	expect(p.reUnresolved.map((u) => u.why).sort()).toEqual(["ambiguous", "no match"]);
-	expect(p.reResolved).toBe(3); // two messages and one ack
+	expect(p.reResolved).toBe(4); // three messages and one ack
 });
 
 test("ack is a cursor, not a message", () => {
@@ -178,9 +180,9 @@ test("protocol is reported and NOT written — `Channel` has no body field yet",
 test("the rows land in .my_chat.tsv with their ORIGINAL instants, not the import's clock", () => {
 	const p = plan(RULED);
 	const done = write(p);
-	expect(done.rows).toBe(8);
+	expect(done.rows).toBe(10);
 	const all = allMessages();
-	expect(all.map((m) => m.seq)).toEqual([1, 2, 3, 4, 5, 6, 7, 8]);
+	expect(all.map((m) => m.seq)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 	expect(all[0]).toMatchObject({ channel: "mukutu", from: "pm", to: "all", at: T(1), text: "start on #7" });
 	// `to` absent means the room: the omission IS the value, in 495 of the 620 real lines.
 	expect(all.every((m) => m.to !== "")).toBe(true);
@@ -193,7 +195,7 @@ test("seq continues from what is already in the file, and never reuses an addres
 	const p = plan(RULED);
 	expect(p.firstSeq).toBe(42);
 	write(p);
-	expect(allMessages().map((m) => m.seq)).toEqual([41, 42, 43, 44, 45, 46, 47, 48, 49]);
+	expect(allMessages().map((m) => m.seq)).toEqual([41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51]);
 });
 
 test("running twice is refused: the channels are already in the file", () => {
@@ -224,6 +226,45 @@ test("the cursor folds with max — a late import never rewinds a live listener"
 // =============================================================================
 // the real channels — read only, and only invariants that survive them growing
 // =============================================================================
+
+test("an alias renames the POINTER too, not only the author", () => {
+	// `re` carries the name as WRITTEN. Fold `alice2` into `alice` without folding
+	// the `re` that quotes it and the reply resolves to nothing — silently, into
+	// `thread` text. Nothing in the real corpus quotes `design` TODAY, which is
+	// precisely why this would have gone unnoticed until after the import was
+	// believed good.
+	const folded = plan({ ...RULED, distinct: new Set(), alias: new Map([["alice2", "alice"]]) });
+	const reply = folded.pending.find((q) => q.text === "answering it");
+	const spoke = folded.pending.find((q) => q.text === "the other name speaks");
+	expect(spoke?.from).toBe("alice");
+	expect(reply?.answers).toBe(spoke?.seq);
+	expect(folded.reUnresolved.some((u) => u.re.startsWith("alice2@"))).toBe(false);
+});
+
+test("the rulings are the same three sets, and every one of them is still checked", () => {
+	const r = ruled();
+	// The direction is the ruling: `design` dies, `designer` lives.
+	expect(r.alias.get("design")).toBe("designer");
+	expect(r.alias.has("designer")).toBe(false);
+	expect(r.distinct.has("pm pm-app")).toBe(true);
+	expect(r.distinct.has("pm pm_owner")).toBe(true);
+	expect([...r.drop].sort()).toEqual([".pm.jsonl:11", ".pm.jsonl:14", ".pm.jsonl:20", ".pm.jsonl:24", ".soulperuibe.jsonl:168"]);
+	// Every ruling carries its reason. A decision without one is a default.
+	expect(r.why.size).toBe(RULINGS.alias.length + RULINGS.distinct.length + RULINGS.drop.length);
+	for (const reason of r.why.values()) expect(reason.length).toBeGreaterThan(20);
+});
+
+test("a RULED drop gets no exemption: pinned at a line that parses fine, it still blocks", () => {
+	// This is the whole safety of pinning line numbers into source while four
+	// agents append to the files. The ruling is a receipt of 21/08, not a standing
+	// truth, and the run that finds it stale must refuse rather than eat a good line.
+	const drop = new Set([...RULED.drop, ".mukutu.jsonl:4"]);
+	const p = plan({ ...RULED, drop });
+	expect(p.staleDrops).toEqual([".mukutu.jsonl:4"]);
+	expect(blockers(p, drop).some((b) => b.includes("stale flag"))).toBe(true);
+	// And the good line it named is NOT in the import.
+	expect(p.pending.some((q) => q.text === "start on #7")).toBe(false);
+});
 
 const CHANNELS = [".soulperuibe.jsonl", ".viacorretor.jsonl", ".mukutu.jsonl", ".pm.jsonl"];
 const REAL = process.env.TODAY_DIR ?? join(homedir(), "src/me/_today");
@@ -266,6 +307,20 @@ test.skipIf(!existsSync(join(REAL, ".pm.jsonl")))("the real _today parses, and t
 	expect(p.refused.some((r) => r.kind === "torn" && r.file === ".pm.jsonl")).toBe(true);
 	expect(p.collisions.some((c) => c.a === "design" && c.b === "designer")).toBe(true);
 	expect(blockers(p, new Set()).length).toBeGreaterThan(0);
+
+	// …and with the rulings of 21/08 carried, the same plan comes out clean.
+	const r = ruled();
+	const green = plan({ source: copy, alias: r.alias, distinct: r.distinct, drop: r.drop });
+	expect(green.collisions).toEqual([]);
+	expect(green.pending.some((q) => q.from === "design")).toBe(false);
+	expect(green.pending.some((q) => q.from === "designer")).toBe(true);
+	// THE DRIFT ALARM. A stale pin means a line number moved, and this test failing
+	// is the finding — the `--dry-run` run in the cutover session is what decides,
+	// and it would name different lines than `RULINGS.drop` does.
+	expect(green.staleDrops).toEqual([]);
+	// A failure here is new damage in the live channels, not a broken test: some
+	// line tore, or an agent joined under a name that is a prefix of another.
+	expect(blockers(green, r.drop)).toEqual([]);
 
 	for (const [f, bytes] of before) expect(readFileSync(join(copy, f), "utf8")).toBe(bytes);
 	rmSync(copy, { recursive: true, force: true });
