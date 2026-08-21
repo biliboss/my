@@ -47,11 +47,12 @@
 //!                         bytes that arrived: 0.12ms and 0.57ms, same box, same
 //!                         minute.
 //!
-//! depends_on: src/interfaces/chat.ts
-//! impacts:    src/chat/say.ts · src/chat/ask.ts · src/chat/read.ts · src/chat/inbox.ts ·
-//!             src/chat/unanswered.ts · src/chat/channels.ts · src/chat/open.ts ·
-//!             src/chat/listen.ts · src/chat/seen.ts · src/chat/check.ts ·
-//!             src/agents/send.ts · src/agents/read.ts · src/agents/chat.ts
+//! depends_on: packages/interfaces/chat.ts
+//! impacts:    src/chat/index.ts · src/chat/say.ts · src/chat/read.ts ·
+//!             src/chat/listen.ts · src/chat/check.ts · src/chat/who.ts ·
+//!             src/chat/import_today.ts · src/agents/read.ts · src/agents/chat.ts
+//!             — whoever IMPORTS this file, by `grep`. `src/agents/send.ts` left the
+//!             list on 21/08: it imports `say.ts` now, and no longer the store.
 
 import {
 	appendFileSync,

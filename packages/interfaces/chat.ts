@@ -20,9 +20,11 @@
 //!
 //! Doc rule, split rule and turn format: see `teams.ts`.
 //!
-//! implemented: src/chat/store.ts · src/chat/say.ts · src/chat/ask.ts · src/chat/read.ts ·
-//!              src/chat/inbox.ts · src/chat/unanswered.ts · src/chat/channels.ts ·
-//!              src/chat/open.ts · src/chat/listen.ts · src/chat/seen.ts · src/chat/check.ts
+//! implemented: src/chat/store.ts · src/chat/index.ts · src/chat/say.ts ·
+//!              src/chat/read.ts · src/chat/listen.ts · src/chat/check.ts — ten verbs
+//!              became five on 21/08, and the six that went were never features: `ask`
+//!              was a flag on `say`, `inbox`/`unanswered`/`seen` were three readings of
+//!              one file, `channels`/`open` were the bare verb with `--members`.
 //! absorbed:   src/agents/bus.ts (deleted) · src/agents/send.ts · src/agents/read.ts ·
 //!             src/agents/chat.ts — the last three stayed as thin aliases, not
 //!             dependencies: `my agents send|read|chat` is cited across the house
