@@ -21,7 +21,7 @@
 //!
 //! depends_on: src/chat/store.ts
 
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { appendFileSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterAll, beforeEach, expect, test } from "bun:test";
@@ -75,6 +75,98 @@ test("cursor: ausente é 0, e `setCursor` é lido de volta por (canal, quem)", (
 	setCursor("t", "bob", 7);
 	expect(getCursor("t", "bob")).toBe(7);
 	expect(getCursor("outro-canal", "bob")).toBe(0); // cursor é por canal
+});
+
+// =============================================================================
+// read-back on append — the four torn lines of 21/08
+// =============================================================================
+
+test("append reads its own line back: what it returns is what the file holds", () => {
+	const m = append({ channel: "t", from: "gabriel", to: "bob", text: "com acento: ação e coração" });
+	expect(allMessages().find((x) => x.seq === m.seq)).toEqual(m);
+});
+
+test("append raises on a torn line instead of returning a message the file lost", () => {
+	append({ channel: "t", from: "gabriel", to: "bob", text: "primeira" });
+	// A REAL TEAR, not a simulated one: a writer that died mid-row leaves a
+	// fragment with NO newline, and the next append glues onto it. This is the
+	// shape of the 4 lines that tore in _today's channels on 21/08.
+	appendFileSync(busPath(), "9\tt\tgabriel");
+
+	expect(() => append({ channel: "t", from: "bob", to: "gabriel", text: "segunda" })).toThrow(/torn line/);
+
+	// And the tear is real: seq 2 exists nowhere as a row of its own, because its
+	// bytes are inside the glued line. Nobody would have noticed on a read — the
+	// glued line still PARSES, with every column shifted by one.
+	const rows = readFileSync(busPath(), "utf8").split("\n").filter(Boolean);
+	expect(rows.some((r) => r.startsWith("2\t"))).toBe(false);
+	expect(rows.some((r) => r.startsWith("9\tt\tgabriel2\t"))).toBe(true);
+});
+
+// =============================================================================
+// cursors fold with max — the rewind `.bus_acks.jsonl` was immune to
+// =============================================================================
+
+test("setCursor never rewinds: a stale acknowledgement folds with max", () => {
+	// This is the listen sequence: a batch is addressed BEFORE its handler runs
+	// and acknowledged AFTER, so a slow handler writes its (older) `to` last.
+	setCursor("t", "bob", 9); // the fast wake finished first
+	setCursor("t", "bob", 3); // the slow one returns later, carrying a stale `to`
+	expect(getCursor("t", "bob")).toBe(9);
+});
+
+test("a rewound cursor would re-deliver: the inbox stays empty after the stale write", () => {
+	for (const text of ["um", "dois", "tres"]) append({ channel: "t", from: "gabriel", to: "bob", text });
+	setCursor("t", "bob", 3);
+	setCursor("t", "bob", 1);
+	const pending = allMessages().filter((m) => m.channel === "t" && m.seq > getCursor("t", "bob") && m.to === "bob");
+	expect(pending).toEqual([]);
+});
+
+// =============================================================================
+// the parse is a tail — every byte before the offset is frozen by append-only
+// =============================================================================
+
+test("a line written by ANOTHER writer shows up on the next read", () => {
+	append({ channel: "t", from: "gabriel", to: "bob", text: "minha" });
+	appendFileSync(busPath(), ["2", "t", "outro-processo", "bob", "2026-08-21T13:20:30Z", "de fora", "", ""].join("\t") + "\n");
+	expect(allMessages().map((m) => m.text)).toEqual(["minha", "de fora"]);
+});
+
+test("a trailing fragment is not parsed until its newline lands", () => {
+	append({ channel: "t", from: "gabriel", to: "bob", text: "inteira" });
+	const half = ["2", "t", "gabriel", "bob", "2026-08-21T13:20:30Z"].join("\t");
+	appendFileSync(busPath(), half);
+	expect(allMessages().map((m) => m.text)).toEqual(["inteira"]);
+
+	appendFileSync(busPath(), ["", "pela metade", "", ""].join("\t") + "\n");
+	expect(allMessages().map((m) => m.text)).toEqual(["inteira", "pela metade"]);
+});
+
+test("accents do not shift the offset: the byte parsed to is a byte, not a character", () => {
+	append({ channel: "t", from: "gabriel", to: "bob", text: "ação, coração, não — três acentos" });
+	append({ channel: "t", from: "bob", to: "gabriel", text: "depois" });
+	expect(allMessages().map((m) => m.seq)).toEqual([1, 2]);
+	expect(allMessages()[1]!.text).toBe("depois");
+});
+
+test("the file being replaced by a LONGER one is re-read from zero", () => {
+	// The dangerous half of the offset: a bigger file passes a size check while its
+	// bytes are somebody else's. This is what the migration does to a house that
+	// already read its `.my_chat.tsv`, and it is what the anchor exists to catch.
+	append({ channel: "t", from: "gabriel", to: "bob", text: "curta" });
+	rmSync(busPath());
+	const outra = ["1", "outro", "quem", "todos", "2026-08-21T13:20:30Z", "uma linha bem mais comprida que a que estava ali antes", "", ""].join("\t");
+	writeFileSync(busPath(), "seq\tchannel\tfrom\tto\tat\ttext\tthread\tanswers\n" + outra + "\n" + outra.replace("1\t", "2\t") + "\n");
+	expect(allMessages().map((m) => m.seq)).toEqual([1, 2]);
+});
+
+test("the file being replaced by a shorter one is re-read from zero", () => {
+	append({ channel: "t", from: "gabriel", to: "bob", text: "antes" });
+	expect(allMessages()).toHaveLength(1);
+	rmSync(busPath());
+	append({ channel: "t", from: "gabriel", to: "bob", text: "depois" });
+	expect(allMessages().map((m) => m.text)).toEqual(["depois"]);
 });
 
 test("registerChannel: chave natural é o nome — a segunda chamada não duplica", () => {

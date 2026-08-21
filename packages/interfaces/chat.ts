@@ -87,7 +87,14 @@ export declare namespace ChatSystem {
 
 	export namespace Entities {
 		/** One thing said. Append-only: a message is never edited, because a channel
-		 *  where the past changes cannot be used to settle an argument. */
+		 *  where the past changes cannot be used to settle an argument.
+		 *
+		 *  THERE IS NO `type` FIELD, and adding one is a regression. The bus this
+		 *  replaced carried five (`message`, `ack`, `join`, `protocol`, `review`) and
+		 *  four of them were state dressed as prose: an ack IS a cursor, a join IS
+		 *  `Channel.members`, a protocol IS the channel's body, a review IS a message
+		 *  with `thread` and `answers`. Measured 21/08 in the fleet's channels: 29 ack
+		 *  lines and 13 join lines, none of which any reader ever folded. */
 		export interface Message {
 			seq: ValueObjects.Cursor;
 			channel: ValueObjects.ChannelName;
@@ -176,6 +183,13 @@ export interface Chat extends View {
 		members?: ChatSystem.ValueObjects.Addressee[],
 	): ChatSystem.Entities.Channel;
 
+	/** Write one line, and hand back the line the FILE holds.
+	 *
+	 *  A WRITE IS NOT DONE UNTIL IT READS BACK. The row is re-read from disk after
+	 *  the append and compared to what was written; a row that does not come back
+	 *  intact raises, and never returns a Message the channel does not carry.
+	 *  Measured 21/08: 4 of 607 lines in the fleet's channels were torn, and every
+	 *  one was found hours later by somebody who was not its writer. */
 	say(
 		channel: ChatSystem.ValueObjects.ChannelName,
 		to: ChatSystem.ValueObjects.Addressee,
@@ -192,7 +206,14 @@ export interface Chat extends View {
 	): Promise<ChatSystem.Entities.Message>;
 
 	/** Move my cursor. Explicit, never a side effect of `read`: an agent that crashes
-	 *  mid-work must find the same messages when it comes back. */
+	 *  mid-work must find the same messages when it comes back.
+	 *
+	 *  IT ONLY GOES FORWARD: `upto` folds with `max` over what is stored, never
+	 *  overwrites it. A batch is addressed before its handler runs and acknowledged
+	 *  after, so two overlapping wakes end with the SLOW one writing last, carrying
+	 *  the OLDER `upto` — an absolute write there rewinds the cursor and re-delivers
+	 *  work already done. Going back on purpose means deleting the cursor; there is
+	 *  no verb for it, on purpose. */
 	seen(
 		channel: ChatSystem.ValueObjects.ChannelName,
 		me: ChatSystem.ValueObjects.Addressee,
