@@ -631,46 +631,110 @@ function checkPresenca(all: ReturnType<typeof allMessages>): Finding[] {
 	return achados;
 }
 
-// ─── the verb ────────────────────────────────────────────────────────────────
+// ─── the verb ─────────────────────────────────────────────────────────────────
 
-/** `my chat <verb>`. One method per subverb: the outline of this class IS the CLI
- *  surface, and a verb the CLI has that this class does not is logic living in
- *  the thin layer. */
-export class Chat {
-	/** Appends one message. The write IS the delivery; waking the reader is not. */
-	say = say;
-
-	/** Appends and waits for the answer on the same thread. */
-	ask = ask;
-
-	/** Everything on a channel, or one thread of it. */
-	read = read;
-
-	/** What this reader has not seen yet, by cursor. */
-	inbox = inbox;
-
-	/** Questions with no answer on their thread. */
-	unanswered = unanswered;
-
-	/** Moves the cursor. Never implied by `inbox`: reading and acknowledging are
-	 *  two decisions, and collapsing them loses the batch on a crash. */
-	seen = seen;
-
-	/** Blocks and hands each new batch to the handler. */
-	listen = listen;
-
-	/** What is rotten in the bus itself — no herdr call. */
-	check = check;
-
-	/** Every message on every channel, in file order. */
-	all = allMessages;
-
-	/** Whether a message wakes the room or one name. */
-	broadcast = broadcast;
-
-	direct = direct;
-
-	channels = listChannels;
-
-	register = registerChannel;
+/** `my chat <subverbo>`. UMA CLASSE POR SUBVERBO, na ordem em que eles importam —
+ *  e é essa ordem que o help tem que ter, não a que o `readdirSync` devolve.
+ *
+ *  O que NÃO está aqui, e por quê: `who` mora em `@biliboss/agents`, porque
+ *  presença é pergunta sobre a FROTA e não sobre mensagem — importá-la daria a
+ *  este package uma dependência que o contrato recusa desde 20/08 ("chat works
+ *  with an agent that does not exist yet"). `import_today` é migração de tiro
+ *  único, mora na casca e morre com ela. */
+class ChatCore {
+	constructor(protected readonly root: Chat) {}
 }
+
+/** `my chat say` — escrever, que é o que mais se faz num canal. */
+export class ChatSay extends ChatCore {
+	/** UMA DIRETA: acorda `who`, e só. O nome é `to` e não `say` porque a forma do
+	 *  argumento É o conceito — quem escreve `say.to(...)` já escolheu. */
+	to(channel: string, who: string, text: string, thread?: string, answers?: number): Msg {
+		return say(channel, who, text, thread, answers);
+	}
+
+	/** BROADCAST: acorda todo membro do canal, e cada um custa um turno de modelo.
+	 *  67% do barramento é isto (531 de 795, medido 22/08); `to()` existe pra
+	 *  quando a pergunta tem dono. */
+	all(channel: string, text: string, thread?: string, answers?: number): Broadcast {
+		return say(channel, ALL, text, thread, answers) as Broadcast;
+	}
+
+	/** Fala e BLOQUEIA até a resposta chegar com `answers` apontando pra pergunta. */
+	ask(channel: string, who: string, text: string, thread?: string): Promise<Msg> {
+		return ask(channel, who, text, thread);
+	}
+}
+
+/** `my chat read` — ler o que já foi dito. Nada aqui move cursor sozinho. */
+export class ChatRead extends ChatCore {
+	/** Tudo do canal, mais velho primeiro, ou um thread só. */
+	channel(name: string, thread?: string): Msg[] {
+		return read(name, thread);
+	}
+
+	/** O que é PRA MIM e ainda não vi. Não avança cursor: `seen()` é a única porta. */
+	mine(name: string, me: string, since?: number): Msg[] {
+		return inbox(name, me, since);
+	}
+
+	/** As perguntas que ninguém respondeu — o único motivo de alguém rolar um canal. */
+	unanswered(name: string): Msg[] {
+		return unanswered(name);
+	}
+
+	/** Move o cursor, explicitamente. Só vai pra frente. */
+	seen(name: string, me: string, upto: number): void {
+		seen(name, me, upto);
+	}
+
+	/** Toda mensagem de todo canal, na ordem do arquivo. */
+	everything(): Msg[] {
+		return allMessages();
+	}
+}
+
+/** `my chat listen` — o verbo difícil: é assim que um agente dorme. */
+export class ChatListen extends ChatCore {
+	/** Entrega o lote quando o canal silencia, e move o cursor SÓ depois que o
+	 *  handler retorna. */
+	on(
+		channel: string,
+		me: string,
+		handler: (batch: Batch) => void,
+		opts?: { debounce?: number; max_wait?: number },
+	): { stop(): void } {
+		return listen(channel, me, handler, opts);
+	}
+}
+
+/** `my chat` pelado — as salas que existem, e quem assina cada uma. */
+export class ChatChannels extends ChatCore {
+	/** Os canais, com os membros já unidos linha a linha. */
+	all(): Channel[] {
+		return listChannels();
+	}
+
+	/** Find-or-create do canal, e ENTRA `members` nele. A lista só cresce. */
+	open(name: string, members: string[] = []): Channel {
+		return registerChannel(name, members);
+	}
+}
+
+/** `my chat check` — o que está torto no barramento. Síncrono, sem herdr. */
+export class ChatCheck extends ChatCore {
+	run(): Finding[] {
+		return check();
+	}
+}
+
+/** O agregado. A ordem destas cinco linhas É a ordem do help. */
+export class Chat {
+	readonly say = new ChatSay(this);
+	readonly read = new ChatRead(this);
+	readonly listen = new ChatListen(this);
+	readonly channels = new ChatChannels(this);
+	readonly check = new ChatCheck(this);
+}
+
+export const chat = new Chat();
