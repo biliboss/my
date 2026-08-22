@@ -30,12 +30,18 @@
 //!                  makes a message answer something it never answered. Same
 //!                  discipline `store.ts` took with `channel: ""`.
 //!
-//! THE FIVE LINE TYPES, and where each one lands:
+//! THE SIX LINE TYPES, and where each one lands:
 //!
 //!   message   → `Message`, unchanged.
 //!   review    → `Message` with `thread` = `<channel>#<issue>`. `answers` is left
 //!               EMPTY: a review names the issue it judges, never the seq, and no
 //!               field in the line carries one. See `answers` above.
+//!   summary   → `Message`, threaded on its issue exactly like a review, and its
+//!               `bullets[]` folded into the text as `- ` lines. It is NOT counted
+//!               as a review: one judges and one recaps, and the report says which.
+//!               Found 22/08 — the fifth type appeared AFTER the corpus was first
+//!               measured, which is the open-enum rule paying for itself: the four
+//!               lines stopped the import instead of arriving as something else.
 //!   ack       → the CURSOR, not a message. Its `re` resolves to a seq, and that
 //!               seq is how far its author had read.
 //!   join      → `Channel.members`.
@@ -336,7 +342,7 @@ export function plan(opts: {
 				continue;
 			}
 
-			if (type !== "message" && type !== "review") {
+			if (type !== "message" && type !== "review" && type !== "summary") {
 				// Open enum: an unknown variant stops the import instead of being
 				// coerced into the nearest known one.
 				refused.push({ file, n: line.n, kind: "unknown type", says: `unknown \`type\`: ${JSON.stringify(line.obj.type)}` });
@@ -345,6 +351,15 @@ export function plan(opts: {
 			}
 
 			let text = str(line.obj.text) ?? "";
+			const bullets = line.obj.bullets;
+			if (Array.isArray(bullets) && bullets.length) {
+				// A summary is a headline plus its evidence, and the evidence is the
+				// half that can be checked. `Message` has one text field, so the
+				// bullets fold into it — dropping them keeps the claim and loses
+				// every number behind it.
+				const lines = bullets.map((b) => (typeof b === "string" ? b : "")).filter(Boolean);
+				if (lines.length) text = [text, ...lines.map((l) => `- ${l}`)].join("\n");
+			}
 			const files = line.obj.files;
 			if (Array.isArray(files) && files.length) {
 				// The text says "ver [File #1]". Dropping the path leaves a reference to
@@ -356,10 +371,15 @@ export function plan(opts: {
 			let thread = str(line.obj.thread) ?? undefined;
 			const keys = [`${who}@${str(line.obj.ts)}`];
 			const isReview = type === "review";
-			if (isReview) {
+			// A summary and a review are different acts — one judges, one recaps —
+			// but both name an ISSUE and neither names a seq. The threading is the
+			// same; the label is not, so `isReview` stays false for a summary and
+			// only the reporting below tells them apart.
+			const onIssue = isReview || type === "summary";
+			if (onIssue) {
 				const issue = line.obj.issue;
 				if (issue === undefined || issue === null) {
-					refused.push({ file, n: line.n, kind: "unknown type", says: "review with no `issue`: nothing to thread it on" });
+					refused.push({ file, n: line.n, kind: "unknown type", says: `${type} with no \`issue\`: nothing to thread it on` });
 					refusedHere++;
 					continue;
 				}
@@ -496,8 +516,14 @@ export function plan(opts: {
 		}
 	}
 
-	const known = new Set(perChannel.map((c) => c.channel));
-	const alreadyImported = [...new Set(existing.filter((m) => known.has(m.channel)).map((m) => m.channel))].sort();
+	// The guard used to fire on the CHANNEL being present, which reads "imported"
+	// off a fact that only means "somebody said something here once". Measured
+	// 22/08: `.my_chat.tsv` held 4 lines written by hand into three channels, and
+	// that alone blocked an import of 600+ that had never run. A channel is not a
+	// receipt. The receipt is the LINE, and its identity is who said it, where,
+	// and when — the same triple the JSONL carries and the importer preserves.
+	const seen = new Set(existing.map((m) => `${m.channel}|${m.from}|${m.at}`));
+	const alreadyImported = [...new Set(kept.filter((p) => seen.has(`${p.channel}|${p.from}|${p.at}`)).map((p) => p.channel))].sort();
 
 	// A `--drop` naming a line that parses fine, or no line at all, is a stale flag
 	// from a previous run — and these files GROW, so line 11 tomorrow is not the
@@ -595,7 +621,7 @@ function report(p: Plan, drop: Set<string>, willWrite: boolean, why: Map<string,
 		console.log("");
 	}
 
-	const types = ["message", "review", "ack", "join", "protocol"];
+	const types = ["message", "review", "summary", "ack", "join", "protocol"];
 	console.log(`${pad("channel", 14)}${pad("file", 22)}${pad("lines", 7)}${types.map((t) => pad(t, 10)).join("")}refused`);
 	const total: Record<string, number> = {};
 	let totalLines = 0;
