@@ -1,0 +1,26 @@
+{
+  "name": "@biliboss/agents",
+  "version": "0.1.0",
+  "description": "Delegation: one herdr workspace, one tab per stage, a ceiling on how many run at once.",
+  "license": "MIT",
+  "author": "Gabriel (biliboss)",
+  "type": "module",
+  "exports": {
+    ".": "./agents.ts"
+  },
+  "dependencies": {
+    "@biliboss/chat": "workspace:*",
+    "@biliboss/herdr": "workspace:*",
+    "@biliboss/interfaces": "workspace:*",
+    "@biliboss/shared": "workspace:*",
+    "commander": "^15.0.0"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/node": "^20",
+    "typescript": "catalog:"
+  },
+  "scripts": {
+    "check": "tsc --noEmit --strict --target es2022 --module esnext --moduleResolution bundler --allowImportingTsExtensions --skipLibCheck --types node,bun *.ts"
+  }
+}
