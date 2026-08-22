@@ -50,6 +50,18 @@ function save(roster: Roster): void {
   writeFileSync(STORE(), JSON.stringify(roster, null, 2))
 }
 
+/** OS NOMES GUARDADOS, sem falar com o herdr e sem reconciliar nada.
+ *
+ *  `roster()` logo abaixo é a leitura NORMAL — ela cruza com a frota viva e
+ *  esquece quem sumiu, o que é certo pra "quem posso cutucar agora". Mas ela tem
+ *  dois efeitos que um leitor às vezes não pode pagar: devolve `[]` inteiro
+ *  quando o herdr está fora, e APAGA entradas na passagem. Quem só quer saber
+ *  como um agente se chama — o cartão A2A, entre outros — precisa da resposta
+ *  que sobrevive à frota estar fechada. */
+export function stored(): Roster {
+  return load()
+}
+
 export function remember(name: string, pane: string): void {
   const roster = load()
   roster[name] = { pane, workspace: pane.split(':')[0]!, at: new Date().toISOString() }
