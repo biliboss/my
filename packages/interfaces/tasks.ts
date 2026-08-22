@@ -7,9 +7,9 @@
 //! work ENDED, and the queue has nowhere to put them. Two axes, two types below.
 //!
 //! implemented: src/shared/work/{model,new,start,done,claim}.ts — LIBRARY ONLY.
-//! O verbo `my tasks` foi ARRANCADO em 22/08: oito subcomandos, e o board já era a
-//! porta de todos eles. Quem cria e fecha task hoje é `my kanban`; quem toma é
-//! `my teams claim`. Duas portas pro mesmo fato é a que ninguém mantém.
+//! NÃO EXISTE VERBO PRÓPRIO. O board é a porta: `my kanban` cria, move e fecha;
+//! `my teams claim` toma. Duas portas pro mesmo fato é a que ninguém mantém — o
+//! que morreu, e por quê, está no commit a248f1f.
 //! depends_on:  src/shared/work/ · packages/interfaces/labels.ts
 //! checks:      declared HERE, never imported. `check()` returns `Finding[]` and
 //!              the runner reads it structurally, so a check costs no dependency.
