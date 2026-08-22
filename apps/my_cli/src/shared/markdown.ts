@@ -82,7 +82,7 @@ const TYPES: [RegExp, string][] = [
 	// casa mudou de ideia: @01_projects/CONTEXT.md pedia `<slug>/<slug>.md`, e o
 	// `my projects new` de 17/08 escreve `CONTEXT.md`. São o mesmo tipo.
 	[/^01_projects\/([^/]+)\/\1\.md$/, "project"],
-	[/^02_areas\/00_workflows\//, "workflow"],
+	[/^03_resources\/00_company\//, "workflow"],
 	[/^02_areas\/\d\d-/, "area"],
 	[/^03_resources\/rules\//, "rule"],
 	[/^03_resources\/templates\//, "template"],

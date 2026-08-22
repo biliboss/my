@@ -26,7 +26,7 @@
 
 import { existsSync, mkdirSync, symlinkSync, unlinkSync } from "node:fs";
 import { join, relative } from "node:path";
-import { has, value } from "../../shared/argv.ts";
+import { has, value } from "@biliboss/shared/argv";
 import { code, root } from "../../home/paths.ts";
 
 export function install(into: string): { link: string; target: string } | { erro: string } {

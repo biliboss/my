@@ -1,3 +1,4 @@
+#!/usr/bin/env bun
 //! Traz uma aba pra frente: `bun run src/herdr/tabs/focus.ts w3K:t2`.
 //!
 //! Cercado por herança: `w3K:t2` nomeia o workspace dele, então bloquear `w3K`
@@ -6,17 +7,7 @@
 //! depends_on: src/herdr/run.ts · src/herdr/policy.ts
 //! impacts:    src/herdr/tabs/CONTEXT.md
 
-import { did } from '../run.ts'
-import { fence } from '../policy.ts'
-import { upstream, type Fail } from '../../shared/result.ts'
-
-export async function focus(id: string): Promise<{ ok: true; id: string } | Fail> {
-  const fenced = fence(id)
-  if (fenced) return fenced
-
-  const out = await did(['tab', 'focus', id])
-  return out.ok ? { ok: true, id } : upstream(out.error ?? 'herdr failed')
-}
+import { focus } from "@biliboss/herdr/tabs/focus";
 
 if (import.meta.main) {
   const out = await focus(Bun.argv[2] ?? '')

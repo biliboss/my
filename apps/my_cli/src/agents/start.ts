@@ -22,8 +22,8 @@
 //! impacts:    —
 
 import type { AgentSystem, Fail } from '@biliboss/interfaces/agents.ts'
-import { startWhenReady } from '../herdr/agents/start.ts'
-import { remember } from '../herdr/agents/roster.ts'
+import { startWhenReady } from "@biliboss/herdr/agents/start"
+import { remember } from "@biliboss/herdr/agents/roster"
 import { find } from './view.ts'
 
 export async function start(

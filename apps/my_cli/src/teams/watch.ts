@@ -40,7 +40,7 @@ import { Command } from "commander";
 import type { TeamsSystem } from "@biliboss/interfaces/teams.ts";
 import { inbox } from "../chat/read.ts";
 import { getCursor } from "../chat/store.ts";
-import { send } from "../herdr/panes/send.ts";
+import { send } from "@biliboss/herdr/panes/send";
 import { type Team, channelOf, queueOf } from "./model.ts";
 import { all } from "./list.ts";
 

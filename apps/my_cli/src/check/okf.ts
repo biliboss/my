@@ -41,7 +41,7 @@
 //! impacts:    src/check/ratchet.ts
 
 import { type Acao, type Carimbo, carimba, carimbos } from "../shared/markdown.ts";
-import { has } from "../shared/argv.ts";
+import { has } from "@biliboss/shared/argv";
 
 /** SEM `type` é uma coisa; `type` DIVERGENTE do caminho é outra — e confundir as
  *  duas travou a catraca em vermelho por dias.

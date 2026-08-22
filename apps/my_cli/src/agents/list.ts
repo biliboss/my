@@ -27,9 +27,9 @@
 //! impacts:    src/agents/view.ts · src/agents/start.ts · src/agents/control.ts · src/agents/check.ts
 
 import { Command } from 'commander'
-import { list as vivos, type Agent } from '../herdr/agents/list.ts'
-import { roster } from '../herdr/agents/roster.ts'
-import { list as listWorkspaces } from '../herdr/workspaces/list.ts'
+import { list as vivos, type Agent } from "@biliboss/herdr/agents/list"
+import { roster } from "@biliboss/herdr/agents/roster"
+import { list as listWorkspaces } from "@biliboss/herdr/workspaces/list"
 import { baseCurta, nomeDoClone } from './clone.ts'
 import { fmtOf, out } from '../shared/gh.ts'
 import type { AgentSystem } from '@biliboss/interfaces/agents.ts'

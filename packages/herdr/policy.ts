@@ -29,11 +29,11 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 
-import { adopt, code } from '../home/paths.ts'
+import { store } from "./paths.ts"
 
-import type { Fail } from '../shared/result.ts'
+import type { Fail } from "@biliboss/shared/result"
 
-const STORE = () => adopt(join(code(), '_data', 'workspaces.json'), 'workspaces')
+const STORE = () => store("workspaces.json")
 
 export type Mark = { at: string; reason?: string }
 type Policy = { blocked: Record<string, Mark>; hidden: Record<string, Mark> }

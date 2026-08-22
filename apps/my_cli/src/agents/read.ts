@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
-//! Apelido fino de `my chat inbox` + `my chat seen`. FICA — `my agents read
-//! <agente>` está citado e usado pela frota AGORA (mesma razão de
+//! Apelido fino de `my chat read --mine` + `my chat read --seen`. FICA — `my
+//! agents read <agente>` está citado e usado pela frota AGORA (mesma razão de
 //! `src/agents/send.ts`, @CLAUDE.md: a chamada antiga não pode quebrar).
 //!
 //! O CONTRATO NOVO (@packages/interfaces/chat.ts:186) diz que `seen` nunca é efeito
@@ -18,11 +18,9 @@
 //!
 //! Canal sempre `""` — ver `src/agents/send.ts`.
 //!
-//! depends_on: src/chat/inbox.ts · src/chat/seen.ts · src/chat/read.ts
+//! depends_on: src/chat/read.ts
 
-import { inbox } from "../chat/inbox.ts";
-import { read as readChannel } from "../chat/read.ts";
-import { seen } from "../chat/seen.ts";
+import { inbox, read as readChannel, seen } from "../chat/read.ts";
 import type { Msg } from "../chat/store.ts";
 
 const show = (m: Msg) => console.log(`${m.at}  ${m.from} → ${m.to}\n  ${m.text}`);

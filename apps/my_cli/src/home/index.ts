@@ -34,7 +34,7 @@
 
 import { existsSync, rmSync } from "node:fs";
 
-import { has, value } from "../shared/argv.ts";
+import { has, value } from "@biliboss/shared/argv";
 import { machine, resolve, root, setRoot, storedRoot } from "./paths.ts";
 
 export function main(argv: string[] = Bun.argv.slice(2)): number {

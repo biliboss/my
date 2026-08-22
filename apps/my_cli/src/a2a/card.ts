@@ -32,7 +32,7 @@ import { Command } from "commander";
 
 import type { A2ASystem } from "@biliboss/interfaces/a2a.ts";
 
-import { stored } from "../herdr/agents/roster.ts";
+import { stored } from "@biliboss/herdr/agents/roster";
 
 /** A versão da spec que esta casa fala. Literal, e não lida de lugar nenhum: é
  *  uma AFIRMAÇÃO sobre o que implementamos, e ela só muda quando o código muda. */

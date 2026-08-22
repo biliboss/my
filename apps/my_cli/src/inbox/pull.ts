@@ -20,12 +20,12 @@
 //! instruction would arrive BEFORE the request.
 //!
 //! depends_on: src/inbox/layout.ts · src/inbox/system_inbox.ts · src/herdr/panes/send.ts
-//! impacts:    02_areas/00_workflows/02_system/001_user_prompt/CONTEXT.md
+//! impacts:    03_resources/00_company/shared_workflows/route_request/CONTEXT.md
 
 import { Command } from "commander";
 import { relative } from "node:path";
 import { home } from "../shared/file.ts";
-import { send } from "../herdr/panes/send.ts";
+import { send } from "@biliboss/herdr/panes/send";
 import { inboxAt, items, locate, moveTo } from "./layout.ts";
 import type { Inbox } from "./system_inbox.ts";
 
@@ -96,7 +96,7 @@ export async function main(argv: string[]): Promise<number> {
 
   const line =
     `1) ${dir}/CONTEXT.md (o item ${pulled})  ` +
-    `2) ${ROOT}/02_areas/00_workflows/02_system/001_user_prompt/CONTEXT.md  ` +
+    `2) ${ROOT}/03_resources/00_company/shared_workflows/route_request/CONTEXT.md  ` +
     `— siga as instruções de cada arquivo, NA ORDEM: o pedido, e a rampa que o roteia.`;
   // Pelo caso de uso, nunca por `Bun.$`: @src/herdr/run.ts é o ÚNICO lugar que sai
   // pro herdr, por causa do timeout. E `panes/send.ts` traz a pausa antes do Enter

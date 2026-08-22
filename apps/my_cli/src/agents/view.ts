@@ -45,9 +45,9 @@ import { existsSync, readdirSync, readFileSync } from 'node:fs'
 import { homedir } from 'node:os'
 import { join } from 'node:path'
 import type { AgentSystem, Fail } from '@biliboss/interfaces/agents.ts'
-import { list as liveAgents, type Agent as HerdrAgent } from '../herdr/agents/list.ts'
-import { roster } from '../herdr/agents/roster.ts'
-import { read } from '../herdr/panes/read.ts'
+import { list as liveAgents, type Agent as HerdrAgent } from "@biliboss/herdr/agents/list"
+import { roster } from "@biliboss/herdr/agents/roster"
+import { read } from "@biliboss/herdr/panes/read"
 import { all } from './list.ts'
 
 const fail = (error: string, reason: Fail['reason'] = 'not_found'): Fail => ({ ok: false, error, reason })

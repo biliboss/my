@@ -79,7 +79,7 @@
 
 import { existsSync } from "node:fs";
 import { resolve } from "node:path";
-import { has, value } from "../shared/argv.ts";
+import { has, value } from "@biliboss/shared/argv";
 import { trees } from "../shared/file.ts";
 
 const HERE = import.meta.dir;

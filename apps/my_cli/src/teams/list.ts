@@ -25,7 +25,7 @@ import { Command } from "commander";
 
 import type { TeamsSystem } from "@biliboss/interfaces/teams.ts";
 import { all as fleet } from "../agents/list.ts";
-import { list as liveWorkspaces } from "../herdr/workspaces/list.ts";
+import { list as liveWorkspaces } from "@biliboss/herdr/workspaces/list";
 import { fmtOf, out } from "../shared/gh.ts";
 import { type Member, type Team, type TeamName, heldBy, isIdle, memberName, queueOf, stored, storedOf } from "./model.ts";
 

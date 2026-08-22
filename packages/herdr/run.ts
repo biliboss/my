@@ -1,5 +1,11 @@
-//! The ONE place this house shells out to herdr — the multiplexer where the
-//! fleet lives.
+//! The one place THIS PACKAGE shells out to herdr — the multiplexer where the
+//! fleet lives. It carries the timeout and `--remote`, and everything under
+//! `packages/herdr/` goes through it.
+//!
+//! It is not yet the only shellout in the monorepo: `apps/my` and `apps/my-wall`
+//! each run their own `execFile("herdr", ...)` in `app/api/agents/route.ts`, with
+//! no timeout and no remote. Extracting this package is what makes fixing those
+//! an import instead of a third copy.
 //!
 //!     bun run src/herdr/run.ts workspace list
 //!     my herdr workspaces list --remote fonseca-vps
@@ -68,7 +74,8 @@ export async function run(
     const stdout = await new Response(child.stdout).text()
     await child.exited
 
-    if (child.exitedDueToTimeout) {
+    // `exitedDueToTimeout` is newer than the @types/bun this workspace pins.
+    if ((child as { exitedDueToTimeout?: boolean }).exitedDueToTimeout) {
       const onde = remote ? ` em ${remote}` : ''
       return { ok: false, stdout: '', error: `herdr ${args.join(' ')}${onde} timed out after ${limit}ms` }
     }

@@ -66,12 +66,12 @@
 //! impacts:    src/herdr/agents/start.ts
 
 import { Command } from 'commander'
-import { result } from '../herdr/run.ts'
-import { read } from '../herdr/panes/read.ts'
-import { send } from '../herdr/panes/send.ts'
-import { split } from '../herdr/panes/split.ts'
-import { list as liveAgents } from '../herdr/agents/list.ts'
-import { remember, roster } from '../herdr/agents/roster.ts'
+import { result } from "@biliboss/herdr/run"
+import { read } from "@biliboss/herdr/panes/read"
+import { send } from "@biliboss/herdr/panes/send"
+import { split } from "@biliboss/herdr/panes/split"
+import { list as liveAgents } from "@biliboss/herdr/agents/list"
+import { remember, roster } from "@biliboss/herdr/agents/roster"
 import type { AgentSystem, Fail } from '@biliboss/interfaces/agents.ts'
 
 type Pane = {

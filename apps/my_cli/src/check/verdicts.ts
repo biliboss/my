@@ -41,7 +41,7 @@ import { join } from "node:path";
 import { home } from "../shared/file.ts";
 
 const ROOT = home();
-const QA = join(ROOT, "02_areas", "00_workflows", "00_main", "03_qa", "output");
+const QA = join(ROOT, "03_resources", "00_company", "02_deliver_what_sell", "03_validate", "qa_and_merge", "output");
 
 const argv = Bun.argv.slice(2);
 const wantsJson = argv.includes("--json");

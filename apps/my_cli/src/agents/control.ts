@@ -47,11 +47,11 @@
 //!             src/agents/clone.ts (esperaTUI)
 //! impacts:    —
 
-import { did } from '../herdr/run.ts'
-import { send } from '../herdr/panes/send.ts'
-import { split } from '../herdr/panes/split.ts'
-import { list as liveAgents, type Agent as HerdrAgent } from '../herdr/agents/list.ts'
-import { forget, remember, roster } from '../herdr/agents/roster.ts'
+import { did } from "@biliboss/herdr/run"
+import { send } from "@biliboss/herdr/panes/send"
+import { split } from "@biliboss/herdr/panes/split"
+import { list as liveAgents, type Agent as HerdrAgent } from "@biliboss/herdr/agents/list"
+import { forget, remember, roster } from "@biliboss/herdr/agents/roster"
 import { esperaTUI, TUI_MS } from './clone.ts'
 import type { AgentSystem, Fail } from '@biliboss/interfaces/agents.ts'
 

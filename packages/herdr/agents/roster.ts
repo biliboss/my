@@ -26,11 +26,11 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 
-import { adopt, code } from '../../home/paths.ts'
+import { store } from "../paths.ts"
 
 import { list } from './list.ts'
 
-const STORE = () => adopt(join(code(), '_data', 'agents.json'), 'agents')
+const STORE = () => store("agents.json")
 
 export type Entry = { pane: string; workspace: string; at: string }
 type Roster = Record<string, Entry>
