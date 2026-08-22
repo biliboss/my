@@ -15,7 +15,7 @@
     "commander": "^15.0.0",
     "drizzle-orm": "^0.45.2",
     "surrealdb": "^2.0.8",
-    "@biliboss/my-notes": "workspace:*",
+    "@biliboss/notes": "workspace:*",
     "@biliboss/herdr": "workspace:*",
     "@biliboss/shared": "workspace:*"
   },

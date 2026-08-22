@@ -11,7 +11,7 @@ import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
-const CASA = mkdtempSync(join(tmpdir(), "my-resources-"));
+const CASA = mkdtempSync(join(tmpdir(), "resources-"));
 const REAL = process.env.MY_HOME;
 process.env.MY_HOME = CASA;
 

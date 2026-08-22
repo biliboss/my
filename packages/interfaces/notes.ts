@@ -1,7 +1,7 @@
 //! `notes` — the zettels in `03_resources/notes/` and the day in `00_daily_notes/`,
 //! plus the labels both carry. Full field list: `03_resources/notes/note.schema.json`.
 //!
-//! implemented: packages/my-notes/
+//! implemented: packages/notes/
 //! cli:         apps/my_cli/src/{notes,daily_notes,labels}/
 
 import type { Shared } from "./shared";

@@ -98,7 +98,7 @@ export const LENSES = {
 			"references/google_workspace",
 			"references/skills",
 			// `references/databases` VIVEU MEIA HORA, em 20/08. A página de SurrealDB
-			// nasceu aqui e mudou pra `packages/my-resources/resource/surrealdb.ts` no
+			// nasceu aqui e mudou pra `packages/resources/resource/surrealdb.ts` no
 			// mesmo dia: é conhecimento sobre o CÓDIGO, e código anda com código. A
 			// pasta saiu junto — semente que aponta pra pasta vazia é a mesma podridão
 			// que este comentário já descreve dois parágrafos acima.

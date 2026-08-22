@@ -9,7 +9,7 @@
 import { readFileSync } from "node:fs";
 import { Command } from "commander";
 
-import { dayFile, days, hasDay, today } from "@biliboss/my-notes";
+import { dayFile, days, hasDay, today } from "@biliboss/notes";
 import { fmtOf, out } from "../shared/gh.ts";
 
 /** The `##` headings of a day, in the order they happened. */

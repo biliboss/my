@@ -1,5 +1,5 @@
 #!/usr/bin/env bun
-//! A new zettel. The gate lives in `@biliboss/my-notes#create`.
+//! A new zettel. The gate lives in `@biliboss/notes#create`.
 //!
 //!     my notes new "the idea" --link 2026-08-22T0743Z --why "same pair of boxes"
 //!     my notes new "first of its subject" --first "nobody has written this down"
@@ -7,7 +7,7 @@
 
 import { Command } from "commander";
 
-import { KINDS, SCOPES, STATUSES, create } from "@biliboss/my-notes";
+import { KINDS, SCOPES, STATUSES, create } from "@biliboss/notes";
 
 export function command(): Command {
 	return new Command("new")

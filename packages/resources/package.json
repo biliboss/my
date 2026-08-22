@@ -1,5 +1,5 @@
 {
-  "name": "@biliboss/my-resources",
+  "name": "@biliboss/resources",
   "version": "0.1.0",
   "description": "Everything this house knows, N at a time: the .ts resources this package ships, plus the markdown of whatever house MY_HOME points at.",
   "license": "MIT",
@@ -15,9 +15,10 @@
   },
   "devDependencies": {
     "@types/node": "^20",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "@types/bun": "latest"
   },
   "scripts": {
-    "check": "tsc --noEmit --strict --target es2022 --module esnext --moduleResolution bundler --allowImportingTsExtensions --skipLibCheck --types node *.ts resource/*.ts"
+    "check": "tsc --noEmit --strict --target es2022 --module esnext --moduleResolution bundler --allowImportingTsExtensions --skipLibCheck --types node,bun *.ts resource/*.ts"
   }
 }

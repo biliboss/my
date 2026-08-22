@@ -12,7 +12,7 @@
 //!
 //!   `.ts` DAQUI      conhecimento sobre o CÓDIGO, que viaja com ele. Quem instala
 //!                    o pacote leva junto, e a página não depende de existir uma
-//!                    casa. É o que faz `my-resources` ser útil fora desta máquina.
+//!                    casa. É o que faz `@biliboss/resources` ser útil fora desta máquina.
 //!   markdown da CASA o que é do Gabriel — `03_resources/`, versionado no
 //!                    `biliboss/me`, e que nenhum pacote público deveria carregar.
 //!

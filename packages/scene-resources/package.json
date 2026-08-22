@@ -1,0 +1,29 @@
+{
+  "name": "@biliboss/scene-resources",
+  "version": "0.1.0",
+  "description": "One scene, one question: what does this house know, and through which of the three lenses is it being read.",
+  "license": "MIT",
+  "author": "Gabriel (biliboss)",
+  "type": "module",
+  "exports": {
+    ".": "./index.ts",
+    "./adapt": "./adapt.ts"
+  },
+  "dependencies": {
+    "@biliboss/interfaces": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": ">=19"
+  },
+  "devDependencies": {
+    "@biliboss/resources": "workspace:*",
+    "@types/node": "^20",
+    "@types/react": "catalog:",
+    "react": "catalog:",
+    "typescript": "catalog:"
+  },
+  "scripts": {
+    "check": "tsc --noEmit -p tsconfig.json",
+    "probe": "bun run probe.ts"
+  }
+}

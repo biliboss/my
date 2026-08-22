@@ -7,7 +7,7 @@
 
 import { Command } from "commander";
 
-import { append, today } from "@biliboss/my-notes";
+import { append, today } from "@biliboss/notes";
 
 export function command(): Command {
 	return new Command("add")

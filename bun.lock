@@ -187,7 +187,7 @@
         "@biliboss/herdr": "workspace:*",
         "@biliboss/interfaces": "workspace:*",
         "@biliboss/lp-slices": "workspace:*",
-        "@biliboss/my-notes": "workspace:*",
+        "@biliboss/notes": "workspace:*",
         "@biliboss/shared": "workspace:*",
         "commander": "^15.0.0",
         "drizzle-orm": "^0.45.2",
@@ -243,29 +243,6 @@
         "electrobun": "1.18.1",
       },
     },
-    "packages/my-notes": {
-      "name": "@biliboss/my-notes",
-      "version": "0.1.0",
-      "dependencies": {
-        "@biliboss/interfaces": "workspace:*",
-      },
-      "devDependencies": {
-        "@types/bun": "latest",
-        "@types/node": "^20",
-        "typescript": "catalog:",
-      },
-    },
-    "packages/my-resources": {
-      "name": "@biliboss/my-resources",
-      "version": "0.1.0",
-      "dependencies": {
-        "@biliboss/interfaces": "workspace:*",
-      },
-      "devDependencies": {
-        "@types/node": "^20",
-        "typescript": "catalog:",
-      },
-    },
     "packages/my-ui": {
       "name": "@biliboss/my-ui",
       "version": "0.1.0",
@@ -288,6 +265,30 @@
       "optionalPeers": [
         "cytoscape",
       ],
+    },
+    "packages/notes": {
+      "name": "@biliboss/notes",
+      "version": "0.1.0",
+      "dependencies": {
+        "@biliboss/interfaces": "workspace:*",
+      },
+      "devDependencies": {
+        "@types/bun": "latest",
+        "@types/node": "^20",
+        "typescript": "catalog:",
+      },
+    },
+    "packages/resources": {
+      "name": "@biliboss/resources",
+      "version": "0.1.0",
+      "dependencies": {
+        "@biliboss/interfaces": "workspace:*",
+      },
+      "devDependencies": {
+        "@types/bun": "latest",
+        "@types/node": "^20",
+        "typescript": "catalog:",
+      },
     },
     "packages/scene-design": {
       "name": "@biliboss/scene-design",
@@ -367,7 +368,7 @@
         "@biliboss/interfaces": "workspace:*",
       },
       "devDependencies": {
-        "@biliboss/my-resources": "workspace:*",
+        "@biliboss/resources": "workspace:*",
         "@types/node": "^20",
         "@types/react": "catalog:",
         "react": "catalog:",
@@ -478,13 +479,13 @@
 
     "@biliboss/my-graph": ["@biliboss/my-graph@workspace:apps/my-graph"],
 
-    "@biliboss/my-notes": ["@biliboss/my-notes@workspace:packages/my-notes"],
-
-    "@biliboss/my-resources": ["@biliboss/my-resources@workspace:packages/my-resources"],
-
     "@biliboss/my-ui": ["@biliboss/my-ui@workspace:packages/my-ui"],
 
     "@biliboss/my-wall": ["@biliboss/my-wall@workspace:apps/my-wall"],
+
+    "@biliboss/notes": ["@biliboss/notes@workspace:packages/notes"],
+
+    "@biliboss/resources": ["@biliboss/resources@workspace:packages/resources"],
 
     "@biliboss/scene-design": ["@biliboss/scene-design@workspace:packages/scene-design"],
 

@@ -10,7 +10,7 @@
 import { readFileSync } from "node:fs";
 import { Command } from "commander";
 
-import { filter, notes } from "@biliboss/my-notes";
+import { filter, notes } from "@biliboss/notes";
 import { fmtOf, out } from "../shared/gh.ts";
 
 export function command(): Command {
