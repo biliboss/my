@@ -6,11 +6,14 @@
 //! disagree with itself. But `blocked` and `dropped` have no folder: they are how the
 //! work ENDED, and the queue has nowhere to put them. Two axes, two types below.
 //!
-//! implemented: src/tasks/model.ts · src/tasks/new.ts · src/tasks/start.ts · src/tasks/done.ts · src/tasks/claim.ts · src/tasks/list.ts · src/tasks/monitor.ts · src/tasks/check.ts
-//! depends_on:  src/tasks/ · packages/interfaces/labels.ts
+//! implemented: src/shared/work/{model,new,start,done,claim}.ts — LIBRARY ONLY.
+//! O verbo `my tasks` foi ARRANCADO em 22/08: oito subcomandos, e o board já era a
+//! porta de todos eles. Quem cria e fecha task hoje é `my kanban`; quem toma é
+//! `my teams claim`. Duas portas pro mesmo fato é a que ninguém mantém.
+//! depends_on:  src/shared/work/ · packages/interfaces/labels.ts
 //! checks:      declared HERE, never imported. `check()` returns `Finding[]` and
 //!              the runner reads it structurally, so a check costs no dependency.
-//!              IMPLEMENTED in `src/tasks/check.ts`.
+//!              O runner que sobrou é `my kanban check`.
 //! imports:    nothing of the domain. It is the bottom layer; `kanban.ts` points HERE.
 
 
@@ -93,7 +96,7 @@ export declare namespace TaskSystem {
 		 *  `blocked` and `dropped` are why this cannot be one type with `Place`: neither
 		 *  has a folder, so collapsing the two axes DELETES them — which is exactly what
 		 *  this file did until 20/08, declaring `backlog | in_progress | done` and
-		 *  leaving `my tasks done --blocked` writing a value the contract had no name
+		 *  leaving `my kanban close` --blocked` writing a value the contract had no name
 		 *  for. A task closed as `blocked` stays parked in `in_progress/`, and the list
 		 *  called it `doing`. */
 		export type State = "draft" | "doing" | "done" | "blocked" | "dropped";
@@ -159,7 +162,7 @@ export declare namespace TaskSystem {
 	}
 
 	export namespace Entities {
-		/** THE TASK AS IT IS ON DISK — `src/tasks/model.ts`'s `Task`, named here with the
+		/** THE TASK AS IT IS ON DISK — `src/shared/work/model.ts`'s `Task`, named here with the
 		 *  names that file already uses. Two files, two tenses, and it is what decides
 		 *  where each field lives: `pedido` is `CONTEXT.md` (what to do, the proof, the
 		 *  budget) and does not change because work happened; `saida` is `output.md`
@@ -220,7 +223,7 @@ export interface Metrics {
  *  (`new(title)`, `start(name)`) were the CLI's arguments with the project filed
  *  off — and the project is not optional, it is just resolved earlier, from `-P`,
  *  from the cwd, or from the last one used. The verbs below are the functions
- *  `src/tasks/*.ts` export; `main(argv): number` stays what it always was, the
+ *  `src/shared/work/*.ts` export; `main(argv): number` stays what it always was, the
  *  shell that parses argv, prints, and turns a refusal into an exit code.
  *
  *  REFUSAL IS A VALUE, not an exception: `{ erro }` is how `acharTask` has always

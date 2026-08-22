@@ -25,7 +25,7 @@
 //! no error at all — measured 20/08, which is how this split came to exist. The
 //! join with the live workspaces lives in `./list.ts`.
 //!
-//! depends_on: src/interfaces/teams.ts · src/tasks/model.ts · src/tasks/claim.ts
+//! depends_on: src/interfaces/teams.ts · src/shared/work/model.ts · src/shared/work/claim.ts
 //! impacts:    src/teams/list.ts · src/teams/up.ts · src/teams/down.ts ·
 //!             src/teams/claim.ts · src/teams/watch.ts · src/teams/check.ts
 
@@ -35,8 +35,8 @@ import { join } from "node:path";
 
 import { store } from "../home/paths.ts";
 import type { TeamsSystem } from "@my/interfaces/teams.ts";
-import { type Cracha, crachaDe } from "../tasks/claim.ts";
-import { BACKLOG, TASKS, agora, ler, pastasDeTask, placeDe, rel, sprintDe } from "../tasks/model.ts";
+import { type Cracha, crachaDe } from "../shared/work/claim.ts";
+import { BACKLOG, TASKS, agora, ler, pastasDeTask, placeDe, rel, sprintDe } from "../shared/work/model.ts";
 
 export type Team = TeamsSystem.Entities.Team;
 export type Member = TeamsSystem.Entities.Member;

@@ -15,7 +15,7 @@
 //! the header used to say `projects → a LABEL. Deleted 20/08`, past tense, as if the
 //! cut had already happened. It had not — `01_projects/`, `src/projects/`,
 //! `src/sprints/` and `src/inbox/` were all still on disk and still the only thing
-//! `my projects check` / `my sprints list` / `my tasks list` read, and this task's
+//! `my projects check` / `my sprints list` / `my kanban list` read, and this task's
 //! own brief required confirming the three keep working. Corrected here rather than
 //! silently: a contract describing a cut that never happened is worse than one
 //! admitting the cut is still ahead.

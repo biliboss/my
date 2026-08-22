@@ -32,7 +32,7 @@
 import { existsSync, mkdirSync, renameSync } from "node:fs";
 import { join } from "node:path";
 import { Command } from "commander";
-import { lembra, projetoCorrente } from "../tasks/model.ts";
+import { lembra, projetoCorrente } from "../shared/work/model.ts";
 import { ESTADOS, type Estado, acharSprint, sprintsDir } from "./model.ts";
 
 export function command(): Command {

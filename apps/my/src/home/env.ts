@@ -49,8 +49,6 @@ export const VARS: Var[] = [
 	{ name: "CLAUDE_PID", decides: "o pid do harness; camada 3 da identidade", writes: false },
 	{ name: "AI_AGENT", decides: "nome do agente quando o harness não é o Claude Code", writes: false },
 	{ name: "CLAUDE_PROJECT_DIR", decides: "a raiz que o Claude Code publica pros hooks dele", writes: false },
-	{ name: "GIT_DIR", decides: "herdado de um hook de git — `my tasks start` recusa quando existe, senão a worktree nova nasce apontando pro repo do hook", writes: false },
-	{ name: "GIT_INDEX_FILE", decides: "idem `GIT_DIR`, e o par é o que prova que viemos de um hook", writes: false },
 	{ name: "USER", decides: "quem assina quando não há agente", writes: false },
 
 	// ── as que ainda não migraram de nome ──

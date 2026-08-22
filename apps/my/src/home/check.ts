@@ -47,7 +47,7 @@ function sources(dir: string, into: string[] = []): string[] {
 		const p = join(dir, e.name);
 		if (e.isDirectory()) sources(p, into);
 		// `.test.ts` E `.mjs` CONTAM. Uma env lida só num teste continua sendo uma
-		// alavanca (`GIT_DIR` guarda o `tasks start` de rodar dentro de um hook), e o
+		// alavanca, e o
 		// servidor de dev da extensão é `.mjs` — os dois apareceram como "declarada e
 		// ninguém lê" na primeira rodada deste check, e os dois eram leitura real.
 		else if (/\.(ts|mjs|js)$/.test(e.name)) into.push(p);

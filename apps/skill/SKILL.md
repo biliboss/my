@@ -62,10 +62,10 @@ docstring vira a descrição no help. `.test.ts` não vira comando.
 | **criar um projeto** | `my projects new --resultado … --prazo … --area …` |
 | que projeto nasceu torto | `my check projects` (`--json/--jsonl/--tsv/--watch`) |
 | **abrir uma sprint** | `my sprints new "<título>" [-P <proj>] [-n <nnn>]` |
-| criar a task DELA | `my tasks new "<título>" [-S <nnn>] -d <min> -p "<prova>"` |
+| criar a task DELA | `my kanban capture <board> "<título>" "<o pedido>"` |
 | ver sprints com a SOMA dos minutos | `my sprints list [-P <proj>]` (exit 1 acima do teto) |
-| começar / fechar uma task | `my tasks start <sprint>/<nnn>` · `my tasks done <nnn>` |
-| a fila em movimento | `my tasks monitor` (uma linha por mudança de estado) |
+| começar / fechar uma task | `my kanban move <card> in_progress` · `my kanban close <card> --became …` |
+| a fila em movimento | `my kanban list <board>` (coluna, WIP e quem bloqueia) |
 | **um board, cards, WIP** | `my kanban open|capture|add|move|tag|limit|close|list|check|metrics` |
 | o plano de um ciclo, com o link de cada issue | `my runs <run>` · `my runs` lista |
 | **desenhar um projeto novo** | `my system_design new <slug>` |
@@ -93,11 +93,11 @@ Rodar o comando no herdr da OUTRA caixa: `--remote <host>` é global.
 
 ## As três raízes, e por que confundi-las quebra tudo
 
-```
+``
 root      ~/src/me     a CASA — o que o CLI lê e escreve      file:~/.me/home
 code      ~/src/my     o CÓDIGO — este monorepo               anchor:package.json
 machine   ~/.me        ESTADO DE MÁQUINA — db, worktrees      default:~/.me
-```
+``
 
 **Nunca hardcode nenhuma das três**: `$(my home)` resolve a casa, e ela é
 trocável (`my home <caminho>`). Markdown e YAML seguem sendo o banco do que é
@@ -120,11 +120,11 @@ nascer sobre suposição.
 
 Os workflows são agrupados por FAMÍLIA, e a família é a pergunta que ela responde:
 
-```
+``
 my workflows list                       as famílias, com a contagem de cada uma
 my workflows list <família>             os workflows dela, com a primeira linha do contrato
 my workflows show <nome>                o CONTEXT.md de um, inteiro — o nome BARE, sem o caminho
-```
+``
 
 | família | a pergunta dela |
 |---|---|
@@ -153,19 +153,19 @@ prosa no fim da resposta some no scroll e obriga o dono a escrever de volta; o
 popup é uma tecla. `my askuser ask` sobe a janela na frente do que ele estiver
 fazendo e BLOQUEIA — e **as quatro saídas são contrato**:
 
-```
+``
 0 escolheu   2 PULOU   3 EXPIROU   1 não consegui perguntar
-```
+``
 
 Tratar `2` ou `3` como `0` é seguir com uma decisão que ninguém tomou. A opção
 carrega o **tempo esperado**, medido ou estimado, porque é o número que decide se
 agora é o momento:
 
-```
+``
 "Disparo as 4 unidades?"
   faz    — 4 agentes em paralelo · ~10 min cada · ~12 min de parede
   espera — primeiro decido a S5 e as duas decisões da S6
-```
+``
 
 A rodada vira `output/NNN_<slug>/interview.yaml` com `confianca:` em TODA opção,
 não só na escolhida — é o metadado que depois diz onde o agente erra mais. O
@@ -245,12 +245,12 @@ emitido. Um evento só existe quando algo reage a ele: passo que só narra não 
 
 **O nó de um CLI nosso é o COMANDO**, na gramática do CLI:
 
-```
+``
 my runs: { run }                 verbo sem subverbo   → src/runs.ts
 my gh: issues { issue url }      verbo com subverbo   → src/gh/issues.ts
 cc: AskUserQuestion { … }        o harness            → PascalCase, é o nome real
 my askuser: ask { … }            a pergunta desta casa → o que um agente USA
-```
+``
 
 **Helper não é nó.** `my readPlan` não existe: `readPlan` mora dentro de
 `my runs`, e desenho que desce até o helper é o código escrito duas vezes.
@@ -270,10 +270,10 @@ desenho fecha quando todo `ON <comp>:<Event>` tem um emissor.
 
 ### A sprint é uma PASTA, e ela tem teto de 10 minutos
 
-```
+``
 01_projects/<proj>/sprints/999_<slug_ate_5_palavras>/CONTEXT.md
 01_projects/<proj>/sprints/999_<slug>/001_<nome_ate_4_palavras>/CONTEXT.md
-```
+``
 
 A sprint conta pra **BAIXO desde 999** — mais nova = número menor = primeiro num
 `ls`. A task conta pra **CIMA desde 001** dentro dela, porque ali o número É a
@@ -290,12 +290,12 @@ PARTIR: outra sprint, depois outro pacote. **Nunca encolher a task pra caber**
 
 A tabela de roteamento serve um pedido. Trabalho de verdade atravessa famílias:
 
-```
+``
 suporte / canal        puxa o pedido do cliente   → asks.md
 request_to_issue       corta as issues            → o run, com as issues
 qa_and_merge           afere se é problema mesmo
                        responde no canal          ← o elo que fecha, e o que mais se esquece
-```
+``
 
 - **A saída de um elo é o arquivo que o próximo consome como `context`** — não um
   resumo na sessão.
@@ -321,10 +321,10 @@ comando que sai 0 sem fazer nada faz o chamador achar que aconteceu.
 
 **Uma trilha só: a pasta do run.**
 
-```
+``
 03_resources/00_company/<família>/<fase>/<workflow>/output/NNN_<slug>/
   summary.md · interview.yaml · findings.md · sprints.yaml · state.yaml · F<N>_*.md
-```
+``
 
 Ex.: `02_deliver_what_sell/01_plan/request_to_issue/output/969_fonte_por_dado/`.
 Nem todo workflow tem `output/` — só os que produzem ciclo.
@@ -340,14 +340,14 @@ relatório**, e a pasta do run é o que foi decidido. `my references 001_steps`.
 
 ## Validar antes de dizer que terminou
 
-```bash
+``bash
 my check citations   # citação apontando pro vazio
 my check context     # o CONTEXT.md de cada pasta continua MAPA (≤100 linhas)
 my check rules       # cada regra na pasta que o TYPE: dela nomeia
 my check notes       # o contrato de ID dos zettels
 my check ratchet     # a catraca: nenhum número desta casa pode SUBIR
 my check all         # todos de uma vez, e é o que o gate roda
-```
+``
 
 `my check --help` é a fonte dos 16 subverbos; a lista acima é conveniência, não
 contrato. **O buraco conhecido:** ninguém cruza a frota VIVA (`my agents list`)
@@ -377,9 +377,9 @@ com o `agentes[]` que os runs declaram, então agente órfão não aparece sozin
 Shim de três linhas que roda o FONTE, nunca binário compilado (`bun build
 --compile` congela a varredura de `src/` no estado do último build):
 
-```bash
+``bash
 exec bun run "$HOME/src/my/apps/my/src/cli/my.ts" "$@"
-```
+``
 
 ## References
 

@@ -55,7 +55,7 @@ export const folderTag = sqliteTable(
 /** O que o CLI lembra entre chamadas — `<verbo>.<chave>` → valor.
  *
  *  Chave composta e não uma tabela por verbo: o primeiro caso é UM valor (o
- *  projeto corrente do `my tasks`), e uma tabela por preferência seria a
+ *  projeto corrente do `my kanban`), e uma tabela por preferência seria a
  *  abstração nascida de um único uso. O prefixo mantém o namespace do verbo.
  *
  *  Vale só nesta máquina, e é por isso que mora aqui e não no repo: "o projeto

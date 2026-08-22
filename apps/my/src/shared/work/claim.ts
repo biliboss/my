@@ -1,11 +1,11 @@
 #!/usr/bin/env bun
 //! QUEM está com a task, escrito por quem pegou — e verificável antes de agir.
 //!
-//!     my tasks claim 3                  pega a 003: trava atômica + identidade inteira
-//!     my tasks claim 3 --check          exit 0 SÓ se a trava for minha
-//!     my tasks claim 3 --release        solta (recusa se for de outro; `--force` passa por cima)
-//!     my tasks claim 3 --meta lote=faxina --meta prioridade=alta
-//!     my tasks claim 3 --json           a identidade gravada, pro jq
+//!     `my teams claim` 3                  pega a 003: trava atômica + identidade inteira
+//!     `my teams claim` 3 --check          exit 0 SÓ se a trava for minha
+//!     `my teams claim` 3 --release        solta (recusa se for de outro; `--force` passa por cima)
+//!     `my teams claim` 3 --meta lote=faxina --meta prioridade=alta
+//!     `my teams claim` 3 --json           a identidade gravada, pro jq
 //!
 //! A TRAVA É A MESMA DO `start` — `<task>/.doing/`, criada com `mkdirSync` sem
 //! `recursive`, que falha com EEXIST e é atômica no filesystem. O que este verbo
@@ -25,16 +25,15 @@
 //! `host+pid`. Comparar tudo faria um `cd` invalidar o crachá; comparar só o host
 //! faria duas sessões da mesma máquina se confundirem.
 //!
-//! depends_on: src/tasks/model.ts
-//! impacts:    src/tasks/start.ts
+//! depends_on: src/shared/work/model.ts
+//! impacts:    src/shared/work/start.ts
 
-import { Command } from 'commander'
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { hostname } from 'node:os'
 import { join } from 'node:path'
 import { type Task, acharTask, agora, devolver, lembra, projetoCorrente, projetos, puxar, rel } from './model.ts'
 
-/** O nome da sentinela — a MESMA que `my tasks start` cria. */
+/** O nome da sentinela — a MESMA que `my kanban move` cria. */
 export const TRAVA = '.doing'
 export const CRACHA = 'claim.json'
 
@@ -101,7 +100,7 @@ export function claim(t: Task, extra: Record<string, string> = {}): { cracha: Cr
     // reescrito com o `at` de agora, e quem chamou segue.
     if (!ehMinha(dono, eu))
       return {
-        erro: `${t.slug} já é de ${dono?.claude_session ?? dono?.herdr_pane ?? 'outro agente'} desde ${dono?.at ?? '?'}\n  se ele morreu: my tasks claim ${t.nnn} --release --force`,
+        erro: `${t.slug} já é de ${dono?.claude_session ?? dono?.herdr_pane ?? 'outro agente'} desde ${dono?.at ?? '?'}\n  se ele morreu: \`my teams claim ${t.nnn} --release --force\``,
       }
   }
   const dir = puxar(t.dir)
@@ -122,68 +121,3 @@ export function release(t: Task, force = false): { dir: string } | { erro: strin
   return { dir: devolver(t.dir) }
 }
 
-export function command(): Command {
-  const cmd = new Command('claim')
-    .description('Trava a task e grava QUEM pegou — sessão, pane, agente, host, e o que vier em --meta.')
-    .argument('<nnn>', 'o número da task — `3`, `03` ou `003`')
-    .option('-P, --project <slug>', 'o projeto. Passado uma vez, fica lembrado — senão vem do cwd')
-    .option('--meta <k=v>', 'metadado extra no crachá; repita', (v: string, acc: string[]) => [...acc, v], [] as string[])
-    .option('--check', 'não pega nada: sai 0 se a trava existente for minha, 1 se não')
-    .option('--release', 'solta a trava — recusa se o crachá for de outro')
-    .option('--force', 'com --release: solta mesmo sendo de outro')
-    .option('--json', 'o crachá, pro jq')
-  cmd.addHelpText('after', '\n  Depois de pegar: my tasks start <nnn> --here — ele reconhece o crachá e segue.\n')
-  return cmd
-}
-
-export async function main(argv: string[]): Promise<number> {
-  const cmd = command().exitOverride()
-  try {
-    cmd.parse(argv, { from: 'user' })
-  } catch (err) {
-    return (err as { exitCode?: number }).exitCode ?? 1
-  }
-  const [alvo] = cmd.args
-  const opts = cmd.opts()
-
-  const { slug, porque } = await projetoCorrente(opts.project)
-  if (!slug) return console.error(`de que projeto? \`-P <slug>\`\n  existem: ${projetos().join(', ')}`), 1
-  if (porque !== 'último usado') await lembra(slug)
-
-  const t = acharTask(slug, alvo!)
-  if ('erro' in t) return console.error(t.erro), 1
-  const trava = join(t.dir, TRAVA)
-  const dono = crachaDe(t.dir)
-  const mostra = (c: Cracha) => (opts.json ? console.log(JSON.stringify(c)) : console.log(Object.entries(c).map(([k, v]) => `  ${k}: ${v}`).join('\n')))
-
-  if (opts.check) {
-    if (!existsSync(trava)) return console.error(`${t.slug} está livre — ninguém pegou`), 1
-    if (!ehMinha(dono)) return console.error(`${t.slug} é de outro: ${dono?.claude_session ?? dono?.herdr_pane ?? 'crachá ausente'}`), 1
-    mostra(dono!)
-    return 0
-  }
-
-  if (opts.release) {
-    if (!existsSync(trava)) return console.log(`${t.slug} já estava livre`), 0
-    const solta = release(t, opts.force)
-    if ('erro' in solta) return console.error(solta.erro), 1
-    // Soltar é DESFAZER o puxão: a pasta volta pro `tasks/` da sprint, senão ela
-    // ficaria em `in_progress/` sem dono — um "rodando" que ninguém está rodando.
-    console.log(`${t.slug} solta — de volta em ${rel(solta.dir)}`)
-    return 0
-  }
-
-  const extra = Object.fromEntries(
-    (opts.meta as string[]).map((m) => {
-      const i = m.indexOf('=')
-      return i < 0 ? [m, 'sim'] : [m.slice(0, i), m.slice(i + 1)]
-    }),
-  )
-  const pego = claim(t, extra)
-  if ('erro' in pego) return console.error(pego.erro), 1
-  if (!opts.json) console.log(`${t.nnn} ${t.titulo} — em ${rel(pego.dir)}`)
-  mostra(pego.cracha)
-  return 0
-}
-
-if (import.meta.main) main(process.argv.slice(2)).then((c) => process.exit(c))

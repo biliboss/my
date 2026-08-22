@@ -4,7 +4,7 @@ type: template
 
 <!--
 TEMPLATE — `01_projects/<projeto>/sprints/NNN_<sprint>/NNN_<nome>/CONTEXT.md`.
-Escrito por `my tasks new "<título>"`, que preenche o front matter e o `#`.
+Escrito por `my kanban capture <board> "<título>"`, que preenche o front matter e o `#`.
 
 A TASK MORA DENTRO DA SPRINT (desde 18/08). A sprint conta pra BAIXO desde 999 —
 mais nova em cima —, e a task conta pra CIMA desde 001 dentro dela, porque aí o
@@ -13,7 +13,7 @@ renumerado: ele é o ENDEREÇO, e citação a ele tem que continuar valendo. Nom
 pasta e do título: `my resources task_naming`.
 
 Este arquivo é o PEDIDO, e pedido não muda porque o trabalho andou. O resultado
-mora no `output.md` ao lado, e é `my tasks start|done` que escreve nele.
+mora no `output.md` ao lado, e é `my kanban move|done` que escreve nele.
 
 A TASK NÃO DECLARA A SPRINT: sem `sprint:`, sem `run:`, sem `issue:`. A PASTA que
 a contém já diz de quem ela é — campo pra isso seria a segunda fonte, e é sempre

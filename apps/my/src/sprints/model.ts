@@ -19,13 +19,13 @@
 //! as tasks: a pasta já diz. Campo pra isso seria a segunda fonte, e é sempre
 //! ela que envelhece.
 //!
-//! depends_on: src/runs.ts · src/tasks/model.ts · src/shared/resolve.ts
-//! impacts:    src/sprints/new.ts · src/sprints/list.ts · src/tasks/new.ts · src/projects/model.ts · src/tasks/list.ts · src/sprints/move.ts · src/sprints/units.ts
+//! depends_on: src/runs.ts · src/shared/work/model.ts · src/shared/resolve.ts
+//! impacts:    src/sprints/new.ts · src/sprints/list.ts · src/shared/work/new.ts · src/projects/model.ts · src/sprints/move.ts · src/sprints/units.ts
 
 import { existsSync, readFileSync, readdirSync } from 'node:fs'
 import { join } from 'node:path'
 import { CEILING_MIN, readTasksDir, type Task } from '../runs.ts'
-import { PROJETOS, TASKS } from '../tasks/model.ts'
+import { PROJETOS, TASKS } from '../shared/work/model.ts'
 import { resolvePorPrefixo } from '../shared/resolve.ts'
 
 export { CEILING_MIN }

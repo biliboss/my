@@ -12,7 +12,7 @@ projeto: <slug>
 area: NN-<slug>
 dono: <nome>
 state: ativo            # ativo | pausado | entregue | descartado
-tasks: tasks/           # a menor unidade mora lá — `my tasks new`
+tasks: tasks/           # a menor unidade mora lá — `my kanban capture`
 issues: issues/         # OPCIONAL: as issues do GitHub que este projeto acompanha,
                         # uma pasta por issue, e as fechadas em `issues/done/`.
                         # Só quando existe repo de fora — `my resources project issues`.
@@ -29,11 +29,11 @@ prazo: <YYYY-MM-DD>     # OPCIONAL: projeto sem data é o que a casa chama de á
 **Resultado:** <o que existe no mundo quando isto acabar>
 **Serve a área:** [<area>](../../02_areas/NN-<slug>/<slug>.md)
 
-```mermaid
+``mermaid
 flowchart LR
   A[<estado hoje>] --> B[<o trabalho>]
   B --> C[<resultado>]
-```
+``
 
 ## Por que este projeto e não outro
 

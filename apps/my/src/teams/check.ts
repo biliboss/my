@@ -34,7 +34,7 @@
 //! — which is the same reason `src/chat/check.ts` reads it directly instead of
 //! calling `who()`.
 //!
-//! depends_on: src/teams/model.ts · src/tasks/claim.ts · src/chat/store.ts ·
+//! depends_on: src/teams/model.ts · src/shared/work/claim.ts · src/chat/store.ts ·
 //!             src/shared/findings.ts
 //! impacts:    src/shared/house.ts
 
@@ -43,8 +43,8 @@ import { join } from "node:path";
 
 import { allMessages, getCursor } from "@my/chat";
 import { emit } from "@my/shared/findings";
-import { crachaDe } from "../tasks/claim.ts";
-import { pastasDeTask, rel } from "../tasks/model.ts";
+import { crachaDe } from "../shared/work/claim.ts";
+import { pastasDeTask, rel } from "../shared/work/model.ts";
 import { STORE, type Stored, channelOf, memberName, slugOf, stored } from "./model.ts";
 
 export type Finding = { path: string; says: string };
@@ -70,7 +70,7 @@ export const countIn = (msgs: { channel: string }[], channel: string): number =>
  *  existed, the one nothing else can see.
  *
  *  PURE, and the two readings are handed in rather than imported. `MY_HOME` decides
- *  where the chat file lives and `src/tasks/model.ts` freezes `RAIZ` off the same
+ *  where the chat file lives and `src/shared/work/model.ts` freezes `RAIZ` off the same
  *  env at IMPORT time, so a test that repointed the house to prove this one rule
  *  would repoint it for every teams test loaded after it — `bun test` runs a
  *  package's files in one process, and `check()` below wires the real store. */

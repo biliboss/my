@@ -4,7 +4,7 @@
 //!     my kanban capture my-teams-v1 "fix up the cockpit" "o corpo do pedido, verbatim"
 //!
 //! O que era `my inbox capture`, com o board escolhido em vez da inbox da casa.
-//! HERDA a recusa de `my tasks new`: sem sprint ABERTA no board, não nasce card —
+//! HERDA a recusa de `my kanban add`: sem sprint ABERTA no board, não nasce card —
 //! nenhuma task nesta casa nasce fora de uma sprint, capturada ou não. A mensagem
 //! de erro ensina o próximo passo (`my sprints new`).
 //!

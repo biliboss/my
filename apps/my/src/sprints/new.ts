@@ -12,20 +12,20 @@
 //! execução — #sprint_order_and_size.
 //!
 //! O NNN É O ENDEREÇO: `-n` num número ocupado RECUSA em vez de empurrar os
-//! vizinhos, igual `my tasks new --priority`. Renumerar quebra toda citação.
+//! vizinhos, igual `my kanban add --priority`. Renumerar quebra toda citação.
 //!
 //! SLUG DE ATÉ 5 PALAVRAS, uma a mais que a task: a sprint nomeia um PACOTE de
 //! capacidades, e as regras de nome são as mesmas — #task_naming.
 //!
-//! depends_on: src/sprints/model.ts · src/tasks/new.ts · src/shared/template.ts
-//! impacts:    src/tasks/new.ts · 03_resources/templates/system/sprint/CONTEXT.md
+//! depends_on: src/sprints/model.ts · src/shared/work/new.ts · src/shared/template.ts
+//! impacts:    src/shared/work/new.ts · 03_resources/templates/system/sprint/CONTEXT.md
 
 import { template } from '../home/paths.ts'
 import { Command } from 'commander'
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { PROJETOS, RAIZ, lembra, projetoCorrente, projetos, rel } from '../tasks/model.ts'
-import { criticaDoNome, nomeDePasta } from '../tasks/new.ts'
+import { PROJETOS, RAIZ, lembra, projetoCorrente, projetos, rel } from '../shared/work/model.ts'
+import { criticaDoNome, nomeDePasta } from '../shared/work/new.ts'
 import { PRIMEIRA, proximoNNN, sprints, sprintsDir } from './model.ts'
 import { doTemplate } from '../shared/template.ts'
 
@@ -45,7 +45,7 @@ export function command(): Command {
     .option('-n, --number <nnn>', `o número da sprint. Ocupado, RECUSA — o NNN é endereço. Omitido, conta pra cima desde ${PRIMEIRA}`)
   cmd.addHelpText(
     'after',
-    `\n  A sprint e a task contam pra CIMA desde ${PRIMEIRA}: o número é a ordem em que se fez.\n  O teto de 10 min é a SOMA das durations das tasks: \`my sprints list\` soma e acusa.\n  Depois: my tasks new "<título>" -d <min> -p "<prova>"\n`,
+    `\n  A sprint e a task contam pra CIMA desde ${PRIMEIRA}: o número é a ordem em que se fez.\n  O teto de 10 min é a SOMA das durations das tasks: \`my sprints list\` soma e acusa.\n  Depois: my kanban add "<título>" -d <min> -p "<prova>"\n`,
   )
   return cmd
 }
@@ -112,7 +112,7 @@ export async function main(argv: string[]): Promise<number> {
 
   console.log(rel(join(pasta, 'CONTEXT.md')))
   console.log(`projeto ${slug} (${porque}) · sprint ${nnn} · próxima será ${String(n + 1).padStart(3, '0')}`)
-  console.log(`a primeira task: my tasks new "<título>" -S ${nnn} -d <min> -p "<prova>"`)
+  console.log(`a primeira task: my kanban add "<título>" -S ${nnn} -d <min> -p "<prova>"`)
   return 0
 }
 

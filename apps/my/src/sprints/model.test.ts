@@ -3,7 +3,7 @@ import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 
 import { criticaDoTeto, minutos, proximoNNN, sprints, PRIMEIRA } from './model'
-import { PROJETOS } from '../tasks/model'
+import { PROJETOS } from '../shared/work/model'
 
 /** Um projeto de mentira DENTRO de `01_projects/`, com prefixo `.` pra ficar fora
  *  de `slugs()` e da varredura da casa. É o único jeito honesto de testar isto:

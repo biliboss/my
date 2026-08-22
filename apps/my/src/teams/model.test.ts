@@ -11,7 +11,7 @@
 //! uses, written and swept in the same test. It is machine state, not repo state —
 //! same reason `~/.me/me.db` lives out there.
 //!
-//! AND `MY_HOME` IS NOT TOUCHED HERE, deliberately: `src/tasks/model.ts` freezes
+//! AND `MY_HOME` IS NOT TOUCHED HERE, deliberately: `src/shared/work/model.ts` freezes
 //! `RAIZ` off it at IMPORT time, `bun test` runs a package's files in one process,
 //! and repointing the house for the room tests would repoint it for every teams
 //! file loaded after this one. The room rules are proved through the pure halves

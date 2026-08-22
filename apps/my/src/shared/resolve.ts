@@ -12,7 +12,7 @@
 //! frase é dele. O que unifica é o CASAMENTO e a AMBIGUIDADE.
 //!
 //! depends_on: —
-//! impacts:    src/tasks/model.ts · src/sprints/model.ts · src/sprints/run.ts
+//! impacts:    src/shared/work/model.ts · src/sprints/model.ts · src/sprints/run.ts
 //! impacts:    src/runs.ts · src/meta.ts
 
 /** `7` → `007`. Só número puro: `007_slug` volta `null`, porque ele já é o nome

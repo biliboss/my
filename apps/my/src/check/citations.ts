@@ -182,7 +182,7 @@ function resolves(target: string, fromDir: string): boolean {
   const candidates = clean.startsWith("~/")
     ? [join(homedir(), clean.slice(2))]
     // AS DUAS ÁRVORES: a citação pode nomear conteúdo (`02_areas/…`) ou fonte
-    // (`src/tasks/model.ts`), e desde 20/08 elas moram em checkouts diferentes.
+    // (`src/shared/work/model.ts`), e desde 20/08 elas moram em checkouts diferentes.
     : [join(fromDir, clean), ...ROOTS.map((t) => join(t, clean))];
   for (const abs of candidates) {
     try {

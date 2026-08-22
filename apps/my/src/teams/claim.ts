@@ -6,12 +6,12 @@
 //!     my teams claim plantao-coding coding --release       let go of what it holds
 //!     my teams claim plantao-coding coding --release --force
 //!
-//! THE SAME LOCK `my tasks claim` USES — `<work>/.doing/`, created with `mkdirSync`
+//! THE SAME LOCK `my teams claim` USES — `<work>/.doing/`, created with `mkdirSync`
 //! WITHOUT `recursive`, which fails EEXIST and is atomic on the filesystem. One
 //! sentinel for the whole house: a second one beside it would be a second answer to
 //! "who has this", and the second answer is always the stale one.
 //!
-//! WHAT THIS ADDS OVER `my tasks claim` is `team` and `role` in the badge, and NOT
+//! WHAT THIS ADDS OVER `my teams claim` is `team` and `role` in the badge, and NOT
 //! moving the folder. `tasks` pulls the folder into `in_progress/` because a task
 //! has a place; a team claims a WorkPath, which may be an inbox item that has no
 //! `in_progress/` to be pulled into. The badge is the whole record.
@@ -26,7 +26,7 @@
 //! Nothing narrower is reachable today — the lock is held between them — and a real
 //! counter would need a record of our own, which this design refuses.
 //!
-//! depends_on: src/teams/model.ts · src/teams/list.ts · src/tasks/claim.ts · src/tasks/model.ts
+//! depends_on: src/teams/model.ts · src/teams/list.ts · src/shared/work/claim.ts · src/shared/work/model.ts
 //! impacts:    src/teams/watch.ts · src/teams/check.ts
 
 import { Command } from "commander";
@@ -34,8 +34,8 @@ import { existsSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
 import type { Fail, TeamsSystem } from "@my/interfaces/teams.ts";
-import { CRACHA, TRAVA, crachaDe, ehMinha, identidade } from "../tasks/claim.ts";
-import { RAIZ } from "../tasks/model.ts";
+import { CRACHA, TRAVA, crachaDe, ehMinha, identidade } from "../shared/work/claim.ts";
+import { RAIZ } from "../shared/work/model.ts";
 import { type Claim, type Member, type TeamName, type WorkPath, memberName, queueOf, storedOf } from "./model.ts";
 import { find } from "./list.ts";
 

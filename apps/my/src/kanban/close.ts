@@ -4,11 +4,11 @@
 //!     my kanban close 999_001_slug --became "01_projects/inbox-v1/"
 //!     my kanban close 999_001_slug --dropped "o herdr já faz isso, e melhor"
 //!
-//! `--dropped` roda `my tasks done --blocked/--dropped` por baixo (arquiva sem
+//! `--dropped` roda `my kanban close --blocked/--dropped` por baixo (arquiva sem
 //! commit). `--became` NÃO roda a prova nem commita código — é o registro leve que
 //! `Inbox.process` já era; pra fechar rodando prova e commit, o verbo é
-//! `my tasks done`. Um card fechado com `--became` sem ter passado por lá continua
-//! aparecendo em `my tasks check` como "done sem prova" — é a mesma regra, não uma
+//! `my kanban close`. Um card fechado com `--became` sem ter passado por lá continua
+//! aparecendo em `my kanban check` como "done sem prova" — é a mesma regra, não uma
 //! segunda.
 //!
 //! depends_on: src/kanban/model.ts

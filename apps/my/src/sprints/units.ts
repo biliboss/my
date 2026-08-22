@@ -38,7 +38,7 @@
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { Command } from "commander";
-import { lembra, projetoCorrente } from "../tasks/model.ts";
+import { lembra, projetoCorrente } from "../shared/work/model.ts";
 import { RAIZ } from "../projects/model.ts";
 import { type Sprint, acharSprint, criticaDoTeto, minutos, sprints } from "./model.ts";
 

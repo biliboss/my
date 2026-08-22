@@ -1,9 +1,9 @@
 #!/usr/bin/env bun
 //! Cria a próxima task de uma SPRINT — uma PASTA, com o pedido e o output em draft.
 //!
-//!     my tasks new "registry answers on myregistry.localhost" -d 2 -p "curl -sf …"
-//!     my tasks new "…" -S 998                na sprint 998, e não na corrente
-//!     my tasks new "…" --folder install_zot
+//!     `my kanban add` "registry answers on myregistry.localhost" -d 2 -p "curl -sf …"
+//!     `my kanban add` "…" -S 998                na sprint 998, e não na corrente
+//!     `my kanban add` "…" --folder install_zot
 //!
 //! `01_projects/<proj>/sprints/NNN_<sprint>/NNN_<folder>/` com `CONTEXT.md` (o
 //! pedido) e `output.md` (o resultado, nascido em `draft`).
@@ -26,15 +26,14 @@
 //! medido em 18/08 que 4 de 5 nomes gerados por slugify ingênuo truncaram na
 //! sidebar, e nome que só se entende com o mouse em cima é id, não nome.
 //!
-//! depends_on: src/tasks/model.ts · src/tasks/list.ts · src/sprints/new.ts · src/sprints/model.ts · src/shared/template.ts
-//! impacts:    src/tasks/list.ts · 03_resources/rules/planning/task_naming.md · src/sprints/new.ts
+//! depends_on: src/shared/work/model.ts · src/sprints/new.ts · src/sprints/model.ts · src/shared/template.ts
+//! impacts:    src/kanban/model.ts · 03_resources/rules/planning/task_naming.md · src/sprints/new.ts
 
-import { Command } from 'commander'
 import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { acharSprint, corrente, criticaDoTeto } from '../sprints/model.ts'
+import { acharSprint, corrente, criticaDoTeto } from '../../sprints/model.ts'
 import { ARQUIVO, BACKLOG, PROJETOS, TASKS, TPL, type Task, ler, lembra, projetoCorrente, projetos, rel, worktreeDe } from './model.ts'
-import { doTemplate } from '../shared/template.ts'
+import { doTemplate } from '../../shared/template.ts'
 
 /** Palavra que não paga o espaço que ocupa: artigo, preposição, cópula. Sai do
  *  nome da pasta, e nunca do TÍTULO — no título ela é o que faz virar frase. */
@@ -110,7 +109,7 @@ export type Criada = { task: Task; sprint: string; n: number }
 /** CRIA a próxima task de uma sprint — a pasta, o pedido e o output em `draft`.
  *
  *  Chama-se `criar` e não `new` porque `new` é palavra reservada: o verbo da CLI
- *  continua sendo `my tasks new`, e é a casca que traduz o nome.
+ *  continua sendo `my kanban add`, e é a casca que traduz o nome.
  *
  *  Esta é a função; `main` abaixo é só a casca que traduz argv e imprime. */
 export function criar(
@@ -200,60 +199,3 @@ export function criar(
   return { task: ler(pasta), sprint: sprint.pasta, n }
 }
 
-export function command(): Command {
-  const cmd = new Command('new')
-    .description('Cria a próxima task DA SPRINT — uma pasta, com CONTEXT.md e output.md.')
-    .argument('<titulo>', 'o RESULTADO, no presente, até 7 palavras — #task_naming')
-    .option('-P, --project <slug>', 'o projeto. Passado uma vez, fica lembrado — senão vem do cwd')
-    .option('-S, --sprint <nnn>', 'a sprint que recebe a task — `999` ou `999_<slug>`. Omitida, a CORRENTE')
-    .option('-f, --folder <nome>', 'o nome da pasta, no imperativo, até 4 palavras. Omitido, sai do título')
-    .option('-d, --duration <min>', 'minutos; a SOMA da sprint não passa de 10')
-    .option('-p, --proof <cmd>', 'o comando que prova ESTA task')
-    .option('-n, --priority <nnn>', 'o número da pasta. Ocupado, RECUSA — o NNN é endereço')
-    .option('-b, --backlog', 'nasce em `backlog/`: escrita, não comprometida — não gasta o teto')
-  cmd.addHelpText(
-    'after',
-    '\n  PASTA no imperativo, 4 palavras: `install_zot` · `map_hosts_entry`\n  TÍTULO no presente, 7 palavras: "registry answers on myregistry.localhost"\n  Os vinte exemplos e o porquê: `my resources task_naming`\n',
-  )
-  return cmd
-}
-
-export async function main(argv: string[]): Promise<number> {
-  const cmd = command().exitOverride()
-  try {
-    cmd.parse(argv, { from: 'user' })
-  } catch (err) {
-    return (err as { exitCode?: number }).exitCode ?? 1
-  }
-  const [titulo] = cmd.args
-  const opts = cmd.opts()
-
-  const { slug, porque } = await projetoCorrente(opts.project)
-  if (!slug)
-    return console.error(
-      `de que projeto é esta task? passe \`-P <slug>\` (fica lembrado), ou rode de dentro de 01_projects/<slug>/\n  existem: ${projetos().join(', ')}`,
-    ), 1
-  const dir = join(PROJETOS, slug)
-  if (!existsSync(dir))
-    return console.error(`projeto não existe: 01_projects/${slug}/ (veio de ${porque})\n  existem: ${projetos().join(', ')}`), 1
-  if (porque !== 'último usado') await lembra(slug)
-
-  const criada = criar(slug, titulo!, opts)
-  if ('erro' in criada) return console.error(criada.erro), 1
-  const { task, sprint, n } = criada
-  const pasta = task.dir
-
-  console.log(rel(join(pasta, 'CONTEXT.md')))
-  console.log(`${rel(join(pasta, 'output.md'))}   state: draft`)
-  console.log(`projeto ${slug} (${porque}) · sprint ${sprint} · prioridade ${n}`)
-  if (!opts.proof || !opts.duration) console.log('falta `proof:` e/ou `duration:` — sem os dois o 01_coding recusa a task')
-  // O teto é relido do DISCO, não somado na memória: a task acabou de ser
-  // escrita, e a única soma que vale é a que o próximo comando também vê.
-  const depois = acharSprint(slug, sprint)
-  const teto = 'erro' in depois ? '' : criticaDoTeto(depois)
-  if (teto) console.log(`sprint ${sprint}: ${teto}`)
-  console.log(`começa com: my tasks start ${sprint}/${task.nnn}`)
-  return 0
-}
-
-if (import.meta.main) main(process.argv.slice(2)).then((c) => process.exit(c))

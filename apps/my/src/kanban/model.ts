@@ -5,7 +5,7 @@
 //! ponto medido aqui: o cabeçalho dizia `projects → uma LABEL. Deleted 20/08` como se
 //! já tivesse acontecido. Não aconteceu — `01_projects/`, `src/projects/`,
 //! `src/sprints/` continuam no disco e são o que `my projects check`, `my sprints
-//! list` e `my tasks list` leem hoje, e o próprio pedido desta task manda confirmar
+//! list` e `my kanban list` leem hoje, e o próprio pedido desta task manda confirmar
 //! que os três continuam funcionando. `kanban` COMPÕE esses sistemas — não os
 //! substitui — e a frase do contrato foi corrigida lá para dizer isso.
 //!
@@ -39,7 +39,7 @@
 //! task sem reescrever citação — mover projeto é o `my projects rename`, que troca
 //! NOME, não dono.
 //!
-//! depends_on: src/interfaces/kanban.ts · src/projects/model.ts · src/sprints/model.ts · src/tasks/model.ts · src/tasks/new.ts · src/tasks/done.ts
+//! depends_on: src/interfaces/kanban.ts · src/projects/model.ts · src/sprints/model.ts · src/shared/work/model.ts · src/shared/work/new.ts · src/shared/work/done.ts
 //! impacts:    src/kanban/open.ts · src/kanban/capture.ts · src/kanban/close.ts · src/kanban/add.ts · src/kanban/move.ts · src/kanban/tag.ts · src/kanban/label.ts · src/kanban/limit.ts · src/kanban/list.ts · src/kanban/check.ts · src/kanban/metrics.ts · src/kanban/rename.ts
 
 import { appendFileSync, existsSync, mkdirSync, readFileSync, readdirSync, renameSync, statSync, writeFileSync } from "node:fs";
@@ -62,8 +62,8 @@ import {
 } from "./remote.ts";
 import { PROJETOS, slugs as boardSlugs } from "../projects/model.ts";
 import { main as renameProject } from "../projects/rename.ts";
-import { criar as criarTask } from "../tasks/new.ts";
-import { done as doneTask } from "../tasks/done.ts";
+import { criar as criarTask } from "../shared/work/new.ts";
+import { done as doneTask } from "../shared/work/done.ts";
 import {
 	ARQUIVO,
 	BACKLOG,
@@ -78,7 +78,7 @@ import {
 	placeDe,
 	projetoDe,
 	rotuloDe,
-} from "../tasks/model.ts";
+} from "../shared/work/model.ts";
 
 export type Finding = { path: string; says: string };
 
@@ -307,7 +307,7 @@ export function rename(from: string, to: string): KanbanSystem.Entities.Board {
 export function capture(boardName: string, title: string, body: string): KanbanSystem.Entities.Card {
 	if (!existsSync(join(PROJETOS, boardName))) throw new Error(`não existe board \`${boardName}\` — my kanban open ${boardName}`);
 	// Pousa em `backlog/` — a coluna de intake — via a MESMA opção que
-	// `src/tasks/new.ts` já expõe. Herda a recusa dela também: sem sprint aberta,
+	// `src/shared/work/new.ts` já expõe. Herda a recusa dela também: sem sprint aberta,
 	// `criar` recusa, e é a recusa REAL desta casa hoje — nenhuma task nasce fora de
 	// uma sprint, capturada ou não. Abrir uma sprint automaticamente seria decidir
 	// política de produto que ninguém pediu; a mensagem de erro já ensina o próximo
@@ -330,14 +330,14 @@ export function close(
 	if (!t) throw new Error(`nenhum card \`${taskName}\``);
 	const slug = projetoDe(t.dir);
 	// `close` é o `Inbox.process`/`Inbox.drop` de antes: registra o desfecho e
-	// arquiva. NÃO é `my tasks done` — aquele roda prova e commita código, e nem
+	// arquiva. NÃO é `my kanban close` — aquele roda prova e commita código, e nem
 	// todo card é código. Um card fechado com `became` que nunca passou por `my
-	// tasks done` continua aparecendo em `my tasks check` como "done sem prova" —
+	// tasks done` continua aparecendo em `my kanban check` como "done sem prova" —
 	// é a MESMA regra, e ela está certa: entregar sem prova é isso mesmo que
 	// `tasks` já flagra, kanban não inventa uma segunda.
 	if ("dropped" in answer) {
 		// `tasks.done({dropped})` NÃO arquiva — é o comportamento de HOJE do próprio
-		// `src/tasks/done.ts` (só o caminho que commita chama `arquivar`), e kanban
+		// `src/shared/work/done.ts` (só o caminho que commita chama `arquivar`), e kanban
 		// herda em vez de inventar um segundo. A pasta fica onde estava; o
 		// `state:` é que muda.
 		const fechada = doneTask(t, { dropped: answer.dropped });
@@ -371,7 +371,7 @@ export function add(taskName: string, boardName: string, labels: string[] = []):
 }
 
 /** Move a pasta pra base da coluna alvo, replicando a mesma regra de
- *  `puxar`/`devolver`/`arquivar` de `src/tasks/model.ts` — subir até o `tasks/` que
+ *  `puxar`/`devolver`/`arquivar` de `src/shared/work/model.ts` — subir até o `tasks/` que
  *  contém a task antes de descer na coluna nova — mas GENERALIZADA pras quatro
  *  colunas, porque aqueles três só sabem ir pras três que já tinham verbo. Não fica
  *  em `tasks/model.ts` porque nenhuma das quatro colunas ali contempla ida DIRETA
@@ -507,7 +507,7 @@ export function flow(
 }
 
 /** Uma entrada em `done` por DIA, mais antigo primeiro. Só conta o que `moves/`
- *  viu — um card fechado ontem por `my tasks done` sem nunca ter passado por
+ *  viu — um card fechado ontem por `my kanban close` sem nunca ter passado por
  *  `my kanban move`/`add`/`close` não deixou rastro aqui, e não entra. */
 export function throughput(days: number): number[] {
 	const hoje = new Date();

@@ -150,7 +150,7 @@ export async function attach(parent: Command, nodes: Node[]): Promise<Command> {
           // 17/08. O valor dos quatro formatos é justamente o pipe.
           process.exitCode = code;
           // FECHA O QUE O COMANDO ABRIU. O SurrealDB do `home/db.ts` mantém um
-          // socket vivo, e socket vivo segura o loop do Bun: `my tasks list`
+          // socket vivo, e socket vivo segura o loop do Bun: `my kanban list`
           // imprimia a lista e FICAVA — 120s de timeout num comando de 300ms
           // (medido 20/08).
           //

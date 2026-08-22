@@ -29,7 +29,7 @@ import { homedir } from "node:os";
 import { join } from "node:path";
 import { frontMatter } from "../runs.ts";
 import { CEILING_MIN, minutos, semDuration, sprints, tasksSoltas } from "../sprints/model.ts";
-import { ARQUIVO as DONE } from "../tasks/model.ts";
+import { ARQUIVO as DONE } from "../shared/work/model.ts";
 import { home, template } from "../shared/file.ts";
 
 export const RAIZ = home();
@@ -52,7 +52,7 @@ export const hoje = () => new Date().toISOString().slice(0, 10);
 export const CHAVES = ["name", "description", "repo", "repo_local", "main_branch"] as const;
 
 /** A subpasta onde o que FECHOU vai morar, e o nome NÃO é escolha deste arquivo:
- *  vem de @src/tasks/model.ts, que já move task fechada pra `done/` dentro da sprint
+ *  vem de @src/shared/work/model.ts, que já move task fechada pra `done/` dentro da sprint
  *  (`sprints/991_share_external_v1/tasks/done/002_.../`). Issue reusa a mesma palavra e a
  *  mesma forma um nível acima — reescrever o literal aqui daria duas constantes com o
  *  mesmo valor, que divergem na primeira vez que uma delas mudar.

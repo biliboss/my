@@ -12,14 +12,14 @@
 //! contrato.
 //!
 //! depends_on: src/runs.ts · src/shared/resolve.ts
-//! impacts:    src/tasks/new.ts · src/tasks/list.ts · src/tasks/start.ts · src/tasks/done.ts · src/sprints/model.ts
+//! impacts:    src/shared/work/new.ts · src/shared/work/start.ts · src/shared/work/done.ts · src/sprints/model.ts · src/kanban/model.ts
 
 import { existsSync, mkdirSync, readFileSync, readdirSync, renameSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
-import { frontMatter } from '../runs.ts'
-import { db } from '../home/db.ts'
-import { resolvePorPrefixo } from '../shared/resolve.ts'
-import { root as home, store, template } from '../home/paths.ts'
+import { frontMatter } from '../../runs.ts'
+import { db } from '../../home/db.ts'
+import { resolvePorPrefixo } from '../../shared/resolve.ts'
+import { root as home, store, template } from '../../home/paths.ts'
 
 export const RAIZ = home()
 export const PROJETOS = join(RAIZ, '01_projects')
@@ -152,11 +152,11 @@ export function pastasDeTask(slugProjeto: string): string[] {
 export function acharTask(slugProjeto: string, alvo: string): Task | { erro: string } {
   const pastas = pastasDeTask(slugProjeto)
   if (!pastas.length)
-    return { erro: `01_projects/${slugProjeto}/ não tem task — \`my sprints new "<título>"\` e depois \`my tasks new "<título>"\`` }
+    return { erro: `01_projects/${slugProjeto}/ não tem task — \`my sprints new "<título>"\` e depois \`my kanban add "<título>"\`` }
   const rotulo = (p: string) => p.slice(join(PROJETOS, slugProjeto).length + 1)
   // O rótulo da task é o caminho DENTRO do projeto (`sprints/999_x/tasks/001_y`),
   // e é por ele que se casa: a peneira de substring precisa enxergar a sprint,
-  // senão `my tasks start 999_x` não acha nada.
+  // senão `my kanban move 999_x` não acha nada.
   const achado = resolvePorPrefixo(pastas, alvo, rotulo, { dica: (h) => ` — passe o caminho, ex. \`${rotulo(h[0]!)}\`` })
   if (!achado) return { erro: `nenhuma task casa "${alvo}" em ${slugProjeto}: ${pastas.map(rotulo).join(', ')}` }
   if ('erro' in achado) return achado
@@ -267,7 +267,7 @@ export type Place = typeof BACKLOG | typeof RODANDO | typeof ARQUIVO | typeof TA
 
 /** O DESFECHO — o `state:` do `output.md`, o eixo que a pasta NÃO carrega.
  *
- *  `draft` nasce com a task (@src/tasks/new.ts), `doing` é do `start`, e os três
+ *  `draft` nasce com a task (@src/shared/work/new.ts), `doing` é do `start`, e os três
  *  finais são do `done`: `done` entregou, `blocked` travou, `dropped` não vai
  *  acontecer. Os dois últimos só existem AQUI — não há pasta `blocked/`, e é por
  *  isso que o eixo do lugar não pode ser o único. */

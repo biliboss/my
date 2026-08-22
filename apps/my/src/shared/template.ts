@@ -1,7 +1,7 @@
 //! Um template do disco vira o arquivo que nasce da geração.
 //!
 //! Existe porque três geradores — @src/projects/new.ts, @src/sprints/new.ts e
-//! @src/tasks/new.ts — carregavam a MESMA linha copiada
+//! @src/shared/work/new.ts — carregavam a MESMA linha copiada
 //! (`s.replace(/^<!--[\s\S]*?-->\n+/, '')`), e ela passou a estar errada nos três
 //! no mesmo dia: em 18/08 todo markdown desta casa ganhou frontmatter OKF, e um
 //! strip que só conhece comentário HTML deixa o `type: template` do MOLDE vazar
@@ -11,7 +11,7 @@
 //! chamadores, e esta tem três.
 //!
 //! depends_on: 03_resources/templates/system/
-//! impacts:    src/projects/new.ts · src/sprints/new.ts · src/tasks/new.ts · src/system_design/model.ts
+//! impacts:    src/projects/new.ts · src/sprints/new.ts · src/shared/work/new.ts · src/system_design/model.ts
 
 /** Só o que o STAMPER escreve: um bloco de frontmatter com `type:` e nada mais.
  *

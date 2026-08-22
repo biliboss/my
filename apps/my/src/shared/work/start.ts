@@ -1,8 +1,8 @@
 #!/usr/bin/env bun
 //! Começa uma task: corta a worktree, carimba o início, e FIXA a mensagem do commit.
 //!
-//!     my tasks start 3                 a task 003 do projeto corrente
-//!     my tasks start 3 --here          sem worktree: commita no checkout atual
+//!     `my kanban move` 3                 a task 003 do projeto corrente
+//!     `my kanban move` 3 --here          sem worktree: commita no checkout atual
 //!
 //! O que ele escreve no `output.md` — e por que cada campo:
 //!
@@ -24,10 +24,9 @@
 //! ser seguro ali dentro e proibido no checkout principal (medido em 16/08: um
 //! commit pelado varreu 43 arquivos de outra sessão).
 //!
-//! depends_on: src/tasks/model.ts
-//! impacts:    src/tasks/done.ts
+//! depends_on: src/shared/work/model.ts
+//! impacts:    src/shared/work/done.ts
 
-import { Command } from 'commander'
 import { existsSync, mkdirSync, rmSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { TRAVA, crachaDe, ehMinha } from './claim.ts'
@@ -102,12 +101,12 @@ export function start(t: Task, opts: { owner?: string; here?: boolean } = {}): S
   try {
     mkdirSync(trava)
   } catch {
-    // Já travada. `my tasks claim` grava um CRACHÁ dentro da trava, e ele é o que
+    // Já travada. `my teams claim` grava um CRACHÁ dentro da trava, e ele é o que
     // distingue "outro agente chegou primeiro" de "sou eu, continuando" — sem ele
     // um worker que pega e depois inicia recusava a própria task.
     if (!ehMinha(crachaDe(t.dir)))
       return {
-        erro: `${t.slug} já foi assumida por ${t.saida.owner ?? 'outro agente'} — ele chegou primeiro.\n  se o dono morreu no meio: my tasks claim ${t.nnn} --release --force`,
+        erro: `${t.slug} já foi assumida por ${t.saida.owner ?? 'outro agente'} — ele chegou primeiro.\n  se o dono morreu no meio: \`my teams claim ${t.nnn} --release --force\``,
       }
   }
   const solta = () => {
@@ -162,43 +161,3 @@ export function start(t: Task, opts: { owner?: string; here?: boolean } = {}): S
   return { task: t, worktree: opts.here ? '' : worktree, branch: opts.here ? '' : branch, subject, commitStart: head.out }
 }
 
-export function command(): Command {
-  const cmd = new Command('start')
-    .description('Corta a worktree, carimba o início e fixa a mensagem do commit.')
-    .argument('<nnn>', 'o número da task — `3`, `03` ou `003`')
-    .option('-P, --project <slug>', 'o projeto. Passado uma vez, fica lembrado — senão vem do cwd')
-    .option('-o, --owner <nome>', 'quem assume a task', 'Gabriel')
-    .option('--here', 'sem worktree: o trabalho acontece no checkout atual')
-  cmd.addHelpText('after', '\n  Fecha com: my tasks done <nnn> — ele roda a prova, commita e carimba o fim.\n')
-  return cmd
-}
-
-export async function main(argv: string[]): Promise<number> {
-  const cmd = command().exitOverride()
-  try {
-    cmd.parse(argv, { from: 'user' })
-  } catch (err) {
-    return (err as { exitCode?: number }).exitCode ?? 1
-  }
-  const [alvo] = cmd.args
-  const opts = cmd.opts()
-
-  const { slug, porque } = await projetoCorrente(opts.project)
-  if (!slug) return console.error(`de que projeto? \`-P <slug>\`\n  existem: ${projetos().join(', ')}`), 1
-  if (porque !== 'último usado') await lembra(slug)
-
-  const t = acharTask(slug, alvo!)
-  if ('erro' in t) return console.error(t.erro), 1
-
-  const começou = start(t, { owner: opts.owner, here: opts.here })
-  if ('erro' in começou) return console.error(começou.erro), 1
-
-  console.log(`${t.nnn} ${t.titulo}`)
-  console.log(`  state: doing · owner ${opts.owner} · commit_start ${começou.commitStart.slice(0, 8)}`)
-  console.log(começou.worktree ? `  worktree: ${começou.worktree}\n  branch:   ${começou.branch}` : `  sem worktree: trabalhe em ${workRepo(t)}`)
-  console.log(`  subject fixado: ${começou.subject}`)
-  console.log(`  garanta que só as SUAS mudanças estão aí, e feche com: my tasks done ${t.nnn}`)
-  return 0
-}
-
-if (import.meta.main) main(process.argv.slice(2)).then((c) => process.exit(c))

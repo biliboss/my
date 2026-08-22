@@ -88,7 +88,7 @@ const HERE = import.meta.dir;
  *
  *  Era `resolve(HERE, "../..", file)`, o que só funcionava enquanto conteúdo e fonte
  *  dividiam checkout. Separados, metade das citações de todo header (`depends_on:
- *  src/tasks/model.ts · 02_areas/…/CONTEXT.md` cita as duas numa linha) resolvia pro
+ *  src/shared/work/model.ts · 02_areas/…/CONTEXT.md` cita as duas numa linha) resolvia pro
  *  vazio, e este check morria com ENOENT na primeira — medido 20/08.
  *
  *  A ÚLTIMA ÁRVORE É O FALLBACK quando nenhuma tem o arquivo: quem chama precisa de

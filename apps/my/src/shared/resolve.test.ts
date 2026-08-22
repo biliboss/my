@@ -72,7 +72,7 @@ test("substring é a última peneira, e só quando nada acima pegou", () => {
 
 test("rótulo com caminho casa pelo último segmento E pelo caminho inteiro", () => {
 	// O rótulo de task é `sprints/999_x/tasks/001_y`. Sem testar o segmento,
-	// `001_` não é prefixo do caminho e `my tasks start 1` não acharia nada.
+	// `001_` não é prefixo do caminho e `my kanban move` 1` não acharia nada.
 	const tasks = ["sprints/999_x/tasks/001_y", "sprints/999_x/tasks/002_z"];
 	expect(resolvePorPrefixo(tasks, "1", (r) => r)).toEqual({ hit: "sprints/999_x/tasks/001_y" });
 	expect(resolvePorPrefixo(tasks, "001_y", (r) => r)).toEqual({ hit: "sprints/999_x/tasks/001_y" });

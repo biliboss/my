@@ -218,7 +218,7 @@ const doc = doTemplate(readFileSync(join(TPL, "CONTEXT.md"), "utf8"), "project")
 // `CONTEXT.md` e não `<slug>.md`: o arquivo que explica uma pasta tem o mesmo nome
 // em toda a casa, então quem chega sabe o que abrir sem saber o slug.
 writeFileSync(join(dir, "CONTEXT.md"), doc);
-// E `tasks/` em vez de `tasks.md`: a task virou PASTA (`my tasks new`), porque uma
+// E `tasks/` em vez de `tasks.md`: a task virou PASTA (`my kanban add`), porque uma
 // linha de checkbox não carrega prova, worktree, nem os dois shas do diff. Em
 // `sprints/`, a pasta nasce VAZIA — quem numera a primeira sprint é
 // `my sprints new`, e criar uma aqui seria inventar título no lugar de quem sabe.
@@ -230,7 +230,7 @@ console.log(`área: 02_areas/${area}/${areaSlug}.md · ${prazo ? `prazo: ${prazo
 console.log(
 	estrutura === "sprints"
 		? `primeira sprint: my sprints new "<o pacote, no presente>" -P ${slug}`
-		: `primeira task: my tasks new "<o resultado, no presente>" -P ${slug}`,
+		: `primeira task: my kanban add "<o resultado, no presente>" -P ${slug}`,
 );
 console.log("o esqueleto está lá; o escopo é julgamento — escreva.");
 console.log(`depois, pra ele aparecer na barra: my vscode set me/01_projects/${slug} -t`);

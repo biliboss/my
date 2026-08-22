@@ -40,7 +40,7 @@ import { agents } from "@my/agents";
 import { registerChannel } from "@my/chat";
 import { grid } from "@my/herdr/panes/grid";
 import { create } from "@my/herdr/workspaces/create";
-import { RAIZ } from "../tasks/model.ts";
+import { RAIZ } from "../shared/work/model.ts";
 import { type Lineup, type Team, agora, channelOf, memberName, mint, storedOf, write } from "./model.ts";
 import { find } from "./list.ts";
 

@@ -91,7 +91,7 @@ export function usage(file: string): string[] {
   const lines = readFileSync(file, "utf8").split("\n");
   // O SHEBANG não encerra o docstring, e a versão que encerrava engolia os exemplos
   // de 33 comandos: todo script que abre com `#!/usr/bin/env bun` (`my check okf`,
-  // `my check maps`, `my tasks start`, `my meta`…) caía no `break` da PRIMEIRA linha
+  // `my check maps`, `my kanban move`, `my meta`…) caía no `break` da PRIMEIRA linha
   // e ficava com `Examples:` vazio no `--help`. Medido 20/08, e o sintoma era mudo —
   // o help imprimia o resumo normalmente, então parecia um comando sem exemplo.
   //

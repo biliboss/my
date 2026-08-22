@@ -7,7 +7,7 @@
 //!     my home --clear              volta pro default
 //!
 //! UMA CASA POR VEZ, e é decisão, não limitação de implementação. Um CLI que aceita
-//! N casas ao mesmo tempo precisa que TODO verbo receba qual — e aí `my tasks list`
+//! N casas ao mesmo tempo precisa que TODO verbo receba qual — e aí `my kanban list`
 //! ganha uma flag que 99% das chamadas repetem igual. A casa é ambiente, como o
 //! diretório corrente é pro `git`.
 //!

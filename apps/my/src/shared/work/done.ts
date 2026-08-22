@@ -1,8 +1,8 @@
 #!/usr/bin/env bun
 //! Fecha uma task: roda a prova, commita a worktree e carimba o fim.
 //!
-//!     my tasks done 3                  prova, commit, commit_end, state: done
-//!     my tasks done 3 --blocked "…"    não commita: registra por que travou
+//!     `my kanban close` 3                  prova, commit, commit_end, state: done
+//!     `my kanban close` 3 --blocked "…"    não commita: registra por que travou
 //!
 //! A ORDEM É A REGRA: a prova roda ANTES do commit. Falhou, não commita e sai 1 —
 //! prova depois do commit DESCOBRE o erro, prova antes PREVINE, e só a segunda
@@ -28,10 +28,9 @@
 //! NÃO FAZ MERGE. Integrar é decisão de gente, e a worktree fica pro humano olhar
 //! o diff — @02_areas/00_workflows/00_main/01_coding/CONTEXT.md.
 //!
-//! depends_on: src/tasks/model.ts · src/tasks/start.ts
+//! depends_on: src/shared/work/model.ts · src/shared/work/start.ts
 //! impacts:    02_areas/00_workflows/00_main/01_coding/CONTEXT.md
 
-import { Command } from 'commander'
 import { existsSync, mkdirSync, renameSync, rmSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import {
@@ -65,52 +64,6 @@ export type Finished = {
   onde?: string
 }
 
-export function command(): Command {
-  const cmd = new Command('done')
-    .description('Roda a prova, commita a worktree da task e carimba o fim.')
-    .argument('<nnn>', 'o número da task — `3`, `03` ou `003`')
-    .option('-P, --project <slug>', 'o projeto. Passado uma vez, fica lembrado — senão vem do cwd')
-    .option('-b, --blocked <porque>', 'não commita: registra o que travou e por quê')
-    .option('--dropped <porque>', 'a task não vai acontecer — registra o porquê e fecha')
-  cmd.addHelpText('after', '\n  A prova roda ANTES do commit. Falhou, nada é commitado.\n  Merge é decisão de gente: a worktree fica, o branch fica.\n')
-  return cmd
-}
-
-export async function main(argv: string[]): Promise<number> {
-  const cmd = command().exitOverride()
-  try {
-    cmd.parse(argv, { from: 'user' })
-  } catch (err) {
-    return (err as { exitCode?: number }).exitCode ?? 1
-  }
-  const [alvo] = cmd.args
-  const opts = cmd.opts()
-
-  const { slug, porque } = await projetoCorrente(opts.project)
-  if (!slug) return console.error(`de que projeto? \`-P <slug>\`\n  existem: ${projetos().join(', ')}`), 1
-  if (porque !== 'último usado') await lembra(slug)
-
-  const t = acharTask(slug, alvo!)
-  if ('erro' in t) return console.error(t.erro), 1
-
-  const fechada = done(t, { blocked: opts.blocked, dropped: opts.dropped })
-  if ('erro' in fechada) return console.error(fechada.erro), 1
-
-  if (fechada.state !== 'done') {
-    console.log(`${t.nnn} ${fechada.state} — ${fechada.why}`)
-    return 0
-  }
-
-  console.log(`\n${t.nnn} done · ${fechada.arquivos} arquivo(s) · ${fechada.head!.slice(0, 8)}`)
-  if (fechada.arquivada) console.log(`  arquivada em ${fechada.arquivada}`)
-  console.log(
-    `  ${rel(fechada.arquivada ? join(RAIZ, fechada.arquivada, 'output.md') : join(t.dir, 'output.md'))} — preencha o resumo: um parágrafo, e 3 a 5 seções de um parágrafo`,
-  )
-  console.log(`  diff da task: git -C ${fechada.onde} log ${String(t.saida.commit_start ?? '').slice(0, 8)}..${fechada.head!.slice(0, 8)} --stat`)
-  console.log('  merge é decisão de gente: o branch e a worktree ficam.')
-  return 0
-}
-
 /** FECHA a task: roda a prova, commita e carimba o fim — ou registra o desfecho
  *  que não é entrega (`blocked`, `dropped`), e esses não commitam nada.
  *
@@ -134,7 +87,7 @@ export function done(t: Task, opts: { blocked?: string; dropped?: string } = {})
     return { task: t, state, why: opts.blocked ?? opts.dropped }
   }
 
-  if (stateDe(t) !== 'doing') return { erro: `${t.slug} está em \`${stateDe(t)}\` — rode \`my tasks start ${t.nnn}\` primeiro` }
+  if (stateDe(t) !== 'doing') return { erro: `${t.slug} está em \`${stateDe(t)}\` — rode \`my kanban move\` ${t.nnn}\` primeiro` }
   const onde = String(t.saida.worktree || '') || process.cwd()
   if (!existsSync(onde)) return { erro: `a worktree do start não existe mais: ${onde}` }
 
@@ -224,4 +177,3 @@ export function done(t: Task, opts: { blocked?: string; dropped?: string } = {})
   return { task: t, state: 'done', arquivada: arquivada || undefined, arquivos: sujo.out.split('\n').length, head: head.out, onde }
 }
 
-if (import.meta.main) main(process.argv.slice(2)).then((c) => process.exit(c))
