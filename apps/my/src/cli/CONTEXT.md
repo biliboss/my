@@ -130,6 +130,11 @@ disco. **Pasta sem `@verb` continua aparecendo**, só que sem a frase; **`@verb`
 sem pasta não vira comando nenhum.** A CLI continua sendo o disco — isto é a
 legenda dela, e a legenda não pode inventar comando.
 
+Pasta ANINHADA pode ficar sem frase — o help dela abre depois de já se saber o
+que se procura. A de TOPO não, e [`my.test.ts`](my.test.ts) trava as duas
+pontas: nenhum verbo de topo cai em `N subcomandos`, e nenhuma frase aponta pra
+pasta que não existe (foi o que achou as legendas órfãs de `tasks` e `claude`).
+
 Decorator LEGADO, que é o que o bun implementa: assinatura `(target, key)`, e o
 nome do verbo é o `key`. Medido em 17/08 — na forma TC39 o `ctx.name` chega
 `undefined`.
