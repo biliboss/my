@@ -1,0 +1,14 @@
+/*! A BASE de componente, e só ela: o HeroUI 3 processado pelo Tailwind v4.
+ *
+ *  CAMINHO RELATIVO, e não `@heroui/react/styles`: o pacote expõe esse subpath
+ *  sob a condição `style`, que o plugin PostCSS do Tailwind não resolve —
+ *  medido em 20/08 e já escrito em `apps/my-graph/app/globals.css`. O import
+ *  que não resolve não dá erro; ele some, e o build fica verde sem o estilo.
+ *
+ *  ESTE ARQUIVO NÃO PINTA NADA DESTA CASA. A paleta, a tipografia e a casca da
+ *  página vêm de `@biliboss/my-ui/tokens.css`, importado DEPOIS — e como o
+ *  HeroUI mora inteiro em `@layer`, qualquer regra sem camada dos tokens ganha
+ *  dele por construção, não por especificidade escrita à mão.
+ */
+@import "tailwindcss";
+@import "../node_modules/@heroui/react/dist/styles.css";

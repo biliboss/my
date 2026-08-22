@@ -1,0 +1,31 @@
+{
+  "name": "@my/lp",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A porta da fam\u00edlia: um dom\u00ednio, uma rota por fatia de p\u00fablico, um build.",
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "check": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@biliboss/lp-slices": "workspace:*",
+    "@biliboss/my-ui": "workspace:*",
+    "@heroui/react": "catalog:",
+    "cytoscape": "catalog:",
+    "framer-motion": "catalog:",
+    "next": "16.3.1",
+    "react": "catalog:",
+    "react-dom": "catalog:"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/cytoscape": "catalog:",
+    "@types/node": "^20",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "tailwindcss": "^4",
+    "typescript": "catalog:"
+  }
+}

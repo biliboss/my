@@ -1,0 +1,34 @@
+{
+  "name": "@biliboss/lp-slices",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A composi\u00e7\u00e3o de cada porta de apps/lp: uma fatia de p\u00fablico por arquivo, feita das se\u00e7\u00f5es Lp* do my-ui.",
+  "license": "MIT",
+  "author": "Gabriel (biliboss)",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./slices": "./src/slices/index.ts",
+    "./pages/*": "./src/pages/*.tsx"
+  },
+  "dependencies": {
+    "@biliboss/my-ui": "workspace:*",
+    "framer-motion": "catalog:"
+  },
+  "peerDependencies": {
+    "@heroui/react": ">=3",
+    "react": ">=19",
+    "cytoscape": ">=3"
+  },
+  "devDependencies": {
+    "@heroui/react": "catalog:",
+    "@types/cytoscape": "catalog:",
+    "@types/react": "catalog:",
+    "cytoscape": "catalog:",
+    "react": "catalog:",
+    "typescript": "catalog:"
+  },
+  "scripts": {
+    "check": "tsc -p tsconfig.json --noEmit"
+  }
+}

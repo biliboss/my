@@ -1,3 +1,0 @@
-User-agent: *
-Allow: /
-Sitemap: https://biliboss.github.io/my-graph/sitemap.xml
