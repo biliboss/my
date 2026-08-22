@@ -44,6 +44,23 @@ subverbo" não tinha resposta pra um verbo que já respondia sozinho ANTES de ga
 subverbos, e `my resources <assunto>` está escrito às dezenas nesta casa. Sem
 isto, virar pasta quebrava toda essa citação.
 
+## `my apropos` é a vista PLANA dos 158
+
+**A árvore que dá escopo ao verbo é a mesma que esconde o verbo.** `my --help`
+lista 36; o resto mora um ou dois níveis abaixo, e ver tudo custava uma
+invocação por pasta. [`../apropos.ts`](../apropos.ts) achata a mesma `scan()` e
+casa o termo contra o ENDEREÇO e a descrição, sem acento e sem caixa.
+
+```
+my apropos kanban card     dois termos é AND, nunca OR
+my apropos --json evento   o mesmo, pra outro programa ler
+```
+
+A unidade de resposta é a LINHA, não a página — é o que faz `| grep`, `| wc -l`
+e `| fzf` funcionarem. Corta na largura do terminal e **não corta no pipe**:
+truncar no pipe cortaria o que o `grep` do outro lado procura. Sem acerto o
+status é `1`, igual ao `grep`.
+
 ## Quem declara flag ganha o próprio `-h`
 
 Duas maneiras de um comando ter help, e o DISCO escolhe qual — o gatilho é o
