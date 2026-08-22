@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test";
-import type { UsageLogging as ContractUsageLogging } from "@biliboss/interfaces/shared.ts";
+import type { UsageLogging as ContractUsageLogging } from "@my/interfaces/shared.ts";
 import {
   MemorySpanSink,
   Telemetry,

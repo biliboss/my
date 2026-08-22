@@ -7,7 +7,7 @@
 //! depends_on: src/interfaces/shared.ts
 //! impacts:    —
 
-import type { Logging, Shared, UsageLogging } from "@biliboss/interfaces/shared.ts";
+import type { Logging, Shared, UsageLogging } from "@my/interfaces/shared.ts";
 
 // O contrato é a fonte; estes são apelidos locais pra quem já importa daqui.
 export type Instant = Shared.Instant;

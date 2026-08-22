@@ -38,7 +38,7 @@
 //! says refuse rather than guess when there is no way to implement something
 //! honestly; provably mutating the user's real preferences by accident, twice
 //! per command, on the ONE thing `tune` is not supposed to touch, is that
-//! case. `restart(name, { engine: { model } })` changes model at the next
+//! case. `agents.control.restart(name, { engine: { model } })` changes model at the next
 //! boot instead — a PROCESS flag, not a key three menus deep that also means
 //! "save as default".
 //!
@@ -46,115 +46,31 @@
 //!             src/herdr/panes/{send,split}.ts · src/herdr/run.ts ·
 //!             src/agents/clone.ts (esperaTUI)
 //! impacts:    —
+//!
+//! O domínio mora em `@my/agents`; aqui fica só o que a CLI imprime.
 
-import { did } from "@biliboss/herdr/run"
-import { send } from "@biliboss/herdr/panes/send"
-import { split } from "@biliboss/herdr/panes/split"
-import { list as liveAgents, type Agent as HerdrAgent } from "@biliboss/herdr/agents/list"
-import { forget, remember, roster } from "@biliboss/herdr/agents/roster"
-import { esperaTUI, TUI_MS } from './clone.ts'
-import type { AgentSystem, Fail } from '@biliboss/interfaces/agents.ts'
+import { Command } from "commander";
 
-const fail = (error: string, reason: Fail['reason'] = 'not_found'): Fail => ({ ok: false, error, reason })
+import { agents } from "@my/agents";
 
-async function locate(name: string): Promise<HerdrAgent | undefined> {
-  const live = await liveAgents()
-  if (!live.ok) return undefined
-  const pane = (await roster()).find((a) => a.name === name)?.pane
-  return live.agents.find((a) => a.pane === pane || a.title === name)
-}
-
-export async function interrupt(name: string): Promise<{ ok: true } | Fail> {
-  const rec = await locate(name)
-  if (!rec) return fail(`não conheço agente \`${name}\``)
-  const out = await did(['pane', 'send-keys', rec.pane, 'esc'])
-  return out.ok ? { ok: true } : { ok: false, error: out.error ?? 'herdr failed', reason: 'herdr' }
-}
-
-export async function stop(name: string): Promise<{ ok: true } | Fail> {
-  const rec = await locate(name)
-  if (!rec) return fail(`não conheço agente \`${name}\``)
-  const out = await did(['pane', 'close', rec.pane])
-  if (!out.ok) return { ok: false, error: out.error ?? 'herdr failed', reason: 'herdr' }
-  forget([name])
-  return { ok: true }
-}
-
-export async function restart(name: string): Promise<AgentSystem.Entities.Agent | Fail> {
-  const origem = await locate(name)
-  if (!origem) return fail(`não conheço agente \`${name}\``)
-  if (origem.agent !== 'claude') return fail(`\`${origem.agent}\` não tem restart medido nesta casa — só claude-code`, 'unsupported')
-  if (!origem.session) return fail(`herdr não relatou a sessão de \`${name}\` (agent_session ausente) — sem ela não dá pra retomar`, 'unsupported')
-
-  const partido = await split(origem.pane, { direction: 'right', ratio: 0.6, focus: false })
-  if (!partido.ok) return { ok: false, error: partido.error, reason: 'herdr' }
-  const novo = partido.pane
-
-  const abriu = await send(novo, `claude --dangerously-skip-permissions -r ${origem.session}`)
-  if (!abriu.ok) return { ok: false, error: `o pane ${novo} nasceu mas não recebeu o comando: ${abriu.error}`, reason: 'herdr' }
-
-  if (!(await esperaTUI(novo))) return fail(`o claude não retomou em ${novo} em ${TUI_MS / 1000}s — o pane novo está lá, o velho (${origem.pane}) NÃO foi fechado`, 'herdr')
-
-  const renomeado = await send(novo, `/rename ${name}`, { window: 24 })
-  if (!renomeado.ok) return { ok: false, error: `\`/rename ${name}\` não entrou em ${novo}: ${renomeado.error} — os dois panes estão de pé`, reason: 'herdr' }
-  await Bun.sleep(1_500)
-
-  // SÓ AGORA fecha o velho — depois que o novo provou que subiu e respondeu ao
-  // rename. Fechar antes seria arriscar ficar sem NENHUM dos dois.
-  const fechou = await did(['pane', 'close', origem.pane])
-  if (!fechou.ok) return fail(`${name} retomou em ${novo}, mas o pane velho ${origem.pane} não fechou: ${fechou.error} — feche à mão`, 'herdr')
-
-  remember(name, novo)
-  const depois = await liveAgents()
-  const novoLive = depois.ok ? depois.agents.find((a) => a.pane === novo) : undefined
-  return {
-    name,
-    runtime: { cli: 'claude-code', session: novoLive?.session ?? origem.session },
-    launch: { engine: { cli: 'claude-code' }, worktree: novoLive?.launchCwd ?? origem.launchCwd, resume: origem.session },
-    pane: novo,
-  }
-}
-
-/** RECUSA TUDO — ver o cabeçalho deste arquivo. MEDIDO 20/08 contra um pane
- *  descartável: `/model <m>` e `/effort <n>` prometem escopo de sessão (`s`, ou
- *  um confirm de "esta conversa") e as DUAS vezes acabaram escrevendo
- *  `~/.claude/settings.json` GLOBAL mesmo assim — quatro gravações reais no
- *  arquivo de configuração do Gabriel, todas revertidas à mão contra o
- *  `.bak`. Nenhum campo de `Launch` tem hoje um caminho ao vivo que este teste
- *  não tenha provado arriscado; `tune` diz `unsupported` pra todos até essa
- *  investigação terminar, em vez de reofertar o mesmo risco. */
-export async function tune(
-  name: string,
-  launch: Partial<AgentSystem.ValueObjects.Launch>,
-): Promise<AgentSystem.Entities.Agent | Fail> {
-  const rec = await locate(name)
-  if (!rec) return fail(`não conheço agente \`${name}\``)
-
-  const pedido = Object.keys(launch)
-  return fail(
-    pedido.length
-      ? `\`${pedido.join(', ')}\` não tem tune ao vivo SEGURO nesta casa hoje: /model e /effort MEDIDOS 20/08 escreveram o default GLOBAL em ~/.claude/settings.json em vez de escopar à sessão (achado, não limitação de tempo — ver o cabeçalho de control.ts). Use \`restart(name, launch)\` pra aplicar no próximo boot.`
-      : 'tune sem nenhum campo em `launch` não muda nada — não há o que fazer',
-    'unsupported',
-  )
-}
-
-if (import.meta.main) {
-  const [verb, name] = Bun.argv.slice(2)
+export async function main(argv: string[]): Promise<number> {
+  const [verb, name] = argv
   const value = (n: string) => {
-    const i = Bun.argv.indexOf(`--${n}`)
-    return i === -1 ? undefined : Bun.argv[i + 1]
+    const i = argv.indexOf(`--${n}`)
+    return i === -1 ? undefined : argv[i + 1]
   }
   const out =
-    verb === 'interrupt' && name ? await interrupt(name) :
-    verb === 'stop' && name ? await stop(name) :
-    verb === 'restart' && name ? await restart(name) :
-    verb === 'tune' && name ? await tune(name, { effort: value('effort') }) :
+    verb === 'interrupt' && name ? await agents.control.interrupt(name) :
+    verb === 'stop' && name ? await agents.control.stop(name) :
+    verb === 'restart' && name ? await agents.control.restart(name) :
+    verb === 'tune' && name ? await agents.control.tune(name, { effort: value('effort') }) :
     undefined
   if (out === undefined) {
-    console.error('usage: control.ts <interrupt|stop|restart> <name>  |  control.ts tune <name> --effort <e>')
-    process.exit(2)
+    console.error('usage: my agents control <interrupt|stop|restart> <name>  |  tune <name> --effort <e>')
+    return 2
   }
   console.log(JSON.stringify(out, null, 2))
-  process.exit('ok' in out && out.ok === false ? 1 : 0)
+  return 'ok' in out && out.ok === false ? 1 : 0
 }
+
+if (import.meta.main) process.exit(await main(process.argv.slice(2)));

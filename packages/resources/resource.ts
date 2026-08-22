@@ -18,10 +18,10 @@
 //! "mesmo texto, mesmo id", e colisão adversarial não faz sentido num corpus que a
 //! própria casa escreve. Sete hexas bastam pra citar — mesma régua do git.
 //!
-//! depends_on: @biliboss/interfaces/resources.ts
+//! depends_on: @my/interfaces/resources.ts
 
 import { createHash } from "node:crypto";
-import type { ResourceSystem } from "@biliboss/interfaces/resources.ts";
+import type { ResourceSystem } from "@my/interfaces/resources.ts";
 
 /** Um recurso EM CÓDIGO. `path` continua no contrato porque um markdown da casa tem
  *  um; um `.ts` deste pacote põe o próprio caminho ali, e o `id` é quem identifica. */
@@ -33,7 +33,7 @@ export type Resource = ResourceSystem.Entities.Resource & {
 	/** Quando foi MEDIDO. Um recurso da lente hacker sem data é uma opinião. */
 	readonly at: string;
 	/** Qual lente carrega. É o que substitui a lista de pastas — a lente é o rótulo
-	 *  (@biliboss/interfaces/labels.ts), não o diretório onde o arquivo caiu. */
+	 *  (@my/interfaces/labels.ts), não o diretório onde o arquivo caiu. */
 	readonly lens: "hustler" | "hacker" | "hipster";
 };
 

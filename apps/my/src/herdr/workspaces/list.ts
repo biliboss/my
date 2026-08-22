@@ -19,8 +19,8 @@
 //! depends_on: src/herdr/run.ts · src/herdr/policy.ts · src/shared/argv.ts
 //! impacts:    src/herdr/workspaces/resolve.ts · src/herdr/workspaces/close.ts
 
-import { list } from "@biliboss/herdr/workspaces/list";
-import { has } from "@biliboss/shared/argv";
+import { list } from "@my/herdr/workspaces/list";
+import { has } from "@my/shared/argv";
 
 if (import.meta.main) {
   const empty = has('empty')

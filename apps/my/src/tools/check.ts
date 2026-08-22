@@ -22,7 +22,7 @@
 //! depends_on: src/tools/graph.ts · src/shared/findings.ts
 //! impacts:    src/interfaces/tools.ts
 
-import { emit } from "../shared/findings.ts";
+import { emit } from "@my/shared/findings";
 import { BASE, up } from "./graph.ts";
 
 export type Finding = { path: string; says: string };

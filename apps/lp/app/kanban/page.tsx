@@ -16,8 +16,8 @@
 //! depends_on: packages/lp-slices/src/slices/kanban.ts · apps/lp/lib/metadata.ts
 //! impacts:    —
 
-import { kanban } from "@biliboss/lp-slices/slices";
-import { KanbanSlice } from "@biliboss/lp-slices/pages/kanban";
+import { kanban } from "@my/lp-slices/slices";
+import { KanbanSlice } from "@my/lp-slices/pages/kanban";
 import { metadataOf } from "../../lib/metadata";
 
 export const metadata = metadataOf(kanban);

@@ -23,7 +23,7 @@
 
 import { Command } from "commander";
 
-import { agents, AgentsDelegation } from "@biliboss/agents";
+import { agents, AgentsDelegation } from "@my/agents";
 
 export function command(): Command {
 	return new Command("delegate")

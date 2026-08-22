@@ -36,7 +36,7 @@ afterAll(() => {
 	rmSync(HOME, { recursive: true, force: true });
 });
 
-const { allMessages, append, busPath, getCursor, listChannels, registerChannel, setCursor } = await import("./store.ts");
+const { allMessages, append, busPath, getCursor, listChannels, registerChannel, setCursor } = await import("@my/chat");
 
 const OLD_BUS = join(HOME, ".my_agents_chat.tsv");
 const OLD_MARKS = join(HOME, ".my_agents_chat");

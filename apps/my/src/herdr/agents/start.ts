@@ -53,8 +53,8 @@
 //! depends_on: src/herdr/run.ts · src/herdr/tabs/create.ts · src/shared/argv.ts · 02_areas/00_workflows/04_experimental/01_review_loop/CONTEXT.md · src/herdr/policy.ts
 //! impacts:    02_areas/00_workflows/04_experimental/00_compare/run.ts · 02_areas/00_workflows/04_experimental/01_review_loop/run.ts · src/herdr/agents/cli.ts
 
-import { start, startWhenReady } from "@biliboss/herdr/agents/start";
-import { value } from "@biliboss/shared/argv";
+import { start, startWhenReady } from "@my/herdr/agents/start";
+import { value } from "@my/shared/argv";
 
 if (import.meta.main) {
   const name = Bun.argv[2]

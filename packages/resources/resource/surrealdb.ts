@@ -2,7 +2,7 @@
 //! ligando o CLI nele. Nada aqui foi lido em documentação: cada linha custou um erro.
 //!
 //! EMBARCADO E NÃO NA CASA, e a diferença é sobre QUEM é o dono do fato: isto é
-//! conhecimento sobre o CÓDIGO, e viaja com ele. Quem instalar `@biliboss/resources`
+//! conhecimento sobre o CÓDIGO, e viaja com ele. Quem instalar `@my/resources`
 //! leva junto, sem precisar de uma casa privada. O markdown que estava em
 //! `03_resources/references/databases/` saiu no mesmo commit — dois lugares com o
 //! mesmo texto é a segunda loja que este pacote existe pra recusar.

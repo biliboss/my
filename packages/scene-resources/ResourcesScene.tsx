@@ -41,7 +41,7 @@ import {
 } from "./lens.ts";
 
 export type ResourcesSceneProps = {
-	/** Already read. `@biliboss/scene-resources/adapt` is what shapes them. */
+	/** Already read. `@my/scene-resources/adapt` is what shapes them. */
 	resources: SceneResource[];
 	/** Which tab is open. `null` is the unlabelled pile, which is a real answer
 	 *  and the one worth opening on while 133 of 175 live there. */

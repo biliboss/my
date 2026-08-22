@@ -32,8 +32,8 @@
 //! depends_on: src/resources/store.ts · src/shared/findings.ts
 //! impacts:    src/shared/house.ts
 
-import type { Finding } from "@biliboss/interfaces/resources.ts";
-import { emit } from "../shared/findings.ts";
+import type { Finding } from "@my/interfaces/resources.ts";
+import { emit } from "@my/shared/findings";
 import { index, store } from "./store.ts";
 
 export function check(): Finding[] {

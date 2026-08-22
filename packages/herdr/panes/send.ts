@@ -1,8 +1,8 @@
 import { did, host } from '../run.ts'
 import { read } from './read.ts'
 import { fence } from '../policy.ts'
-import { upstream, type Fail } from "@biliboss/shared/result"
-import { has } from "@biliboss/shared/argv"
+import { upstream, type Fail } from "@my/shared/result"
+import { has } from "@my/shared/argv"
 
 /**
  *  Só o Enter, num pane que já tem o texto.

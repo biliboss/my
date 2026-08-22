@@ -1,4 +1,4 @@
-import type { Fail } from "@biliboss/shared/result"
+import type { Fail } from "@my/shared/result"
 import * as policy from '../policy.ts'
 import { resolve } from './resolve.ts'
 

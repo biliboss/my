@@ -16,8 +16,8 @@
 //! depends_on: packages/lp-slices/src/slices/empresa.ts · apps/lp/lib/metadata.ts
 //! impacts:    —
 
-import { empresa } from "@biliboss/lp-slices/slices";
-import { EmpresaSlice } from "@biliboss/lp-slices/pages/empresa";
+import { empresa } from "@my/lp-slices/slices";
+import { EmpresaSlice } from "@my/lp-slices/pages/empresa";
 import { metadataOf } from "../../lib/metadata";
 
 export const metadata = metadataOf(empresa);

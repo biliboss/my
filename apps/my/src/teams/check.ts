@@ -41,8 +41,8 @@
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 
-import { allMessages, getCursor } from "../chat/store.ts";
-import { emit } from "../shared/findings.ts";
+import { allMessages, getCursor } from "@my/chat";
+import { emit } from "@my/shared/findings";
 import { crachaDe } from "../tasks/claim.ts";
 import { pastasDeTask, rel } from "../tasks/model.ts";
 import { STORE, type Stored, channelOf, memberName, slugOf, stored } from "./model.ts";

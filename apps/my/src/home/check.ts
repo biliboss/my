@@ -30,7 +30,7 @@
 import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { join, relative } from "node:path";
 
-import { emit } from "../shared/findings.ts";
+import { emit } from "@my/shared/findings";
 import { VARS } from "./env.ts";
 import { code, machine, root } from "./paths.ts";
 
@@ -59,7 +59,7 @@ function sources(dir: string, into: string[] = []): string[] {
  *  dizer onde, senão vira "conserte em algum lugar". */
 export function read(): Map<string, string> {
 	const seen = new Map<string, string>();
-	for (const f of sources(join(code(), "src"))) {
+	for (const f of sources(join(code(), "apps", "my", "src"))) {
 		// LINHA DE COMENTÁRIO NÃO É LEITURA. Um `//!` que EXPLICA uma env — e esta casa
 		// explica muito — não a lê, e duas rodadas deste check acusaram uma variável
 		// chamada `X` que só existe em prosa: uma no docstring deste arquivo, outra em

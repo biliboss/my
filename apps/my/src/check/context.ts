@@ -22,7 +22,7 @@
 
 import { readFileSync, readdirSync, statSync } from "node:fs";
 import { join, relative } from "node:path";
-import { has } from "@biliboss/shared/argv";
+import { has } from "@my/shared/argv";
 import { home } from "../shared/file.ts";
 
 const ROOT = home();

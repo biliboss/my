@@ -1,12 +1,12 @@
 //! `NotesSystemView` — the two lists, the labels, and the two writers.
 //! The CLI under `apps/my/src/{notes,daily_notes,labels}/` only reads flags and prints.
 //!
-//! depends_on: @biliboss/interfaces/notes.ts · ./store.ts
+//! depends_on: @my/interfaces/notes.ts · ./store.ts
 
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
-import type { Finding, NotesSystem } from "@biliboss/interfaces/notes.ts";
+import type { Finding, NotesSystem } from "@my/interfaces/notes.ts";
 
 import { NOTES, appendDay, dayFile, days, notes, slugify, stamp, writeNote } from "./store.ts";
 

@@ -30,81 +30,11 @@
 //!
 //! depends_on: src/chat/store.ts · src/chat/read.ts
 //! impacts:    src/agents/chat.ts
+//!
+//! O domínio mora em `@my/chat`; aqui fica só o que a CLI imprime.
 
-import type { Batch, ChatSystem } from "@biliboss/interfaces/chat.ts";
-import { allMessages, getCursor, setCursor, type Msg } from "./store.ts";
-import { read, show } from "./read.ts";
-
-const POLL_MS = 200;
-const DEFAULT_DEBOUNCE = 2000;
-const DEFAULT_MAX_WAIT = 15000;
-
-export function listen(
-	channel: ChatSystem.ValueObjects.ChannelName,
-	me: ChatSystem.ValueObjects.Addressee,
-	on: (batch: Batch) => void,
-	opts?: { debounce?: ChatSystem.ValueObjects.DebounceTime; max_wait?: ChatSystem.ValueObjects.DebounceTime },
-): { stop(): void } {
-	const debounceMs = opts?.debounce ?? DEFAULT_DEBOUNCE;
-	const maxWaitMs = opts?.max_wait ?? DEFAULT_MAX_WAIT;
-	const addressedToMe = (m: Msg) => m.channel === channel && (m.to === me || m.to === "all");
-
-	let stopped = false;
-	let timer: ReturnType<typeof setTimeout> | undefined;
-	let firstPendingAt: number | null = null;
-	let lastActivityAt = 0;
-	let lastMaxSeqSeen = 0;
-
-	// LÊ O PENDENTE DO DISCO A CADA BATIDA, nunca "o que apareceu desde a última
-	// olhada": um lote que já estava esperando quando `listen` começou (o agente
-	// caiu e voltou com mensagens no cursor) tem que entrar no primeiro debounce
-	// igual a um lote que chegou depois — comparar CONTAGEM total erraria esse
-	// caso, porque a contagem já nasceria "vista".
-	const tick = async () => {
-		if (stopped) return;
-		const cursor = getCursor(channel, me);
-		const pending = allMessages().filter((m) => m.seq > cursor && addressedToMe(m));
-		if (pending.length) {
-			const maxSeq = pending[pending.length - 1]!.seq;
-			if (maxSeq !== lastMaxSeqSeen) {
-				lastMaxSeqSeen = maxSeq;
-				lastActivityAt = Date.now();
-				if (firstPendingAt === null) firstPendingAt = lastActivityAt;
-			}
-		} else {
-			firstPendingAt = null;
-			lastMaxSeqSeen = 0;
-		}
-		if (firstPendingAt !== null) {
-			const t = Date.now();
-			const quiet = t - lastActivityAt;
-			const waited = t - firstPendingAt;
-			if (quiet >= debounceMs || waited >= maxWaitMs) {
-				const batch: Batch = { channel, from: cursor, to: pending[pending.length - 1]!.seq, messages: pending };
-				firstPendingAt = null;
-				lastMaxSeqSeen = 0;
-				try {
-					await on(batch);
-					// SÓ AQUI o cursor avança — handler que retorna é a única prova de
-					// que o lote foi tratado.
-					setCursor(channel, me, batch.to);
-				} catch (err) {
-					// Cursor NÃO avançou: a próxima batida ainda vê estas mensagens (mais
-					// o que chegou nesse meio-tempo) como pendentes, e reprocessa.
-					console.error(`chat.listen: handler falhou, lote #${batch.from}..#${batch.to} NÃO consumido — ${(err as Error).message}`);
-				}
-			}
-		}
-		if (!stopped) timer = setTimeout(tick, POLL_MS);
-	};
-	timer = setTimeout(tick, POLL_MS);
-	return {
-		stop() {
-			stopped = true;
-			if (timer) clearTimeout(timer);
-		},
-	};
-}
+import * as chat from "@my/chat";
+const { say, ask, read, inbox, unanswered, seen, listen, check, allMessages, listChannels, registerChannel, show, busPath, now, whoAmI } = chat as any;
 
 export async function main(argv: string[]): Promise<number> {
 	const [channel, me, ...rest] = argv;
@@ -137,3 +67,5 @@ export async function main(argv: string[]): Promise<number> {
 }
 
 if (import.meta.main) process.exitCode = await main(Bun.argv.slice(2));
+
+if (import.meta.main) process.exit(await main(process.argv.slice(2)));

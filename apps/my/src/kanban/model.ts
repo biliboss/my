@@ -44,8 +44,8 @@
 
 import { appendFileSync, existsSync, mkdirSync, readFileSync, readdirSync, renameSync, statSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
-import type { KanbanSystem } from "@biliboss/interfaces/kanban.ts";
-import type { TaskSystem } from "@biliboss/interfaces/tasks.ts";
+import type { KanbanSystem } from "@my/interfaces/kanban.ts";
+import type { TaskSystem } from "@my/interfaces/tasks.ts";
 import {
 	FLOW,
 	HUMAN_REVIEW,

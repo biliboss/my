@@ -12,8 +12,8 @@
 //! depends_on: src/herdr/run.ts · src/herdr/policy.ts · src/herdr/workspaces/resolve.ts · src/shared/argv.ts
 //! impacts:    src/herdr/agents/start.ts
 
-import { create } from "@biliboss/herdr/tabs/create";
-import { value } from "@biliboss/shared/argv";
+import { create } from "@my/herdr/tabs/create";
+import { value } from "@my/shared/argv";
 
 if (import.meta.main) {
   const out = await create({ workspace: value('workspace'), label: value('label'), cwd: value('cwd') })

@@ -1,8 +1,8 @@
 import { result } from '../run.ts'
-import { upstream, type Fail } from "@biliboss/shared/result"
+import { upstream, type Fail } from "@my/shared/result"
 import { resolve } from './resolve.ts'
 import { close } from './close.ts'
-import { has, value } from "@biliboss/shared/argv"
+import { has, value } from "@my/shared/argv"
 
 export async function create(
   label: string,

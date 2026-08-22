@@ -11,7 +11,7 @@
 //! depends_on: packages/lp-slices/src/slice.ts
 //! impacts:    apps/lp/app/
 
-import { canonicalOf, SITE, type Head } from "@biliboss/lp-slices/slices";
+import { canonicalOf, SITE, type Head } from "@my/lp-slices/slices";
 import type { Metadata } from "next";
 
 /** O tamanho que o Slack, o WhatsApp e o X esperam. Imagem menor vira card

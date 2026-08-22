@@ -1,9 +1,9 @@
 import { did } from '../run.ts'
 import { blockedReason, fence, forget } from '../policy.ts'
-import { upstream, type Fail } from "@biliboss/shared/result"
+import { upstream, type Fail } from "@my/shared/result"
 import { list } from './list.ts'
 import { resolve } from './resolve.ts'
-import { has } from "@biliboss/shared/argv"
+import { has } from "@my/shared/argv"
 
 const inHerdr = (id: string) => did(['workspace', 'close', id])
 

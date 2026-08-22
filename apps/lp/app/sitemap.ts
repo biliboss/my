@@ -10,7 +10,7 @@
 //! depends_on: packages/lp-slices/src/slices/index.ts
 //! impacts:    —
 
-import { canonicalOf, INDEX, SLICES } from "@biliboss/lp-slices/slices";
+import { canonicalOf, INDEX, SLICES } from "@my/lp-slices/slices";
 import type { MetadataRoute } from "next";
 
 export const dynamic = "force-static";

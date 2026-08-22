@@ -13,7 +13,7 @@
 //! depends_on: src/herdr/workspaces/list.ts
 //! impacts:    src/herdr/workspaces/CONTEXT.md · src/herdr/tabs/create.ts · src/herdr/workspaces/focus.ts · src/herdr/workspaces/block.ts · src/herdr/workspaces/create.ts
 
-import type { Fail } from "@biliboss/shared/result"
+import type { Fail } from "@my/shared/result"
 import { list, type Workspace } from './list.ts'
 
 export async function resolve(key: string): Promise<{ ok: true; workspace: Workspace } | Fail> {

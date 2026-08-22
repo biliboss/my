@@ -14,7 +14,7 @@
 //! depends_on: src/herdr/run.ts
 //! impacts:    src/herdr/tabs/CONTEXT.md
 
-import { list } from "@biliboss/herdr/tabs/list";
+import { list } from "@my/herdr/tabs/list";
 
 if (import.meta.main) {
   const out = await list(Bun.argv[2])

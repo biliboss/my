@@ -16,8 +16,8 @@
 //! depends_on: packages/lp-slices/src/slices/design.ts · apps/lp/lib/metadata.ts
 //! impacts:    —
 
-import { design } from "@biliboss/lp-slices/slices";
-import { DesignSlice } from "@biliboss/lp-slices/pages/design";
+import { design } from "@my/lp-slices/slices";
+import { DesignSlice } from "@my/lp-slices/pages/design";
 import { metadataOf } from "../../lib/metadata";
 
 export const metadata = metadataOf(design);

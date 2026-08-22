@@ -1,6 +1,6 @@
 import { did } from '../run.ts'
 import { fence } from '../policy.ts'
-import { upstream, type Fail } from "@biliboss/shared/result"
+import { upstream, type Fail } from "@my/shared/result"
 
 export async function close(id: string): Promise<{ ok: true; closed: string } | Fail> {
   const fenced = fence(id)

@@ -56,7 +56,7 @@
 import { existsSync, readdirSync, statSync } from "node:fs";
 import { spawnSync } from "node:child_process";
 import { join, relative } from "node:path";
-import { has } from "@biliboss/shared/argv";
+import { has } from "@my/shared/argv";
 import { home } from "../shared/file.ts";
 
 const ROOT = home();

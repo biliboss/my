@@ -28,7 +28,7 @@
 //! depends_on: apps/my-graph/lib/viewer-state.ts
 //! impacts:    src/interfaces/tools.ts · src/tools/check.ts
 
-import { flag } from "../shared/gh.ts";
+import { flag } from "@my/shared/gh";
 
 /** Caddy (`/opt/homebrew/etc/Caddyfile`) manda `my-graph.localhost` pro Next em
  *  `:4173`. http e não https: nada aqui sai da máquina. */

@@ -1,5 +1,5 @@
 {
-  "name": "@biliboss/my-ui",
+  "name": "@my/my-ui",
   "version": "0.1.0",
   "description": "The design system the my family shares: two themes, the page shell, the parallax fold, and j/k fold navigation.",
   "license": "MIT",
@@ -30,8 +30,8 @@
       "default": "./dist/index.js"
     },
     "./graph": {
-      "types": "./dist/graph.d.ts",
-      "default": "./dist/graph.js"
+      "types": "./dist/Graph.d.ts",
+      "default": "./dist/Graph.js"
     },
     "./tokens.css": "./dist/tokens.css"
   },

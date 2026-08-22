@@ -1,6 +1,6 @@
 //! THE BASE'S HALF OF THE CONTRACT: an index, turned into what the scene draws.
 //!
-//! It exists as a separate entry (`@biliboss/scene-resources/adapt`) because it
+//! It exists as a separate entry (`@my/scene-resources/adapt`) because it
 //! is the only file here that is allowed to know how `my-resources` shapes a
 //! resource, and because the scene must never be the thing that calls it. The
 //! base reads — `await index()` — and hands the result down as props.
@@ -22,9 +22,9 @@
 //!
 //! No `node:` import, no i/o, nothing async — this runs wherever the base runs.
 //!
-//! depends_on: ./lens.ts · @biliboss/interfaces/resources.ts
+//! depends_on: ./lens.ts · @my/interfaces/resources.ts
 
-import { LENSES } from "@biliboss/interfaces/resources.ts";
+import { LENSES } from "@my/interfaces/resources.ts";
 import { LENS_NAMES, type LensName, type SceneResource } from "./lens.ts";
 
 /** The shape this adapter needs, and no more. Structural, so `my-resources` is

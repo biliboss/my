@@ -33,8 +33,8 @@
 //! depends_on: src/herdr/run.ts · src/herdr/tabs/create.ts · src/shared/argv.ts
 //! impacts:    src/herdr/panes/CONTEXT.md
 
-import { mirror } from "@biliboss/herdr/panes/mirror";
-import { value } from "@biliboss/shared/argv";
+import { mirror } from "@my/herdr/panes/mirror";
+import { value } from "@my/shared/argv";
 
 if (import.meta.main) {
   const [host, pane] = Bun.argv.slice(2).filter((a) => !a.startsWith('-'))

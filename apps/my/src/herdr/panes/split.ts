@@ -16,8 +16,8 @@
 //! depends_on: src/herdr/run.ts · src/herdr/policy.ts · src/shared/argv.ts · 02_areas/00_workflows/04_experimental/00_compare/CONTEXT.md
 //! impacts:    02_areas/00_workflows/04_experimental/00_compare/CONTEXT.md · src/herdr/agents/cli.ts · src/herdr/panes/grid.ts
 
-import { split } from "@biliboss/herdr/panes/split";
-import { has, value } from "@biliboss/shared/argv";
+import { split } from "@my/herdr/panes/split";
+import { has, value } from "@my/shared/argv";
 
 if (import.meta.main) {
   const pane = Bun.argv[2]

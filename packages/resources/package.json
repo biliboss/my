@@ -1,5 +1,5 @@
 {
-  "name": "@biliboss/resources",
+  "name": "@my/resources",
   "version": "0.1.0",
   "description": "Everything this house knows, N at a time: the .ts resources this package ships, plus the markdown of whatever house MY_HOME points at.",
   "license": "MIT",
@@ -11,7 +11,7 @@
     "./resource/*": "./resource/*.ts"
   },
   "dependencies": {
-    "@biliboss/interfaces": "workspace:*"
+    "@my/interfaces": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^20",

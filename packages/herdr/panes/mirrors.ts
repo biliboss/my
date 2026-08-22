@@ -1,6 +1,6 @@
 import { result } from '../run.ts'
-import { upstream, type Fail } from "@biliboss/shared/result"
-import { has } from "@biliboss/shared/argv"
+import { upstream, type Fail } from "@my/shared/result"
+import { has } from "@my/shared/argv"
 
 export type Mirror = {
   /** O pane DAQUI que mostra a tela de lá. */

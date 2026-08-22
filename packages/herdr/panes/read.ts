@@ -1,6 +1,6 @@
 import { envelopeError, run } from '../run.ts'
-import { upstream, type Fail } from "@biliboss/shared/result"
-import { value } from "@biliboss/shared/argv"
+import { upstream, type Fail } from "@my/shared/result"
+import { value } from "@my/shared/argv"
 
 export async function read(
   pane: string,

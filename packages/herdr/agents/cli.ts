@@ -8,7 +8,7 @@ import { send, submit } from '../panes/send.ts'
 import { split } from '../panes/split.ts'
 import { startWhenReady } from './start.ts'
 import { forget, paneOf, remember, roster } from './roster.ts'
-import { value } from "@biliboss/shared/argv"
+import { value } from "@my/shared/argv"
 
 /** Um agente da expressão, e como ele se posiciona em relação ao anterior. */
 type Spot = { name: string; where: 'root' | 'right' | 'down' }

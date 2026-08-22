@@ -26,7 +26,7 @@
 import { Command } from 'commander'
 import { existsSync } from 'node:fs'
 import { join } from 'node:path'
-import { fmtOf, out } from '../shared/gh.ts'
+import { fmtOf, out } from "@my/shared/gh"
 import { CRACHA, TRAVA, crachaDe } from './claim.ts'
 import { RODANDO, lembra, ler, pastasDeTask, placeDe, projetoCorrente, projetos, rel, stateDe } from './model.ts'
 

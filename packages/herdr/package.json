@@ -1,5 +1,5 @@
 {
-  "name": "@biliboss/herdr",
+  "name": "@my/herdr",
   "version": "0.1.0",
   "description": "The multiplexer where the fleet lives: workspaces, tabs, panes and agents, over the one shellout that carries the timeout and --remote.",
   "license": "MIT",
@@ -15,8 +15,8 @@
     "./workspaces/*": "./workspaces/*.ts"
   },
   "dependencies": {
-    "@biliboss/interfaces": "workspace:*",
-    "@biliboss/shared": "workspace:*",
+    "@my/interfaces": "workspace:*",
+    "@my/shared": "workspace:*",
     "commander": "^15.0.0"
   },
   "devDependencies": {

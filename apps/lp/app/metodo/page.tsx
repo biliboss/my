@@ -10,8 +10,8 @@
 //! depends_on: packages/lp-slices/src/slices/metodo.ts · apps/lp/lib/metadata.ts
 //! impacts:    —
 
-import { metodo } from "@biliboss/lp-slices/slices";
-import { MetodoSlice } from "@biliboss/lp-slices/pages/metodo";
+import { metodo } from "@my/lp-slices/slices";
+import { MetodoSlice } from "@my/lp-slices/pages/metodo";
 import { metadataOf } from "../../lib/metadata";
 
 export const metadata = metadataOf(metodo);

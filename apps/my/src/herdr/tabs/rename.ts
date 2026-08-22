@@ -7,7 +7,7 @@
 //! depends_on: src/herdr/run.ts · src/herdr/policy.ts
 //! impacts:    src/herdr/tabs/CONTEXT.md
 
-import { rename } from "@biliboss/herdr/tabs/rename";
+import { rename } from "@my/herdr/tabs/rename";
 
 if (import.meta.main) {
   const [id, label] = Bun.argv.slice(2)

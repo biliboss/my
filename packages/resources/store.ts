@@ -12,7 +12,7 @@
 //!
 //!   `.ts` DAQUI      conhecimento sobre o CÓDIGO, que viaja com ele. Quem instala
 //!                    o pacote leva junto, e a página não depende de existir uma
-//!                    casa. É o que faz `@biliboss/resources` ser útil fora desta máquina.
+//!                    casa. É o que faz `@my/resources` ser útil fora desta máquina.
 //!   markdown da CASA o que é do Gabriel — `03_resources/`, versionado no
 //!                    `biliboss/me`, e que nenhum pacote público deveria carregar.
 //!
@@ -35,13 +35,13 @@
 //! caminho. Quando `my-labels` estiver de pé, a lente do markdown vem de
 //! `wearing(<lente>)` e este arquivo perde o `porPasta()`.
 //!
-//! depends_on: ./resource.ts · @biliboss/interfaces/resources.ts
+//! depends_on: ./resource.ts · @my/interfaces/resources.ts
 
 import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
 
-import { LENSES, type ResourceSystem } from "@biliboss/interfaces/resources.ts";
+import { LENSES, type ResourceSystem } from "@my/interfaces/resources.ts";
 import type { Resource } from "./resource.ts";
 import { resource } from "./resource.ts";
 

@@ -58,9 +58,13 @@ export function MyGraphMark(props: MarkProps = {}) {
         <circle cx="22" cy="37" r="2.8" />
         <circle cx="38" cy="37" r="2.8" />
       </g>
-      {/* os pratos: o que cada aresta sustenta */}
-      <circle cx="10" cy="30.5" r="4.8" fill="var(--blue, #6cb2c7)" />
-      <circle cx="49" cy="27" r="4.8" fill="var(--cyan, #61ffca)" />
+      {/* os pratos: o que cada aresta sustenta. SEM fallback de hex: os dois que
+          estavam aqui eram `#6cb2c7` e `#61ffca` — o segundo é o verde do Aura,
+          tema removido em 20/08, e o token que ele cobria (`--blue`) morreu com
+          a troca pra Tokyo Night. Fallback de cor é onde uma paleta morta
+          sobrevive sem ninguém ver. */}
+      <circle cx="10" cy="30.5" r="4.8" fill="var(--primary-2)" />
+      <circle cx="49" cy="27" r="4.8" fill="var(--cyan)" />
     </svg>
   );
 }

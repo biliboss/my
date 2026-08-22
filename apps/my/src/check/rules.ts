@@ -24,7 +24,7 @@
 
 import { existsSync, mkdirSync, readdirSync, readFileSync, renameSync } from "node:fs";
 import { dirname, join } from "node:path";
-import { emit } from "../shared/findings.ts";
+import { emit } from "@my/shared/findings";
 import { home } from "../shared/file.ts";
 
 const ROOT = home();

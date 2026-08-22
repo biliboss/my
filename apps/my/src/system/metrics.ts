@@ -15,7 +15,7 @@
 import { execFileSync } from "node:child_process";
 import { readdirSync, readFileSync, statSync, existsSync, appendFileSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
-import { has, value } from "@biliboss/shared/argv";
+import { has, value } from "@my/shared/argv";
 import { homedir } from "node:os";
 import { index } from "../runs.ts";
 import { root } from "../home/paths.ts";

@@ -1,5 +1,5 @@
 import { result } from '../run.ts'
-import { upstream, type Fail } from "@biliboss/shared/result"
+import { upstream, type Fail } from "@my/shared/result"
 
 export type Tab = {
   /** Sempre `<workspace>:<tab>`, ex. `w1R:t2` — o id carrega o pai. */

@@ -16,8 +16,8 @@
 //! depends_on: packages/lp-slices/src/slices/codigo.ts · apps/lp/lib/metadata.ts
 //! impacts:    —
 
-import { codigo } from "@biliboss/lp-slices/slices";
-import { CodigoSlice } from "@biliboss/lp-slices/pages/codigo";
+import { codigo } from "@my/lp-slices/slices";
+import { CodigoSlice } from "@my/lp-slices/pages/codigo";
 import { metadataOf } from "../../lib/metadata";
 
 export const metadata = metadataOf(codigo);

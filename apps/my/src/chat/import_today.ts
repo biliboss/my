@@ -70,7 +70,7 @@ import { appendFileSync, existsSync, readFileSync, readdirSync } from "node:fs";
 import { homedir } from "node:os";
 import { basename, join } from "node:path";
 
-import { allMessages, busPath, getCursor, type Msg, registerChannel, setCursor } from "./store.ts";
+import { allMessages, busPath, getCursor, type Msg, registerChannel, setCursor } from "@my/chat";
 
 /** The four channels, in the order their seqs are assigned. FILE ORDER inside a
  *  file, never sorted by `ts`: an ack carries the clock of the machine that wrote

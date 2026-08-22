@@ -33,8 +33,8 @@
 //! depends_on: src/herdr/run.ts · src/herdr/workspaces/resolve.ts · src/shared/argv.ts
 //! impacts:    src/herdr/workspaces/CONTEXT.md
 
-import { create } from "@biliboss/herdr/workspaces/create";
-import { has, value } from "@biliboss/shared/argv";
+import { create } from "@my/herdr/workspaces/create";
+import { has, value } from "@my/shared/argv";
 
 if (import.meta.main) {
   const [label] = Bun.argv.slice(2)

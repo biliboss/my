@@ -3,8 +3,8 @@ import { HERDR_TIMEOUT_MS, result } from '../run.ts'
 import { create as createTab } from '../tabs/create.ts'
 import { send as sendToPane } from '../panes/send.ts'
 import { fence } from '../policy.ts'
-import { upstream, type Fail } from "@biliboss/shared/result"
-import { value } from "@biliboss/shared/argv"
+import { upstream, type Fail } from "@my/shared/result"
+import { value } from "@my/shared/argv"
 
 const DEFAULTS = { kind: 'claude', model: 'opus', effort: 'medium', timeoutMs: 120_000 }
 
@@ -45,6 +45,10 @@ export async function start(
     model?: string
     effort?: string
     cwd?: string
+    /** `--permission-mode` do vendor. Ausente mantém o `--dangerously-skip-permissions`
+     *  que esta casa sempre usou — trocar o default calado mudaria o comportamento
+     *  de todo agente que já sobe hoje. */
+    permission?: string
     prompt?: string
     system?: string
     args?: string[]
@@ -98,7 +102,7 @@ export async function start(
     '--pane', pane,
     '--timeout', String(DEFAULTS.timeoutMs),
     '--', '--model', model, '--effort', effort,
-    '--dangerously-skip-permissions',
+    ...(opts.permission ? ['--permission-mode', opts.permission] : ['--dangerously-skip-permissions']),
     ...(opts.system ? systemArgs(opts.system) : []),
     ...(opts.args ?? []),
     text(opts.prompt),
@@ -130,9 +134,16 @@ export async function startWhenReady(
   opts: Parameters<typeof start>[1],
   tries = 10,
 ): ReturnType<typeof start> {
+  let where = opts
   for (let i = 0; ; i++) {
-    const out = await start(name, opts)
+    const out = await start(name, where)
     if (out.ok || i >= tries || !out.error.includes('not an available shell')) return out
+
+    // REUSE THE PANE THE FIRST TRY OPENED. `start` with `--workspace` creates a
+    // tab, so retrying with the same options created one MORE every second:
+    // measured 22/08, one delegate left twelve tabs in the pool. From here on the
+    // retry waits on the pane that already exists.
+    if (out.pane) where = { ...opts, workspace: undefined, cwd: undefined, pane: out.pane }
     await Bun.sleep(1000)
   }
 }

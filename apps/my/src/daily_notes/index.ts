@@ -9,8 +9,8 @@
 import { readFileSync } from "node:fs";
 import { Command } from "commander";
 
-import { dayFile, days, hasDay, today } from "@biliboss/notes";
-import { fmtOf, out } from "../shared/gh.ts";
+import { dayFile, days, hasDay, today } from "@my/notes";
+import { fmtOf, out } from "@my/shared/gh";
 
 /** The `##` headings of a day, in the order they happened. */
 export function subjects(file: string): string[] {

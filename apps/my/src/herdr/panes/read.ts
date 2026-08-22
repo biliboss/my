@@ -14,8 +14,8 @@
 //! depends_on: src/herdr/run.ts · src/shared/argv.ts
 //! impacts:    src/herdr/panes/CONTEXT.md
 
-import { read } from "@biliboss/herdr/panes/read";
-import { value } from "@biliboss/shared/argv";
+import { read } from "@my/herdr/panes/read";
+import { value } from "@my/shared/argv";
 
 if (import.meta.main) {
   const lines = value('lines')

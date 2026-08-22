@@ -21,7 +21,7 @@
 //! depends_on: src/workflows/tree.ts · src/shared/findings.ts
 //! impacts:    src/cli/my.ts
 
-import { emit } from '../shared/findings.ts'
+import { emit } from "@my/shared/findings"
 import { categories, category, summary, workflows } from './tree.ts'
 
 /** A coluna cabe no MAIOR nome, mais dois de respiro. Lista vazia devolve 0 — sem o

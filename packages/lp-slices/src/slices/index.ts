@@ -15,7 +15,7 @@ import { slice as empresaDecl } from "./empresa";
 import { slice as kanbanDecl } from "./kanban";
 import { slice as metodoDecl } from "./metodo";
 
-// A SUPERFÍCIE DE DADO do pacote, num lugar só: `@biliboss/lp-slices/slices` é o
+// A SUPERFÍCIE DE DADO do pacote, num lugar só: `@my/lp-slices/slices` é o
 // que `my lp check` importa, e ele roda no Bun, sem React. Reexportar `SITE` e
 // `canonicalOf` daqui é o que evita o check ter que conhecer a árvore interna.
 export { canonicalOf, INDEX, SITE, type Cta, type Head, type Slice } from "../slice";

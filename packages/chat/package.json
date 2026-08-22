@@ -1,5 +1,5 @@
 {
-  "name": "@biliboss/chat",
+  "name": "@my/chat",
   "version": "0.1.0",
   "description": "The bus: one append-only TSV, a cursor per reader, and the four verbs over it.",
   "license": "MIT",
@@ -9,8 +9,8 @@
     ".": "./chat.ts"
   },
   "dependencies": {
-    "@biliboss/interfaces": "workspace:*",
-    "@biliboss/shared": "workspace:*"
+    "@my/interfaces": "workspace:*",
+    "@my/shared": "workspace:*"
   },
   "devDependencies": {
     "@types/bun": "latest",

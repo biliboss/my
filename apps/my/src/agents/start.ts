@@ -20,56 +20,30 @@
 //!
 //! depends_on: src/herdr/agents/start.ts · src/herdr/agents/roster.ts · src/agents/list.ts
 //! impacts:    —
+//!
+//! O domínio mora em `@my/agents`; aqui fica só o que a CLI imprime.
 
-import type { AgentSystem, Fail } from '@biliboss/interfaces/agents.ts'
-import { startWhenReady } from "@biliboss/herdr/agents/start"
-import { remember } from "@biliboss/herdr/agents/roster"
-import { find } from './view.ts'
+import { Command } from "commander";
 
-export async function start(
-  name: string,
-  where: AgentSystem.ValueObjects.Placement,
-  launch: AgentSystem.ValueObjects.Launch = {},
-): Promise<AgentSystem.Entities.Agent | Fail> {
-  const cli = launch.engine?.cli ?? 'claude-code'
-  if (cli !== 'claude-code') {
-    return { ok: false, error: `\`${cli}\` ainda não tem os defaults de start medidos — só \`claude-code\` roda hoje`, reason: 'unsupported' }
-  }
+import { agents } from "@my/agents";
 
-  const out = await startWhenReady(name, {
-    workspace: where.workspace,
-    pane: where.pane,
-    tab: where.tab,
-    cwd: where.cwd,
-    prompt: where.prompt,
-    model: launch.engine?.model,
-    effort: launch.effort,
-  })
-  if (!out.ok) return { ok: false, error: out.error, reason: out.reason }
-
-  remember(name, out.pane)
-
-  const agent = await find(name)
-  if (!agent) return { ok: false, error: `${name} subiu em ${out.pane}, mas não apareceu na frota logo em seguida`, reason: 'herdr' }
-  return agent
-}
-
-if (import.meta.main) {
-  const name = Bun.argv[2]
+export async function main(argv: string[]): Promise<number> {
+  const name = argv[0]
   const value = (n: string) => {
-    const i = Bun.argv.indexOf(`--${n}`)
-    return i === -1 ? undefined : Bun.argv[i + 1]
+    const i = argv.indexOf(`--${n}`)
+    return i === -1 ? undefined : argv[i + 1]
   }
   if (!name || !value('prompt')) {
-    console.error('usage: start.ts <name> (--workspace <id|label> | --pane <id>) --prompt <text> [--model <m>] [--effort <e>]')
-    process.exit(2)
+    console.error('usage: my agents start <name> (--workspace <id|label> | --pane <id>) --prompt <text> [--model <m>] [--effort <e>]')
+    return 2
   }
-  start(
+  const out = await agents.control.start(
     name,
     { workspace: value('workspace'), pane: value('pane'), tab: value('tab'), cwd: value('cwd'), prompt: value('prompt')! },
     { engine: { cli: 'claude-code', model: value('model') }, effort: value('effort') },
-  ).then((out) => {
-    console.log(JSON.stringify(out, null, 2))
-    process.exit('ok' in out && out.ok === false ? 1 : 0)
-  })
+  )
+  console.log(JSON.stringify(out, null, 2))
+  return 'ok' in out && out.ok === false ? 1 : 0
 }
+
+if (import.meta.main) process.exit(await main(process.argv.slice(2)));

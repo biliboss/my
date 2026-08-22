@@ -58,7 +58,7 @@
 import { existsSync, readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { dirname, join, relative, resolve } from "node:path";
-import { has, value } from "@biliboss/shared/argv";
+import { has, value } from "@my/shared/argv";
 import { home, trees } from "../shared/file.ts";
 
 /** The base for every relative path AND for the basename index.

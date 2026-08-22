@@ -25,7 +25,7 @@
 import { Command } from "commander";
 import { relative } from "node:path";
 import { home } from "../shared/file.ts";
-import { send } from "@biliboss/herdr/panes/send";
+import { send } from "@my/herdr/panes/send";
 import { inboxAt, items, locate, moveTo } from "./layout.ts";
 import type { Inbox } from "./system_inbox.ts";
 

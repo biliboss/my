@@ -24,8 +24,8 @@
 //! depends_on: src/interfaces/home.ts
 //! impacts:    src/home/check.ts
 
-import type { HomeSystem } from "@biliboss/interfaces/home.ts";
-import { fmtOf, out } from "../shared/gh.ts";
+import type { HomeSystem } from "@my/interfaces/home.ts";
+import { fmtOf, out } from "@my/shared/gh";
 
 export type Var = HomeSystem.ValueObjects.Var & { deprecated?: string; by?: string };
 

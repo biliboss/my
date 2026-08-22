@@ -1,5 +1,5 @@
 {
-  "name": "@biliboss/agents",
+  "name": "@my/agents",
   "version": "0.1.0",
   "description": "Delegation: one herdr workspace, one tab per stage, a ceiling on how many run at once.",
   "license": "MIT",
@@ -9,10 +9,10 @@
     ".": "./agents.ts"
   },
   "dependencies": {
-    "@biliboss/chat": "workspace:*",
-    "@biliboss/herdr": "workspace:*",
-    "@biliboss/interfaces": "workspace:*",
-    "@biliboss/shared": "workspace:*",
+    "@my/chat": "workspace:*",
+    "@my/herdr": "workspace:*",
+    "@my/interfaces": "workspace:*",
+    "@my/shared": "workspace:*",
     "commander": "^15.0.0"
   },
   "devDependencies": {

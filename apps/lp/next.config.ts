@@ -31,7 +31,7 @@ const nextConfig: NextConfig = {
   basePath: "/my",
   trailingSlash: true,
   images: { unoptimized: true },
-  transpilePackages: ["@biliboss/lp-slices", "@biliboss/my-ui"],
+  transpilePackages: ["@my/lp-slices", "@my/my-ui"],
 };
 
 export default nextConfig;

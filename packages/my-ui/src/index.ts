@@ -1,9 +1,9 @@
-//! @biliboss/my-ui — o que a família my compartilha.
+//! @my/my-ui — o que a família my compartilha.
 //!
 //! Importe os tokens UMA vez, no ponto de entrada da aplicação:
 //!
 //! ```ts
-//! import "@biliboss/my-ui/tokens.css";
+//! import "@my/my-ui/tokens.css";
 //! ```
 //!
 //! **O prefixo `Lp` marca o que é peça de LANDING PAGE** — uma dobra inteira,
@@ -11,7 +11,7 @@
 //! em qualquer tela, inclusive num app.
 //!
 //! O que NÃO mora aqui: o que só um produto usa. Um grafo tem entrada própria
-//! (`@biliboss/my-ui/graph`) porque cytoscape é peer opcional, e o quadro do
+//! (`@my/my-ui/graph`) porque cytoscape é peer opcional, e o quadro do
 //! kanban mora no my-kanban — feito COM estas primitivas.
 
 // primitivas

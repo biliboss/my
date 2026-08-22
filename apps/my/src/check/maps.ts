@@ -19,7 +19,7 @@
 //! impacts:    src/check/ratchet.ts
 
 import { relative } from "node:path";
-import { emit } from "../shared/findings.ts";
+import { emit } from "@my/shared/findings";
 import { ROOT } from "../shared/markdown.ts";
 
 /** REGISTRO é isento, e a isenção é a razão de o número ser usável: `output`,

@@ -36,7 +36,7 @@
 //! impacts:    src/check/all.ts
 
 import { join } from "node:path";
-import { emit } from "../shared/findings.ts";
+import { emit } from "@my/shared/findings";
 import { repoRoot } from "../shared/file.ts";
 
 const ROOT = repoRoot();

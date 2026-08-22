@@ -7,7 +7,7 @@
 //! depends_on: src/interfaces/shared.ts
 //! impacts:    —
 
-import type { Grammar, Shared } from "@biliboss/interfaces/shared.ts";
+import type { Grammar, Shared } from "@my/interfaces/shared.ts";
 
 // Os brands são do contrato; estes são apelidos locais pra quem já importa daqui.
 export type Words<Max extends number> = Shared.ValueObjects.GrammarStyle.Words<Max>;

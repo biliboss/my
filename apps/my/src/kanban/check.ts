@@ -27,7 +27,7 @@
 //! depends_on: src/kanban/model.ts · src/kanban/remote.ts · src/shared/findings.ts
 //! impacts:    —
 
-import { emit } from "../shared/findings.ts";
+import { emit } from "@my/shared/findings";
 // NÃO reexporta `check`: @src/shared/house.ts varre TODO arquivo de `src/kanban/`
 // que declare `export … check`, e um `export { check }` aqui faria a MESMA função
 // de `model.ts` ser contada duas vezes — achado dobrado, sem achado novo nenhum.

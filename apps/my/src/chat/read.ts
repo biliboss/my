@@ -16,53 +16,11 @@
 //!
 //! depends_on: src/chat/store.ts
 //! impacts:    src/agents/chat.ts · src/agents/read.ts · src/chat/listen.ts · src/chat/index.ts
+//!
+//! O domínio mora em `@my/chat`; aqui fica só o que a CLI imprime.
 
-import type { ChatSystem } from "@biliboss/interfaces/chat.ts";
-import { allMessages, getCursor, setCursor, type Msg } from "./store.ts";
-
-export function read(channel: ChatSystem.ValueObjects.ChannelName, thread?: ChatSystem.ValueObjects.Thread): Msg[] {
-	return allMessages().filter((m) => m.channel === channel && (!thread || m.thread === thread));
-}
-
-/** O que chegou pra MIM, depois do meu cursor — absorve `View.inbox`. NÃO avança
- *  cursor nenhum: `seen()` abaixo é a única porta pra isso, e `listen.ts` é quem
- *  a chama sozinho, só depois que o handler retorna. */
-export function inbox(
-	channel: ChatSystem.ValueObjects.ChannelName,
-	me: ChatSystem.ValueObjects.Addressee,
-	since?: ChatSystem.ValueObjects.Cursor,
-): Msg[] {
-	const cursor = since ?? getCursor(channel, me);
-	return allMessages().filter((m) => m.channel === channel && m.seq > cursor && (m.to === me || m.to === "all"));
-}
-
-/** Perguntas abertas de um canal — absorve `View.unanswered`. Uma mensagem
- *  conta como pergunta quando ela mesma não é resposta de ninguém (sem
- *  `answers`) e nenhuma outra mensagem do canal a responde (nenhum `answers`
- *  aponta pro `seq` dela). */
-export function unanswered(channel: ChatSystem.ValueObjects.ChannelName): Msg[] {
-	const all = allMessages().filter((m) => m.channel === channel);
-	const answered = new Set(all.map((m) => m.answers).filter((s): s is number => s !== undefined));
-	return all.filter((m) => m.answers === undefined && !answered.has(m.seq));
-}
-
-/** Move o cursor de `me`, explicitamente — absorve `Chat.seen`. NUNCA um efeito
- *  colateral de ler: aqui é a porta pra quem move na mão, inclusive via
- *  `--seen` nesta CLI. */
-export function seen(
-	channel: ChatSystem.ValueObjects.ChannelName,
-	me: ChatSystem.ValueObjects.Addressee,
-	upto: ChatSystem.ValueObjects.Cursor,
-): void {
-	setCursor(channel, me, upto);
-}
-
-export const show = (m: Msg) => console.log(`#${m.seq}  ${m.at.slice(11, 19)}  \x1b[1m${m.from}\x1b[0m → ${m.to}\n  ${m.text}`);
-
-const at = (argv: string[], flag: string) => {
-	const i = argv.indexOf(flag);
-	return i > -1 ? argv[i + 1] : undefined;
-};
+import * as chat from "@my/chat";
+const { say, ask, read, inbox, unanswered, seen, listen, check, allMessages, listChannels, registerChannel, show, busPath, now, whoAmI } = chat as any;
 
 export function main(argv: string[]): number {
 	const channel = argv.find((a) => !a.startsWith("-"));
@@ -94,3 +52,5 @@ export function main(argv: string[]): number {
 }
 
 if (import.meta.main) process.exitCode = main(Bun.argv.slice(2));
+
+if (import.meta.main) process.exit(await main(process.argv.slice(2)));

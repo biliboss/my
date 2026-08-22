@@ -49,8 +49,8 @@ import {
 	type Hustler,
 	type ResourceSystem,
 	type Resources,
-} from "@biliboss/interfaces/resources.ts";
-import type { Shared } from "@biliboss/interfaces/shared.ts";
+} from "@my/interfaces/resources.ts";
+import type { Shared } from "@my/interfaces/shared.ts";
 import { home, repoRoot } from "../shared/file.ts";
 import { MemorySpanSink, Telemetry, type SpanSink } from "../shared/telemetry.ts";
 

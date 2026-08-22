@@ -23,5 +23,9 @@
   },
   "devDependencies": {
     "typescript": "5.9.3"
+  },
+  "dependencies": {
+    "ink": "^7.1.1",
+    "react": "^19.2.8"
   }
 }

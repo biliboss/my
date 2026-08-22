@@ -16,79 +16,25 @@
 //! escreveu. Um registro paralelo de "quem clonou quem" seria a segunda fonte, e
 //! ela envelheceria no primeiro pane fechado à mão.
 //!
-//! `all()` (@packages/interfaces/agents.ts `View.all`) lives HERE: this module already
+//! `agents.list.all()` (@packages/interfaces/agents.ts `View.all`) lives HERE: this module already
 //! does the one join it needs — the herdr-raw agent joined with the NAME family
 //! the `-N` suffix encodes. `View.check` is `./check.ts`, DELIBERATELY a separate
-//! file — this one imports herdr statically for `all()`, which taints it async
-//! (see `check.ts`'s header for the measurement), and `check()` must stay
+//! file — this one imports herdr statically for `agents.list.all()`, which taints it async
+//! (see `check.ts`'s header for the measurement), and `agents.list.check()` must stay
 //! `require()`-able synchronously for `house.ts` to find it.
 //!
 //! depends_on: src/herdr/agents/list.ts · src/agents/clone.ts
 //! impacts:    src/agents/view.ts · src/agents/start.ts · src/agents/control.ts · src/agents/check.ts
+//!
+//! O domínio mora em `@my/agents`; aqui fica só o que a CLI imprime.
 
-import { Command } from 'commander'
-import { list as vivos, type Agent } from "@biliboss/herdr/agents/list"
-import { roster } from "@biliboss/herdr/agents/roster"
-import { list as listWorkspaces } from "@biliboss/herdr/workspaces/list"
-import { baseCurta, nomeDoClone } from './clone.ts'
-import { fmtOf, out } from '../shared/gh.ts'
-import type { AgentSystem } from '@biliboss/interfaces/agents.ts'
+import { Command } from "commander";
 
-type Linha = Agent & { nome: string; base: string; n: number; eu: boolean }
+import { list as vivos } from "@my/herdr/agents/list";
+import { list as listWorkspaces } from "@my/herdr/workspaces/list";
+import { fmtOf, out } from "@my/shared/gh";
 
-/** herdr's own program name → the contract's `Engine.cli` discriminator. Not in
- *  the map means `other`: an enum this house does not close against a CLI it has
- *  not met — see `AgentSystem.ValueObjects.Engine.Other`. */
-const CLI: Record<string, 'claude-code' | 'pi' | 'codex' | 'gemini'> = {
-  claude: 'claude-code',
-  pi: 'pi',
-  codex: 'codex',
-  gemini: 'gemini',
-}
-
-/** One herdr-raw agent → the contract's `Entity.Agent`. Exported: `start.ts`,
- *  `clone.ts` and `control.ts` all hand back the entity a mutation just produced,
- *  and this is the one place that knows the shape. */
-export function toEntity(a: Agent, rosterName: string | undefined, siblings: Agent[]): AgentSystem.Entities.Agent {
-  const cli = CLI[a.agent]
-  const runtime: AgentSystem.ValueObjects.Runtime.Any = cli
-    ? { cli, session: a.session }
-    : { cli: 'other', name: a.agent, session: a.session }
-
-  // O PAI: mesmo `tab`, mesma `base` de nome, o `n` imediatamente ABAIXO do
-  // deste — é a mesma árvore que `main()` já desenha na CLI, só que devolvida
-  // como fato em vez de indentação.
-  const { base, n } = nomeDoClone(a.title)
-  let parent: string | undefined
-  if (n > 0) {
-    const candidatos = siblings
-      .filter((s) => s.tab === a.tab && s.pane !== a.pane)
-      .map((s) => ({ s, x: nomeDoClone(s.title) }))
-      .filter((c) => baseCurta(c.x.base) === baseCurta(base) && c.x.n < n)
-      .sort((x, y) => y.x.n - x.x.n)
-    parent = candidatos[0]?.s.title
-  }
-
-  return {
-    name: rosterName ?? a.title,
-    runtime,
-    // `worktree` é o único campo de `launch` que herdr entrega de graça (o
-    // `cwd` do pane); modelo/effort/permission não são reconstruíveis sem ler a
-    // tela — `launch: {}` além disso é uma resposta REAL ("tudo no default"),
-    // não um stub, porque todo campo de `Launch` já é opcional no contrato.
-    launch: { engine: cli ? { cli } : { cli: 'other', name: a.agent }, worktree: a.launchCwd },
-    pane: a.pane,
-    parent,
-  }
-}
-
-/** O QUE `my agents list` MOSTRA, TIPADO (`View.all`). */
-export async function all(): Promise<AgentSystem.Entities.Agent[]> {
-  const [live, known] = await Promise.all([vivos(), roster()])
-  if (!live.ok) return []
-  const names = new Map(known.filter((k) => k.name !== '—').map((k) => [k.pane, k.name]))
-  return live.agents.map((a) => toEntity(a, names.get(a.pane), live.agents))
-}
+import { agents } from "@my/agents";
 
 export function command(): Command {
   return new Command('list')
@@ -121,8 +67,8 @@ export async function main(argv: string[]): Promise<number> {
   const linhas: Linha[] = out0.agents
     .filter((a) => !opts.mine || a.tab === minhaAba)
     .map((a) => {
-      const { base, n } = nomeDoClone(a.title)
-      return { ...a, nome: a.title, base: baseCurta(base), n, eu: a.pane === meuPane }
+      const { base, n } = agents.clone.nomeDoClone(a.title)
+      return { ...a, nome: a.title, base: agents.clone.baseCurta(base), n, eu: a.pane === meuPane }
     })
 
   const fmt = fmtOf(argv)
@@ -151,7 +97,7 @@ export async function main(argv: string[]): Promise<number> {
   return 0
 }
 
-// SEM `await` no top level, de propósito: `src/shared/house.ts` descobre `check()`
+// SEM `await` no top level, de propósito: `src/shared/house.ts` descobre `agents.list.check()`
 // dando `require()` síncrono neste módulo, e Bun trata QUALQUER `await` de topo —
 // mesmo dentro de um `if` que nunca roda ao ser importado — como módulo ASSÍNCRONO,
 // e devolve uma Promise em vez do objeto de exports. `check` sumia (typeof
@@ -159,4 +105,5 @@ export async function main(argv: string[]): Promise<number> {
 // mesmo `await process.exit(...)` e por isso aparece com 0 em `house.coverage()`
 // apesar de rodar limpo por `my tools check`. `.then` em vez de `await` é a mesma
 // chamada sem a palavra que fecha a porta.
-if (import.meta.main) main(process.argv.slice(2)).then((code) => process.exit(code))
+
+if (import.meta.main) process.exit(await main(process.argv.slice(2)));

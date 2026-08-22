@@ -1,6 +1,6 @@
 import { join } from "node:path";
-import { root as home } from "@biliboss/shared/paths";
-import type { Batch, ChatSystem } from "@biliboss/interfaces/chat.ts";
+import { root as home } from "@my/shared/paths";
+import type { Batch, ChatSystem } from "@my/interfaces/chat.ts";
 
 // ─── store ───────────────────────────────────────────────────────
 
@@ -636,7 +636,7 @@ function checkPresenca(all: ReturnType<typeof allMessages>): Finding[] {
 /** `my chat <subverbo>`. UMA CLASSE POR SUBVERBO, na ordem em que eles importam —
  *  e é essa ordem que o help tem que ter, não a que o `readdirSync` devolve.
  *
- *  O que NÃO está aqui, e por quê: `who` mora em `@biliboss/agents`, porque
+ *  O que NÃO está aqui, e por quê: `who` mora em `@my/agents`, porque
  *  presença é pergunta sobre a FROTA e não sobre mensagem — importá-la daria a
  *  este package uma dependência que o contrato recusa desde 20/08 ("chat works
  *  with an agent that does not exist yet"). `import_today` é migração de tiro

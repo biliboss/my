@@ -1,5 +1,5 @@
 {
-  "name": "@biliboss/my",
+  "name": "@my/my",
   "version": "0.1.0",
   "description": "The CLI of the my house: the directory tree IS the command surface \u2014 a folder is a verb, a file is a subverb, and nothing declares a command anywhere.",
   "license": "MIT",
@@ -10,15 +10,18 @@
     "my": "./src/cli/my.ts"
   },
   "dependencies": {
-    "@biliboss/interfaces": "workspace:*",
-    "@biliboss/lp-slices": "workspace:*",
+    "@my/interfaces": "workspace:*",
+    "@my/lp-slices": "workspace:*",
     "commander": "^15.0.0",
     "drizzle-orm": "^0.45.2",
     "surrealdb": "^2.0.8",
-    "@biliboss/notes": "workspace:*",
-    "@biliboss/herdr": "workspace:*",
-    "@biliboss/shared": "workspace:*",
-    "@biliboss/company": "workspace:*"
+    "@my/notes": "workspace:*",
+    "@my/herdr": "workspace:*",
+    "@my/shared": "workspace:*",
+    "@my/agents": "workspace:*",
+    "@my/chat": "workspace:*",
+    "@my/company": "workspace:*",
+    "@my/tui": "workspace:*"
   },
   "devDependencies": {
     "drizzle-kit": "^0.31.10",

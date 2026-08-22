@@ -42,11 +42,11 @@ cpSync(join(import.meta.dir, "context.ts"), CHECK);
 // so the test reports "expected output, received empty" and points at the assertion
 // instead of at the fixture.
 mkdirSync(join(RAIZ, "src/shared"), { recursive: true });
-// `argv.ts` moved to `@biliboss/shared` on 22/08, and a bare specifier does not
+// `argv.ts` moved to `@my/shared` on 22/08, and a bare specifier does not
 // resolve from a fixture in /tmp. Symlinking the package into the fixture's
 // node_modules is what keeps the copied check runnable.
-mkdirSync(join(RAIZ, "node_modules/@biliboss"), { recursive: true });
-symlinkSync(join(import.meta.dir, "../../../../packages/shared"), join(RAIZ, "node_modules/@biliboss/shared"), "dir");
+mkdirSync(join(RAIZ, "node_modules/@my"), { recursive: true });
+symlinkSync(join(import.meta.dir, "../../../../packages/shared"), join(RAIZ, "node_modules/@my/shared"), "dir");
 cpSync(join(import.meta.dir, "../shared/file.ts"), join(RAIZ, "src/shared/file.ts"));
 // `shared/file.ts` REEXPORTA `home/paths.ts` desde 20/08, e a fixture copia módulo a
 // módulo — sem estes dois o check morre com `export 'home' not found`, que é o mesmo
@@ -55,7 +55,7 @@ mkdirSync(join(RAIZ, "src/home"), { recursive: true });
 cpSync(join(import.meta.dir, "../home/paths.ts"), join(RAIZ, "src/home/paths.ts"));
 // O contrato NÃO é copiado: `home/paths.ts` o importa com `import type`, que a
 // transpilação apaga — dentro da fixture não existe `node_modules` pra resolver
-// `@biliboss/interfaces`, e copiá-lo seria remendar um problema que não existe.
+// `@my/interfaces`, e copiá-lo seria remendar um problema que não existe.
 
 write("CONTEXT.md", 100); // no teto, exatamente — não é achado
 write("03_resources/00_company/CONTEXT.md", 101); // um acima — é o defeito

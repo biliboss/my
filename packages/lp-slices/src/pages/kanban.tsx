@@ -12,7 +12,7 @@
 //! depends_on: packages/lp-slices/src/Chrome.tsx · packages/lp-slices/src/slices/kanban.ts
 //! impacts:    apps/lp/app/kanban/page.tsx
 
-import { Arrow, Button, Caveat, Compare, Kicker, LpHero, LpTicker, Section, SplitHeading } from "@biliboss/my-ui";
+import { Arrow, Button, Caveat, Compare, Kicker, LpHero, LpTicker, Section, SplitHeading } from "@my/my-ui";
 import { Chrome } from "../Chrome";
 import { BoardStory } from "../BoardStory";
 import { slice } from "../slices/kanban";

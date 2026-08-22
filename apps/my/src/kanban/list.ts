@@ -22,7 +22,7 @@
 //! depends_on: src/kanban/model.ts · src/kanban/remote.ts · src/shared/gh.ts
 //! impacts:    —
 
-import { fmtOf, out } from "../shared/gh.ts";
+import { fmtOf, out } from "@my/shared/gh";
 import { blocked, board, boards, cards, linkOf, refOf, wip } from "./model.ts";
 import { type RemoteItem, byColumn, listProjects, readBoard, refToString } from "./remote.ts";
 

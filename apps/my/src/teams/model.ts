@@ -34,7 +34,7 @@ import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync
 import { join } from "node:path";
 
 import { store } from "../home/paths.ts";
-import type { TeamsSystem } from "@biliboss/interfaces/teams.ts";
+import type { TeamsSystem } from "@my/interfaces/teams.ts";
 import { type Cracha, crachaDe } from "../tasks/claim.ts";
 import { BACKLOG, TASKS, agora, ler, pastasDeTask, placeDe, rel, sprintDe } from "../tasks/model.ts";
 

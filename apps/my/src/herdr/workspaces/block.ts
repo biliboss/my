@@ -15,7 +15,7 @@
 //! depends_on: src/herdr/policy.ts · src/herdr/workspaces/resolve.ts
 //! impacts:    src/herdr/workspaces/CONTEXT.md
 
-import { mark } from "@biliboss/herdr/workspaces/block";
+import { mark } from "@my/herdr/workspaces/block";
 
 if (import.meta.main) {
   const [verb, key, reason] = Bun.argv.slice(2)

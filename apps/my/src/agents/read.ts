@@ -19,11 +19,12 @@
 //! Canal sempre `""` — ver `src/agents/send.ts`.
 //!
 //! depends_on: src/chat/read.ts
+//!
+//! O domínio mora em `@my/agents`; aqui fica só o que a CLI imprime.
 
-import { inbox, read as readChannel, seen } from "../chat/read.ts";
-import type { Msg } from "../chat/store.ts";
+import { Command } from "commander";
 
-const show = (m: Msg) => console.log(`${m.at}  ${m.from} → ${m.to}\n  ${m.text}`);
+import { agents } from "@my/agents";
 
 export async function main(argv: string[]): Promise<number> {
 	if (argv.includes("--all")) {
@@ -52,4 +53,4 @@ export async function main(argv: string[]): Promise<number> {
 	}
 }
 
-if (import.meta.main) process.exitCode = await main(Bun.argv.slice(2));
+if (import.meta.main) process.exit(await main(process.argv.slice(2)));

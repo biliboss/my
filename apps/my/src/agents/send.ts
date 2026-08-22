@@ -12,8 +12,12 @@
 //!     echo "texto longo" | my agents send coding-workflow -
 //!
 //! depends_on: src/chat/say.ts
+//!
+//! O domínio mora em `@my/agents`; aqui fica só o que a CLI imprime.
 
-import { say } from "../chat/say.ts";
+import { Command } from "commander";
+
+import { agents } from "@my/agents";
 
 export async function main(argv: string[]): Promise<number> {
 	const [to, ...rest] = argv;
@@ -27,4 +31,4 @@ export async function main(argv: string[]): Promise<number> {
 	return 0;
 }
 
-if (import.meta.main) process.exitCode = await main(Bun.argv.slice(2));
+if (import.meta.main) process.exit(await main(process.argv.slice(2)));

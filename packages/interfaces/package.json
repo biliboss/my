@@ -1,5 +1,5 @@
 {
-  "name": "@biliboss/interfaces",
+  "name": "@my/interfaces",
   "version": "0.1.0",
   "description": "The contracts of the my family: one file per system, types only, no runtime.",
   "license": "MIT",

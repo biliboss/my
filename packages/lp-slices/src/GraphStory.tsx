@@ -1,5 +1,5 @@
-import { LpParallax, type LpParallaxStep } from "@biliboss/my-ui";
-import { GraphCanvas, type GraphNode } from "@biliboss/my-ui/graph";
+import { LpParallax, type LpParallaxStep } from "@my/my-ui";
+import { GraphCanvas, type GraphNode } from "@my/my-ui/graph";
 
 //! A TEORIA, DESENHADA. O que sobrou aqui depois do my-ui é só o que é DESTE
 //! produto: os dezesseis nós e o que cada passo diz. A dobra parallax, o canvas

@@ -17,8 +17,8 @@
 //! depends_on: src/herdr/run.ts · src/herdr/policy.ts · src/herdr/workspaces/list.ts · src/shared/argv.ts
 //! impacts:    src/herdr/workspaces/CONTEXT.md
 
-import { close, closeAll } from "@biliboss/herdr/workspaces/close";
-import { has } from "@biliboss/shared/argv";
+import { close, closeAll } from "@my/herdr/workspaces/close";
+import { has } from "@my/shared/argv";
 
 if (import.meta.main) {
   const out = has('all') ? await closeAll() : await close(Bun.argv[2] ?? '')

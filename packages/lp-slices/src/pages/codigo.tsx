@@ -11,7 +11,7 @@
 //! depends_on: packages/lp-slices/src/Chrome.tsx · packages/lp-slices/src/slices/codigo.ts
 //! impacts:    apps/lp/app/codigo/page.tsx
 
-import { Arrow, Button, Caveat, Compare, Kicker, LpCarousel, LpHero, LpTicker, Section, SplitHeading } from "@biliboss/my-ui";
+import { Arrow, Button, Caveat, Compare, Kicker, LpCarousel, LpHero, LpTicker, Section, SplitHeading } from "@my/my-ui";
 import { Chrome } from "../Chrome";
 import { SHOTS } from "../shots";
 import { slice } from "../slices/codigo";

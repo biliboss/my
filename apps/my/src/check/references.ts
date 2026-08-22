@@ -36,7 +36,7 @@
 
 import { readFileSync } from "node:fs";
 import { relative } from "node:path";
-import { emit } from "../shared/findings.ts";
+import { emit } from "@my/shared/findings";
 import { index as store } from "../resources/store.ts";
 
 /** As referências, e SÓ elas: o kind `references` da loja é exatamente o índice que

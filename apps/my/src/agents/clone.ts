@@ -64,91 +64,12 @@
 //!
 //! depends_on: src/herdr/panes/split.ts · src/herdr/panes/send.ts · src/herdr/panes/read.ts · src/herdr/run.ts · src/herdr/agents/roster.ts · src/agents/list.ts
 //! impacts:    src/herdr/agents/start.ts
+//!
+//! O domínio mora em `@my/agents`; aqui fica só o que a CLI imprime.
 
-import { Command } from 'commander'
-import { result } from "@biliboss/herdr/run"
-import { read } from "@biliboss/herdr/panes/read"
-import { send } from "@biliboss/herdr/panes/send"
-import { split } from "@biliboss/herdr/panes/split"
-import { list as liveAgents } from "@biliboss/herdr/agents/list"
-import { remember, roster } from "@biliboss/herdr/agents/roster"
-import type { AgentSystem, Fail } from '@biliboss/interfaces/agents.ts'
+import { Command } from "commander";
 
-type Pane = {
-  pane_id: string
-  tab_id: string
-  terminal_title_stripped?: string
-  agent_session?: { value?: string }
-}
-
-const morre = (msg: string): never => {
-  console.error(msg)
-  process.exit(1)
-}
-
-/** O sufixo `-N` do nome de um clone, e o nome sem ele. `worker` → base
- *  `worker`, n 0; `worker-2` → base `worker`, n 2. */
-export function nomeDoClone(titulo: string): { base: string; n: number } {
-  const m = titulo.trim().match(/^(.*?)-(\d+)$/)
-  return m ? { base: m[1]!.trim(), n: Number(m[2]) } : { base: titulo.trim(), n: 0 }
-}
-
-/** O nome CURTO que vai pro `/rename`, tirado do título do pane.
- *
- *  O título de uma sessão do Claude é a primeira frase do pedido — "Setup
- *  study_bloom project with bloom standalone" — e mandar isso inteiro num
- *  `/rename` dentro de um pane de 16% de largura quebra a linha em quatro, e a
- *  confirmação do `send` não acha o texto que ela mesma digitou (medido 20/08).
- *  Três palavras e 24 caracteres é o que cabe no pane mais estreito que este
- *  comando cria, e continua endereçando: ninguém procura o clone pela frase
- *  inteira, procura pelo começo dela mais o número. */
-export function baseCurta(titulo: string): string {
-  return titulo
-    .trim()
-    .split(/\s+/)
-    .slice(0, 3)
-    .join('-')
-    .replace(/[^\w-]/g, '')
-    .slice(0, 24)
-    .replace(/-+$/, '')
-}
-
-/** O próximo número livre entre os panes irmãos — não `n+1` cego.
- *
- *  Dois clones disparados na mesma aba com `n+1` nasceriam os dois `-1`, e aí o
- *  nome deixa de endereçar. Olhar os irmãos é a única fonte que já existe. */
-export function proximoN(base: string, titulos: string[]): number {
-  const usados = titulos
-    .map((t) => nomeDoClone(t))
-    .filter((x) => x.base === base && x.n > 0)
-    .map((x) => x.n)
-  return usados.length ? Math.max(...usados) + 1 : 1
-}
-
-async function panes(): Promise<Pane[]> {
-  const out = await result(['pane', 'list'])
-  if (!out.ok) morre(`herdr não respondeu: ${out.error}`)
-  return (out.result?.panes ?? []) as Pane[]
-}
-
-/** Quanto se espera o TUI do Claude abrir antes de digitar a primeira barra.
- *  Confirmado lendo a tela, não por sleep — retomar sessão longa demora. */
-export const TUI_MS = 60_000
-
-export async function esperaTUI(pane: string): Promise<boolean> {
-  const fim = Date.now() + TUI_MS
-  do {
-    const tela = await read(pane, { lines: 12 })
-    // O sinal tem que sobreviver à LARGURA. Um clone de clone fica com ~16% da
-    // tela, e ali a barra de status vira `⏵⏵ ·` — procurar "bypass permissions"
-    // ou "shift+tab" falhava com o TUI já pintado (medido 20/08, 60s de espera
-    // por uma tela que estava pronta). O `⏵⏵` é o primeiro caractere da barra e
-    // é o último a ser cortado.
-    if (tela.ok && /⏵⏵|bypass permissions|shift\+tab|\? for shortcuts/i.test(tela.text)) return true
-    await Bun.sleep(500)
-  } while (Date.now() < fim)
-  return false
-}
+import { agents } from "@my/agents";
 
 export function command(): Command {
   return new Command('clone')
@@ -183,8 +104,8 @@ export async function main(argv: string[]): Promise<number> {
   // O número sai ANTES do encurtamento: `…standalone-1` encurtado primeiro vira
   // três palavras do começo e o `-1` some, e aí o segundo clone renasce `-1`.
   const curto = (titulo: string) => {
-    const x = nomeDoClone(titulo)
-    return { base: baseCurta(x.base), n: x.n }
+    const x = agents.clone.nomeDoClone(titulo)
+    return { base: agents.clone.baseCurta(x.base), n: x.n }
   }
   const base = curto(process.env.MY_AGENT ?? eu!.terminal_title_stripped ?? 'agent').base
   const irmaos = todos.filter((p) => p.tab_id === eu!.tab_id)
@@ -192,7 +113,7 @@ export async function main(argv: string[]): Promise<number> {
     const x = curto(p.terminal_title_stripped ?? '')
     return x.n ? `${x.base}-${x.n}` : x.base
   }
-  const n = proximoN(base, irmaos.map(rotulo))
+  const n = agents.clone.proximoN(base, irmaos.map(rotulo))
 
   // O TETO. Um clone carrega a MESMA instrução do original — inclusive "clone
   // você também" —, e em 20/08 isso virou cinco panes numa aba sem ninguém pedir.
@@ -223,8 +144,8 @@ export async function main(argv: string[]): Promise<number> {
   const abriu = await send(novo, `claude --dangerously-skip-permissions -r ${sessao} --fork-session`)
   if (!abriu.ok) morre(`o pane ${novo} nasceu mas não recebeu o comando: ${abriu.error}`)
 
-  if (!(await esperaTUI(novo)))
-    morre(`o Claude não subiu em ${novo} em ${TUI_MS / 1000}s — o pane está lá; termine à mão com \`/fork\` e \`/rename ${nome}\``)
+  if (!(await agents.clone.esperaTUI(novo)))
+    morre(`o Claude não subiu em ${novo} em ${agents.TUI_MS / 1000}s — o pane está lá; termine à mão com \`/fork\` e \`/rename ${nome}\``)
 
   // Só o `/rename` é digitado: a bifurcação já veio no argv. Uma barra só também
   // é uma barra só pra dar errado.
@@ -247,7 +168,7 @@ const fail = (error: string, reason: Fail['reason'] = 'not_found'): Fail => ({ o
 /** `Agents.clone(name, as)` — bifurca a sessão de um agente do ROSTER, sem
  *  depender de `HERDR_PANE_ID`: parte O PANE DELE (não o de quem chama),
  *  `--fork-session` pra dentro do novo, espera o TUI, renomeia, e lembra `as` no
- *  roster. `claude-code` apenas — o mesmo limite de `caps()`: só ele foi medido
+ *  roster. `claude-code` apenas — o mesmo limite de `agents.view.caps()`: só ele foi medido
  *  com `--fork-session`. */
 export async function clone(name: string, as: string): Promise<AgentSystem.Entities.Agent | Fail> {
   const rec = (await roster()).find((a) => a.name === name)
@@ -266,7 +187,7 @@ export async function clone(name: string, as: string): Promise<AgentSystem.Entit
   const abriu = await send(novo, `claude --dangerously-skip-permissions -r ${origem.session} --fork-session`)
   if (!abriu.ok) return { ok: false, error: `o pane ${novo} nasceu mas não recebeu o comando: ${abriu.error}`, reason: 'herdr' }
 
-  if (!(await esperaTUI(novo))) return fail(`o claude não subiu em ${novo} em ${TUI_MS / 1000}s — o pane está lá, mas \`as\` não foi renomeado`, 'herdr')
+  if (!(await agents.clone.esperaTUI(novo))) return fail(`o claude não subiu em ${novo} em ${agents.TUI_MS / 1000}s — o pane está lá, mas \`as\` não foi renomeado`, 'herdr')
 
   const r = await send(novo, `/rename ${as}`, { window: 24 })
   if (!r.ok) return { ok: false, error: `\`/rename ${as}\` não entrou em ${novo}: ${r.error} — o pane está de pé`, reason: 'herdr' }
@@ -288,4 +209,4 @@ export async function clone(name: string, as: string): Promise<AgentSystem.Entit
   }
 }
 
-if (import.meta.main) process.exit(await main(process.argv.slice(2)))
+if (import.meta.main) process.exit(await main(process.argv.slice(2)));

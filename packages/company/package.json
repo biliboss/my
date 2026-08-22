@@ -1,5 +1,5 @@
 {
-  "name": "@biliboss/company",
+  "name": "@my/company",
   "version": "0.1.0",
   "description": "The company's workflows, and the project-scope skills generated from them.",
   "license": "MIT",
@@ -11,8 +11,8 @@
     "./skills": "./skills.ts"
   },
   "dependencies": {
-    "@biliboss/interfaces": "workspace:*",
-    "@biliboss/shared": "workspace:*"
+    "@my/interfaces": "workspace:*",
+    "@my/shared": "workspace:*"
   },
   "devDependencies": {
     "@types/bun": "latest",

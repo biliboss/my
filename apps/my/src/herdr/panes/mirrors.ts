@@ -32,8 +32,8 @@
 //! depends_on: src/herdr/run.ts · src/shared/argv.ts
 //! impacts:    src/herdr/panes/mirror.ts · src/herdr/panes/CONTEXT.md
 
-import { mirrors } from "@biliboss/herdr/panes/mirrors";
-import { has } from "@biliboss/shared/argv";
+import { mirrors } from "@my/herdr/panes/mirrors";
+import { has } from "@my/shared/argv";
 
 if (import.meta.main) {
   const alvo = Bun.argv.slice(2).find((a) => !a.startsWith('-'))

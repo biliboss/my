@@ -1,4 +1,4 @@
-import type { Fail } from "@biliboss/shared/result"
+import type { Fail } from "@my/shared/result"
 import { split } from './split.ts'
 
 export async function grid(

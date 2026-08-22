@@ -7,7 +7,7 @@
 //! depends_on: src/herdr/run.ts · src/herdr/policy.ts
 //! impacts:    src/herdr/tabs/CONTEXT.md
 
-import { close } from "@biliboss/herdr/tabs/close";
+import { close } from "@my/herdr/tabs/close";
 
 if (import.meta.main) {
   const out = await close(Bun.argv[2] ?? '')

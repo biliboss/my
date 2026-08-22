@@ -26,7 +26,7 @@
 //! impacts:    —
 
 import { Command } from 'commander'
-import { fmtOf } from '../shared/gh.ts'
+import { fmtOf } from "@my/shared/gh"
 import { acharSprint } from '../sprints/model.ts'
 import { list } from './list.ts'
 import { type Place, type State, agora, lembra, projetoCorrente } from './model.ts'

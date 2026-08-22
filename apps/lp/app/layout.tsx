@@ -14,7 +14,7 @@
 
 import type { Metadata } from "next";
 import "./heroui.css";
-import "@biliboss/my-ui/tokens.css";
+import "@my/my-ui/tokens.css";
 import "./lp.css";
 
 /** Só o que NÃO é conteúdo: o nome do site nos cards, e o viewport. */

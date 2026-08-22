@@ -9,8 +9,8 @@
 
 import { Command } from "commander";
 
-import { apply, check, plan, workflows } from "@biliboss/company";
-import { fmtOf, out } from "../shared/gh.ts";
+import { apply, check, plan, workflows } from "@my/company";
+import { fmtOf, out } from "@my/shared/gh";
 
 export function command(): Command {
 	return new Command("skills")

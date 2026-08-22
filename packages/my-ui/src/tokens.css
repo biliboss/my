@@ -1,39 +1,74 @@
-/*! @biliboss/my-ui — os tokens e o chrome que a família my compartilha.
+/*! @my/my-ui — os tokens e o chrome que a família my compartilha.
  *
- *  UMA paleta: SynthWave '84 (Robb Owen). Não há seletor de tema e não há
- *  `data-theme` — a paleta É o `:root`. Aura e Tokyo Night existiram até
- *  20/08 e foram REMOVIDOS junto com o botão que os escolhia: opção que
- *  ninguém troca é código que ninguém testa. Tudo abaixo
- *  é design system: a casca da página, a dobra parallax e a navegação por
- *  dobra. O que é de UM produto (um grafo, um quadro) fica no produto.
+ *  UMA paleta: Tokyo Night. Não há seletor de tema e não há `data-theme` — a
+ *  paleta É o `:root`. Tudo abaixo é design system: a casca da página, a dobra
+ *  parallax e a navegação por dobra. O que é de UM produto (um grafo, um
+ *  quadro) fica no produto.
+ *
+ *  20/08 — A CRENÇA: Aura e Tokyo Night foram REMOVIDOS daqui junto com o
+ *  botão que os escolhia, e SynthWave '84 (Robb Owen) ficou como paleta única.
+ *  Motivo registrado: opção que ninguém troca é código que ninguém testa.
+ *
+ *  21/08 — A REVERSÃO, e ela é PARCIAL: o que caiu foi a ESCOLHA da paleta,
+ *  não a regra de 20/08. A regra continua de pé — nenhum seletor voltou, e
+ *  nenhum `data-theme` existe. O que estava errado era o VENCEDOR: a família
+ *  inteira (`my-graph`, e as conversas em `agent_conversation/lib/theme.ts`)
+ *  já lia Tokyo Night, e só este arquivo insistia em SynthWave — duas verdades
+ *  sobre a mesma cor, com o design system do lado errado. Tokyo Night volta
+ *  como ÚNICA. Guardar a crença de 20/08 aqui custa oito linhas e evita que
+ *  alguém releia "opção que ninguém troca" como permissão pra reabrir o seletor.
+ *
+ *  FONTE DOS HEX: `~/src/my/apps/my-graph/ui/Themes.tsx:69` (`tokyo-night`).
+ *  Aquele registro nomeia NOVE cores. Cada token abaixo diz de qual delas veio,
+ *  ou de que mistura de tokens foi derivado. Cor solta é bug.
  */
 :root {
   color-scheme: dark;
-  /* SynthWave '84 (Robb Owen) — o padrão da casa. O rosa É a marca do tema, e
-     por isso ele ocupa `--primary`; o ciano fica no acento, como no editor. */
-  --bg: #262335;
-  /* `--bg-deep` é DERIVADO, não copiado: o tema tem `#241b2f` como fundo mais
-     escuro, mas ele fica a três pontos do `--bg` e o card desta casa — que usa
-     `--bg-deep` como interior — sumiria dentro da página. Mesma matiz, puxada
-     pra baixo o bastante pra separação existir sem borda extra. */
-  --bg-deep: #1a1626;
-  --surface: #2a2139;
-  --surface-2: #34294f;
-  --line: rgba(255, 255, 255, 0.12);
-  --line-strong: rgba(255, 126, 219, 0.42);
-  --text: #ffffff;
-  --muted: #b8b0d0;
-  --faint: #848bbd;
-  --primary: #ff7edb;
-  --primary-2: #f97e72;
-  --cyan: #36f9f6;
-  --blue: #03edf9;
-  --warm: #fede5d;
-  --danger: #fe4450;
-  --glow: rgba(255, 126, 219, 0.28);
-  --grid: rgba(255, 126, 219, 0.06);
-  /* o brilho de neon: é o que faz o tema ser reconhecido de longe */
-  --neon: 0 0 2px rgba(255, 255, 255, .55), 0 0 12px rgba(255, 126, 219, .55), 0 0 30px rgba(255, 126, 219, .35);
+
+  /* Tokyo Night — "cidade japonesa à noite, o mais polido dos futuristas".
+     O ROXO é a marca do tema, e por isso ocupa `--primary`; o azul e o ciano
+     abrem o degradê a partir dele, como no editor. */
+  --bg: #1a1b26;         /* Themes.tsx `bg` */
+  /* Em Tokyo Night o PAINEL é mais escuro que o fundo — ao contrário do que o
+     nome sugere. Isso serve exatamente ao `--bg-deep` desta casa, que é o
+     interior do card: separação sem borda extra, e sem derivar nada. */
+  --bg-deep: #16161e;    /* Themes.tsx `panel` */
+  --surface: #292e42;    /* Themes.tsx `line` — a única superfície acima do fundo
+                            que a paleta nomeia */
+  /* `--surface-2` e `--muted` a paleta NÃO nomeia: são passos INTERMEDIÁRIOS.
+     A conta que os produziu está escrita ao lado — mas o VALOR é literal, e o
+     motivo está no bloco de CANVAS logo abaixo. */
+  --surface-2: #444a62;  /* srgb(--surface 82% + --text 18%) */
+  --text: #c0caf5;       /* Themes.tsx `text` */
+  --faint: #565f89;      /* Themes.tsx `dim` */
+  --muted: #98a1cc;      /* srgb(--text 62% + --faint 38%) */
+  --primary: #bb9af7;    /* Themes.tsx `draft` — o roxo, a marca */
+  --cyan: #7dcfff;       /* Themes.tsx `tool` */
+  --green: #9ece6a;      /* Themes.tsx `runs` */
+  --danger: #f7768e;     /* Themes.tsx `danger` */
+  /* DUAS cores que `Themes.tsx` não carrega, porque aquele registro guarda só
+     as nove que o grafo pinta. Vieram do Tokyo Night de origem, conferidas
+     contra `agent_conversation/lib/theme.ts` (`blue`, `yellow`), que bate hex a
+     hex com `Themes.tsx` nas nove que as duas têm em comum. */
+  --primary-2: #7aa2f7;  /* Tokyo Night `blue` — o meio do degradê roxo→ciano */
+  --warm: #e0af68;       /* Tokyo Night `yellow` — a nota de ressalva */
+  /* CANVAS: todo token acima é um VALOR LITERAL, nunca `color-mix()` nem
+     `var()`. `Graph.tsx:21` lê `--text`, `--bg-deep`, `--primary`,
+     `--primary-2`, `--cyan`, `--surface-2`, `--muted` e `--line-strong` com
+     `getComputedStyle().getPropertyValue()` e entrega a STRING ao cytoscape.
+     O cytoscape pinta num <canvas>: ele não resolve `color-mix()`, e uma cor
+     que ele não entende não dá erro — o nó simplesmente sai da cor errada.
+     Linha, brilho e grade são o mesmo roxo em alfas diferentes; o alfa fica
+     em `rgba()` por isso, e não porque `color-mix` seria pior aqui. */
+  --line: rgba(192, 202, 245, 0.12);       /* --text @ 12% */
+  --line-strong: rgba(187, 154, 247, 0.42); /* --primary @ 42% */
+  --glow: rgba(187, 154, 247, 0.26);        /* --primary @ 26% */
+  --grid: rgba(187, 154, 247, 0.07);        /* --primary @ 7% */
+  /* A sombra do card: o fundo mais escuro com alfa, não um preto solto. */
+  --shadow: rgba(22, 22, 30, 0.62);         /* --bg-deep @ 62% */
+  /* O brilho de neon. Tokyo Night é o polido da família, então ele fica mais
+     curto que o do SynthWave — presente na manchete, ausente no resto. */
+  --neon: 0 0 2px rgba(192, 202, 245, .45), 0 0 14px rgba(187, 154, 247, .45), 0 0 34px rgba(187, 154, 247, .24);
 }
 
 
@@ -186,14 +221,17 @@ main::before { content: ""; position: fixed; inset: 0; pointer-events: none; z-i
 
 .fit-section { background: var(--text); color: var(--bg-deep); }
 .fit-grid { display: grid; grid-template-columns: .85fr 1.15fr; gap: 100px; }
-.fit-section .section-kicker { color: color-mix(in srgb, var(--primary) 80%, #43375c); }
-.fit-grid .lead { margin-top: 28px; font-size: 18px; color: #6f6b78; }
-.fit-columns { display: grid; grid-template-columns: 1fr 1fr; border-left: 1px solid #c9c7cd; }
+.fit-section .section-kicker { color: color-mix(in srgb, var(--primary) 80%, var(--bg-deep)); }
+/* A dobra CLARA inverte o fundo: `--text` vira papel e `--bg-deep` vira
+   tinta. Os quatro cinzas dela são MISTURAS dos dois — um hex claro solto
+   aqui é uma cor que a troca de paleta não alcança. */
+.fit-grid .lead { margin-top: 28px; font-size: 18px; color: color-mix(in srgb, var(--bg-deep) 60%, var(--text)); }
+.fit-columns { display: grid; grid-template-columns: 1fr 1fr; border-left: 1px solid color-mix(in srgb, var(--bg-deep) 22%, var(--text)); }
 .fit-columns.three { grid-template-columns: repeat(3, 1fr); }
 .fit-column { padding-left: 38px; }
-.fit-column + .fit-column { border-left: 1px solid #c9c7cd; }
+.fit-column + .fit-column { border-left: 1px solid color-mix(in srgb, var(--bg-deep) 22%, var(--text)); }
 .fit-column span { display: block; font-size: 10px; font-weight: 800; letter-spacing: .14em; margin-bottom: 30px; }
-.fit-column p { padding: 15px 0; margin: 0; border-bottom: 1px solid #d8d6db; color: #4f4c56; }
+.fit-column p { padding: 15px 0; margin: 0; border-bottom: 1px solid color-mix(in srgb, var(--bg-deep) 14%, var(--text)); color: color-mix(in srgb, var(--bg-deep) 78%, var(--text)); }
 
 .principle { text-align: center; max-width: 1050px; }
 .principle-mark { font-family: Georgia, serif; font-size: 120px; height: 72px; color: var(--primary); opacity: .65; }
@@ -245,7 +283,7 @@ main::before { content: ""; position: fixed; inset: 0; pointer-events: none; z-i
   .compare-card { min-height: 320px; }
   .fit-columns { grid-template-columns: 1fr; border-left: 0; }
   .fit-column { padding: 20px 0; }
-  .fit-column + .fit-column { border-left: 0; border-top: 1px solid #c9c7cd; }
+  .fit-column + .fit-column { border-left: 0; border-top: 1px solid color-mix(in srgb, var(--bg-deep) 22%, var(--text)); }
   .caveat { grid-template-columns: 1fr; gap: 15px; }
   .footer { grid-template-columns: 1fr; gap: 18px; padding-block: 36px; text-align: center; }
   .footer > p { margin: 0; }
@@ -261,8 +299,8 @@ main::before { content: ""; position: fixed; inset: 0; pointer-events: none; z-i
 .hero-copy code { color: var(--cyan); font-size: .85em; padding: 2px 7px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg-deep); }
 
 .family-link { display: inline-block; margin-top: 34px; padding: 14px 22px; border-radius: 12px; background: var(--bg-deep); color: var(--text); font-weight: 750; font-size: 15px; transition: .18s ease; }
-.family-link:hover { background: var(--primary); color: #fff; transform: translateY(-2px); }
-.fit-column.fam span { color: #1f7a63; }
+.family-link:hover { background: var(--primary); color: var(--bg-deep); transform: translateY(-2px); }
+.fit-column.fam span { color: color-mix(in srgb, var(--green) 55%, var(--bg-deep)); }
 
 /* ── a segunda dobra: o grafo vivo, full-width, revelado pelo scroll ────────── */
 /* `--p` (0→1) é escrito pelo GraphStory a cada scroll. Três camadas o consomem

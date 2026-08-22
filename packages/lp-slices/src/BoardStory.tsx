@@ -1,5 +1,5 @@
 import { LayoutGroup, motion } from "framer-motion";
-import { Chip, ChipRow, LpParallax } from "@biliboss/my-ui";
+import { Chip, ChipRow, LpParallax } from "@my/my-ui";
 
 //! A DEMONSTRAÇÃO: o mesmo conjunto de cards, quatro perguntas diferentes.
 //!

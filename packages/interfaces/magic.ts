@@ -13,11 +13,11 @@
 //! Everything here describes the claim on a HUMAN, never the importance of the
 //! work.
 //!
-//! THE SCENE NEVER FETCHES. `@biliboss/scene-magic` renders these types and
+//! THE SCENE NEVER FETCHES. `@my/scene-magic` renders these types and
 //! calls these ports; it holds no URL, no route name and no socket path. That
 //! is what lets the same screen run inside `apps/my` over HTTP, inside a story
 //! with a hand-written queue, and inside a test with none of either. The route
-//! `apps/my/app/api/attention/route.ts` is ONE implementation of `readQueue`,
+//! `apps/web_app/app/api/attention/route.ts` is ONE implementation of `readQueue`,
 //! not the definition of it — see `packages/scene-magic/CONTEXT.md`.
 //!
 //! OPEN ENUMS. `ClaimKind` and `AttentionLevel` are written by whatever ranked
@@ -274,7 +274,7 @@ export type Attached =
   | { ok: false; error: string };
 
 /**
- * Everything `@biliboss/scene-magic` needs from the world, and nothing more.
+ * Everything `@my/scene-magic` needs from the world, and nothing more.
  *
  * The base implements this and hands it down once; every component in the
  * scene calls it through context. Nine verbs is the whole surface — if a

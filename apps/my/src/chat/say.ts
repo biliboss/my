@@ -21,49 +21,11 @@
 //!
 //! depends_on: src/chat/store.ts
 //! impacts:    src/agents/send.ts
+//!
+//! O domínio mora em `@my/chat`; aqui fica só o que a CLI imprime.
 
-import type { ChatSystem } from "@biliboss/interfaces/chat.ts";
-import { allMessages, append, type Msg, whoAmI } from "./store.ts";
-
-export function say(
-	channel: ChatSystem.ValueObjects.ChannelName,
-	to: ChatSystem.ValueObjects.Addressee,
-	text: string,
-	thread?: ChatSystem.ValueObjects.Thread,
-	answers?: ChatSystem.ValueObjects.Cursor,
-): Msg {
-	return append({ channel, from: whoAmI(), to, text, thread, answers });
-}
-
-const ASK_POLL_MS = 300;
-
-/** Fala e ESPERA — absorve `Chat.ask`. BLOQUEIA de propósito, sem timeout: o
- *  contrato não declara um, porque `ask` é pra quem vai FICAR esperando (um
- *  script, uma sessão parada). Quem quer "pergunta sem bloquear" usa `say()`
- *  puro. */
-export async function ask(
-	channel: ChatSystem.ValueObjects.ChannelName,
-	to: ChatSystem.ValueObjects.Addressee,
-	text: string,
-	thread?: ChatSystem.ValueObjects.Thread,
-): Promise<Msg> {
-	const asked = say(channel, to, text, thread);
-	const me = whoAmI();
-	for (;;) {
-		const reply = allMessages().find((m) => m.channel === channel && m.answers === asked.seq && m.to === me);
-		if (reply) return reply;
-		await Bun.sleep(ASK_POLL_MS);
-	}
-}
-
-/** `--re` NUMÉRICO vira `answers` — o `seq` que esta mensagem responde.
- *  NÃO-NUMÉRICO nunca vira um `seq` inventado: cai pra `thread`, e só quando
- *  ninguém deu um `--thread` explícito (que sempre ganha). */
-function resolveRe(value: string, explicitThread: string | undefined): { thread?: string; answers?: number } {
-	const n = Number(value);
-	if (value.trim() !== "" && !Number.isNaN(n)) return { answers: n };
-	return { thread: explicitThread ?? value };
-}
+import * as chat from "@my/chat";
+const { say, ask, read, inbox, unanswered, seen, listen, check, allMessages, listChannels, registerChannel, show, busPath, now, whoAmI } = chat as any;
 
 export async function main(argv: string[]): Promise<number> {
 	const rest0 = [...argv];
@@ -98,3 +60,5 @@ export async function main(argv: string[]): Promise<number> {
 }
 
 if (import.meta.main) process.exitCode = await main(Bun.argv.slice(2));
+
+if (import.meta.main) process.exit(await main(process.argv.slice(2)));

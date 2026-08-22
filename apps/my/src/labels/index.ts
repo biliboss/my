@@ -8,8 +8,8 @@
 
 import { Command } from "commander";
 
-import { days, labels, notes } from "@biliboss/notes";
-import { fmtOf, out } from "../shared/gh.ts";
+import { days, labels, notes } from "@my/notes";
+import { fmtOf, out } from "@my/shared/gh";
 
 export function command(): Command {
 	return new Command("labels")

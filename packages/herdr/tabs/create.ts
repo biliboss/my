@@ -1,8 +1,8 @@
 import { result } from '../run.ts'
 import { fence } from '../policy.ts'
 import { resolve } from '../workspaces/resolve.ts'
-import { upstream, type Fail } from "@biliboss/shared/result"
-import { value } from "@biliboss/shared/argv"
+import { upstream, type Fail } from "@my/shared/result"
+import { value } from "@my/shared/argv"
 
 export async function create(
   opts: { workspace?: string; label?: string; cwd?: string; env?: Record<string, string> } = {},

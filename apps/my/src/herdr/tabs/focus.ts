@@ -7,7 +7,7 @@
 //! depends_on: src/herdr/run.ts · src/herdr/policy.ts
 //! impacts:    src/herdr/tabs/CONTEXT.md
 
-import { focus } from "@biliboss/herdr/tabs/focus";
+import { focus } from "@my/herdr/tabs/focus";
 
 if (import.meta.main) {
   const out = await focus(Bun.argv[2] ?? '')

@@ -2,8 +2,8 @@ import { run } from '../run.ts'
 import { create } from '../tabs/create.ts'
 import { create as createWorkspace } from '../workspaces/create.ts'
 import { resolve } from '../workspaces/resolve.ts'
-import { upstream, type Fail } from "@biliboss/shared/result"
-import { value } from "@biliboss/shared/argv"
+import { upstream, type Fail } from "@my/shared/result"
+import { value } from "@my/shared/argv"
 
 /** Onde o binário do espelho mora NESTA máquina. Caminho absoluto de propósito:
  *  ele é instalado fora de qualquer gerenciador, e um `command not found` aqui

@@ -26,13 +26,13 @@
 
 import { existsSync, mkdirSync, symlinkSync, unlinkSync } from "node:fs";
 import { join, relative } from "node:path";
-import { has, value } from "@biliboss/shared/argv";
+import { has, value } from "@my/shared/argv";
 import { code, root } from "../../home/paths.ts";
 
 export function install(into: string): { link: string; target: string } | { erro: string } {
 	if (!existsSync(join(into, ".git"))) return { erro: `${into} não é um checkout — não tem \`.git\`` };
 
-	const script = join(code(), "src/check/pre-commit");
+	const script = join(code(), "apps/my/src/check/pre-commit");
 	if (!existsSync(script)) return { erro: `o script não existe: ${script}` };
 
 	const hooks = join(into, ".git/hooks");

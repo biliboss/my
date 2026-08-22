@@ -20,11 +20,13 @@
 //! Canal sempre `""` — ver `src/agents/send.ts`.
 //!
 //! depends_on: src/chat/read.ts · src/chat/store.ts
+//!
+//! O domínio mora em `@my/agents`; aqui fica só o que a CLI imprime.
 
-import { read } from "../chat/read.ts";
-import { allMessages, type Msg } from "../chat/store.ts";
+import { allMessages, read, type Msg } from "@my/chat";
 
-const show = (m: Msg) => console.log(`\x1b[2m${m.at.slice(11, 19)}\x1b[0m  \x1b[1m${m.from}\x1b[0m → ${m.to}\n  ${m.text}`);
+const show = (m: Msg) =>
+	console.log(`\x1b[2m${m.at.slice(11, 19)}\x1b[0m  \x1b[1m${m.from}\x1b[0m → ${m.to}\n  ${m.text}`);
 
 const at = (argv: string[], flag: string) => {
 	const i = argv.indexOf(flag);
@@ -60,4 +62,4 @@ export async function main(argv: string[]): Promise<number> {
 	return 0;
 }
 
-if (import.meta.main) process.exitCode = await main(Bun.argv.slice(2));
+if (import.meta.main) process.exit(await main(process.argv.slice(2)));

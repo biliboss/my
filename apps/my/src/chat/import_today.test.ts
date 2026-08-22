@@ -39,7 +39,7 @@ afterAll(() => {
 });
 
 const { blockers, plan, RULINGS, ruled, write } = await import("./import_today.ts");
-const { allMessages, busPath, getCursor, listChannels, setCursor } = await import("./store.ts");
+const { allMessages, busPath, getCursor, listChannels, setCursor } = await import("@my/chat");
 
 const T = (n: number) => `2026-08-21T10:0${n}:00Z`;
 

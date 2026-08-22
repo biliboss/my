@@ -13,7 +13,7 @@
 //! depends_on: packages/lp-slices/src/href.ts
 //! impacts:    packages/lp-slices/src/pages/codigo.tsx · apps/lp/public/shots/
 
-import type { LpSlide } from "@biliboss/my-ui";
+import type { LpSlide } from "@my/my-ui";
 import { BASE } from "./href";
 
 export const SHOTS: LpSlide[] = [

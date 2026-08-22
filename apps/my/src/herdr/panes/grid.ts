@@ -17,7 +17,7 @@
 //! depends_on: src/herdr/panes/split.ts · 02_areas/00_workflows/04_experimental/01_review_loop/CONTEXT.md
 //! impacts:    02_areas/00_workflows/04_experimental/00_compare/run.ts · 02_areas/00_workflows/04_experimental/01_review_loop/run.ts
 
-import { grid } from "@biliboss/herdr/panes/grid";
+import { grid } from "@my/herdr/panes/grid";
 
 if (import.meta.main) {
   const [root, count] = Bun.argv.slice(2)

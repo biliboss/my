@@ -6,7 +6,7 @@
  *  que não resolve não dá erro; ele some, e o build fica verde sem o estilo.
  *
  *  ESTE ARQUIVO NÃO PINTA NADA DESTA CASA. A paleta, a tipografia e a casca da
- *  página vêm de `@biliboss/my-ui/tokens.css`, importado DEPOIS — e como o
+ *  página vêm de `@my/my-ui/tokens.css`, importado DEPOIS — e como o
  *  HeroUI mora inteiro em `@layer`, qualquer regra sem camada dos tokens ganha
  *  dele por construção, não por especificidade escrita à mão.
  */

@@ -13,8 +13,8 @@
 //! depends_on: packages/lp-slices/src/slices/index.ts
 //! impacts:    apps/lp/app/page.tsx
 
-import { familyLinks, LpFoldNav, LpFooter, LpHero, LpNav, Mark, Page, Section } from "@biliboss/my-ui";
-import { href, INDEX, SLICES } from "@biliboss/lp-slices/slices";
+import { familyLinks, LpFoldNav, LpFooter, LpHero, LpNav, Mark, Page, Section } from "@my/my-ui";
+import { href, INDEX, SLICES } from "@my/lp-slices/slices";
 
 export function Portas() {
 	return (

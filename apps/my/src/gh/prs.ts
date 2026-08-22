@@ -15,7 +15,7 @@
 //! depends_on: 02_areas/00_workflows/00_main/00_shared/references/gh_general.md · src/gh/run.ts · src/shared/gh.ts
 //! impacts:    src/sprints/run.ts
 
-import { flag, fmtOf, out, type Fmt } from '../shared/gh.ts'
+import { flag, fmtOf, out, type Fmt } from "@my/shared/gh"
 import { GH_RETRIES, ghJson } from './run.ts'
 
 export type Pr = { branch: string; number?: number; state?: string; title?: string; url?: string; repo: string }

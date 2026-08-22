@@ -16,7 +16,7 @@
 //! impacts:    src/projects/model.ts
 
 import { Command } from 'commander'
-import { fmtOf, out } from '../shared/gh.ts'
+import { fmtOf, out } from "@my/shared/gh"
 import { lembra, projetoCorrente } from '../tasks/model.ts'
 import { CEILING_MIN, criticaDoTeto, minutos, semDuration, sprints, tasksSoltas } from './model.ts'
 

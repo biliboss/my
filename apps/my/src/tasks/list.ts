@@ -28,7 +28,7 @@ import { Command } from 'commander'
 import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import type { Task } from '../runs.ts'
-import { fmtOf, out } from '../shared/gh.ts'
+import { fmtOf, out } from "@my/shared/gh"
 import { sprints, tasksSoltas } from '../sprints/model.ts'
 import { type Place, RAIZ, type State, lembra, ler, placeDe, projetoCorrente, stateDe } from './model.ts'
 

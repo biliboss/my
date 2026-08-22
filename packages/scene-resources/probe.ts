@@ -1,18 +1,18 @@
 //! THE MEASUREMENT, RUNNABLE: `bun run probe.ts`.
 //!
-//! `@biliboss/resources` had ZERO consumers on 21/08 (note 002, "Medido em 21/08"). A
+//! `@my/resources` had ZERO consumers on 21/08 (note 002, "Medido em 21/08"). A
 //! package with no consumer is a package whose contract has never been tested by
 //! anything but its author, so the first thing this scene owes is proof that the
 //! two halves fit: a real `index()` over the real house, through `adapt()`, into
 //! the counts the scene draws.
 //!
-//! It is the only file here that imports `@biliboss/resources`, which is why that
+//! It is the only file here that imports `@my/resources`, which is why that
 //! package is a devDependency and not a dependency: the SCENE does not read.
 //!
 //! Nothing is asserted and nothing is mocked — it prints what it found. A number
 //! that changes tomorrow is the point; a number that comes back 0 is the finding.
 
-import { index } from "@biliboss/resources";
+import { index } from "@my/resources";
 import { adapt } from "./adapt.ts";
 import { LENS_NAMES, inLens, offeredLenses, unlabelled } from "./lens.ts";
 

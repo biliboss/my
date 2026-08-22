@@ -23,10 +23,12 @@
 
 import { Command } from "commander";
 
-import type { TeamsSystem } from "@biliboss/interfaces/teams.ts";
-import { all as fleet } from "../agents/list.ts";
-import { list as liveWorkspaces } from "@biliboss/herdr/workspaces/list";
-import { fmtOf, out } from "../shared/gh.ts";
+import type { TeamsSystem } from "@my/interfaces/teams.ts";
+import { agents } from "@my/agents";
+
+const fleet = () => agents.list.all();
+import { list as liveWorkspaces } from "@my/herdr/workspaces/list";
+import { fmtOf, out } from "@my/shared/gh";
 import { type Member, type Team, type TeamName, heldBy, isIdle, memberName, queueOf, stored, storedOf } from "./model.ts";
 
 /** A LINEUP PLUS A LIVE WORKSPACE IS A TEAM; a lineup alone is a leftover, and
@@ -49,7 +51,7 @@ export async function all(): Promise<Team[]> {
 			const name = memberName(s.name, role);
 			// The pane prefix is what proves the agent is in THIS team's workspace: a
 			// name is ours to mint and a stale roster entry can outlive the pane.
-			const a = agents.find((x) => x.name === name && x.pane.startsWith(`${ws.id}:`));
+			const a = agents.list.find((x) => x.name === name && x.pane.startsWith(`${ws.id}:`));
 			if (!a) continue;
 			members[role] = {
 				agent: a.name,

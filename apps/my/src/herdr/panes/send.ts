@@ -22,8 +22,8 @@
 //! depends_on: src/herdr/run.ts · src/herdr/policy.ts · src/shared/argv.ts
 //! impacts:    src/inbox/capture.ts
 
-import { send } from "@biliboss/herdr/panes/send";
-import { has } from "@biliboss/shared/argv";
+import { send } from "@my/herdr/panes/send";
+import { has } from "@my/shared/argv";
 
 if (import.meta.main) {
   const [pane, text] = Bun.argv.slice(2)

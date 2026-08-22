@@ -6,7 +6,7 @@
 //! depends_on: apps/lp/app/sitemap.ts
 //! impacts:    —
 
-import { SITE } from "@biliboss/lp-slices/slices";
+import { SITE } from "@my/lp-slices/slices";
 import type { MetadataRoute } from "next";
 
 export const dynamic = "force-static";

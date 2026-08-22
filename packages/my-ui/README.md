@@ -1,4 +1,4 @@
-# @biliboss/my-ui
+# @my/my-ui
 
 The design system the **my** family shares — [my](https://github.com/biliboss/my) ·
 [my-graph](https://github.com/biliboss/my-graph) ·
@@ -27,7 +27,7 @@ bun add github:biliboss/my-ui#semver:^0.1.0
 Then, once, at the app entry point:
 
 ```ts
-import "@biliboss/my-ui/tokens.css";
+import "@my/my-ui/tokens.css";
 ```
 
 ## What's in it
@@ -44,7 +44,7 @@ import "@biliboss/my-ui/tokens.css";
 | **Family** | `FAMILY` as data, `<Mark/>`, `familyLinks()` |
 | **Logos** | `MyGraphMark` — the balance |
 | **I18n** | `I18nProvider` `useT` `LocaleSwitch`, no dependency, keys are the source text |
-| **Graph** | `@biliboss/my-ui/graph` — `GraphCanvas`, cytoscape as an **optional** peer |
+| **Graph** | `@my/my-ui/graph` — `GraphCanvas`, cytoscape as an **optional** peer |
 
 ## Two naming rules
 

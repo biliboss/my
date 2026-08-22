@@ -1,7 +1,7 @@
 import { result } from '../run.ts'
 import { fence } from '../policy.ts'
-import { upstream, type Fail } from "@biliboss/shared/result"
-import { has, value } from "@biliboss/shared/argv"
+import { upstream, type Fail } from "@my/shared/result"
+import { has, value } from "@my/shared/argv"
 
 export async function split(
   pane: string,

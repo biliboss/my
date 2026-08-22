@@ -55,7 +55,7 @@ import { existsSync, mkdirSync } from "node:fs";
 import { dirname } from "node:path";
 
 import { Surreal } from "surrealdb";
-import { has, value } from "@biliboss/shared/argv";
+import { has, value } from "@my/shared/argv";
 import { store } from "./paths.ts";
 
 export const NS = "my";

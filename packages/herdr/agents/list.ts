@@ -1,5 +1,5 @@
 import { result } from '../run.ts'
-import { upstream, type Fail } from "@biliboss/shared/result"
+import { upstream, type Fail } from "@my/shared/result"
 
 export type Agent = {
   /** Que programa o herdr detectou no pane: `claude`, `codex`, … */

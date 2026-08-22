@@ -1,5 +1,5 @@
 {
-  "name": "@biliboss/notes",
+  "name": "@my/notes",
   "version": "0.1.0",
   "description": "The two time-and-idea axes of the house: zettels in 03_resources/notes/ and the day in 00_daily_notes/, plus the labels both carry.",
   "license": "MIT",
@@ -10,7 +10,7 @@
     "./store": "./store.ts"
   },
   "dependencies": {
-    "@biliboss/interfaces": "workspace:*"
+    "@my/interfaces": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^20",

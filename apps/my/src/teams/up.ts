@@ -33,12 +33,13 @@
 
 import { Command } from "commander";
 
-import type { AgentSystem } from "@biliboss/interfaces/agents.ts";
-import type { Fail, TeamsSystem } from "@biliboss/interfaces/teams.ts";
-import { start } from "../agents/start.ts";
-import { registerChannel } from "../chat/store.ts";
-import { grid } from "@biliboss/herdr/panes/grid";
-import { create } from "@biliboss/herdr/workspaces/create";
+import type { AgentSystem } from "@my/interfaces/agents.ts";
+import type { Fail, TeamsSystem } from "@my/interfaces/teams.ts";
+import { agents } from "@my/agents";
+
+import { registerChannel } from "@my/chat";
+import { grid } from "@my/herdr/panes/grid";
+import { create } from "@my/herdr/workspaces/create";
 import { RAIZ } from "../tasks/model.ts";
 import { type Lineup, type Team, agora, channelOf, memberName, mint, storedOf, write } from "./model.ts";
 import { find } from "./list.ts";
@@ -95,7 +96,7 @@ export async function up(lineup: Lineup): Promise<Team | Fail> {
 
 	for (const [i, role] of lineup.roles.entries()) {
 		const launch: AgentSystem.ValueObjects.Launch = { ...lineup.launch, ...lineup.per_role?.[role] };
-		const member = await start(memberName(name, role), { pane: panes.panes[i]!, prompt: brief(name, role, lineup.listens, channel) }, launch);
+		const member = await agents.control.start(memberName(name, role), { pane: panes.panes[i]!, prompt: brief(name, role, lineup.listens, channel) }, launch);
 		if ("ok" in member && member.ok === false)
 			// The workspace STAYS UP on a failed member, deliberately: the pane holds
 			// whatever the CLI printed before it died, and that is the only evidence of

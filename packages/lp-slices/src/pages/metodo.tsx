@@ -23,7 +23,7 @@
 
 import { useMemo, useState } from "react";
 import { Input } from "@heroui/react";
-import { Arrow, Button, Caveat, Chip, Kicker, LpHero, LpTicker, Section, SplitHeading } from "@biliboss/my-ui";
+import { Arrow, Button, Caveat, Chip, Kicker, LpHero, LpTicker, Section, SplitHeading } from "@my/my-ui";
 import { Chrome } from "../Chrome";
 import { slice } from "../slices/metodo";
 import linksJson from "../data/icm-links.json";

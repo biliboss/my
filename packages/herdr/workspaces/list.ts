@@ -1,7 +1,7 @@
 import { result } from '../run.ts'
 import { marks, type Mark } from '../policy.ts'
-import { upstream, type Fail } from "@biliboss/shared/result"
-import { has } from "@biliboss/shared/argv"
+import { upstream, type Fail } from "@my/shared/result"
+import { has } from "@my/shared/argv"
 import { list as agents } from '../agents/list.ts'
 
 export type Workspace = {

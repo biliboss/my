@@ -25,7 +25,7 @@ import {
 	LpNav,
 	Mark,
 	Page,
-} from "@biliboss/my-ui";
+} from "@my/my-ui";
 import { href } from "./href";
 import type { Slice } from "./slice";
 

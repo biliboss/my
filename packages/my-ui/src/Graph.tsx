@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import cytoscape from "cytoscape";
 
-//! O CANVAS DA CASA — um só, com entrada separada (`@biliboss/my-ui/graph`)
+//! O CANVAS DA CASA — um só, com entrada separada (`@my/my-ui/graph`)
 //! porque cytoscape é peer OPCIONAL e três produtos não devem pagar por ele.
 //!
 //! ELE EXISTE PORQUE HAVIA QUATRO. Medido em 21/08: `my-ui/Graph.tsx` (195),
@@ -36,7 +36,7 @@ import cytoscape from "cytoscape";
  *
  *  ENTÃO ELE FALHA ALTO. Duas falhas, e as duas são silenciosas sem esta guarda:
  *
- *  1. TOKEN AUSENTE — quem esqueceu `import "@biliboss/my-ui/tokens.css"` recebe
+ *  1. TOKEN AUSENTE — quem esqueceu `import "@my/my-ui/tokens.css"` recebe
  *     `""`, o cytoscape lê string vazia como preto, e o grafo nasce preto no
  *     preto sem um erro no console.
  *  2. TOKEN CALCULADO — `getComputedStyle().getPropertyValue()` devolve uma
@@ -51,11 +51,11 @@ function readCss(name: string): string {
   const raw = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
   if (!raw)
     throw new Error(
-      `@biliboss/my-ui/graph: o token \`${name}\` está vazio. Importe "@biliboss/my-ui/tokens.css" no ponto de entrada da aplicação.`,
+      `@my/my-ui/graph: o token \`${name}\` está vazio. Importe "@my/my-ui/tokens.css" no ponto de entrada da aplicação.`,
     );
   if (/^(var|color-mix|light-dark)\(/.test(raw))
     throw new Error(
-      `@biliboss/my-ui/graph: o token \`${name}\` vale \`${raw}\`, e o cytoscape pinta em canvas — ele não resolve função de cor. Declare o valor final em tokens.css.`,
+      `@my/my-ui/graph: o token \`${name}\` vale \`${raw}\`, e o cytoscape pinta em canvas — ele não resolve função de cor. Declare o valor final em tokens.css.`,
     );
   return raw;
 }

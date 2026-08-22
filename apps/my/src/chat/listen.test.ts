@@ -31,8 +31,8 @@ afterAll(() => {
 	rmSync(HOME, { recursive: true, force: true });
 });
 
-const { listen } = await import("./listen.ts");
-const { append, busPath, getCursor } = await import("./store.ts");
+const { listen } = await import("@my/chat");
+const { append, busPath, getCursor } = await import("@my/chat");
 
 beforeEach(() => {
 	rmSync(busPath(), { force: true });

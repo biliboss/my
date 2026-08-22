@@ -7,7 +7,7 @@
 //! depends_on: apps/lp/app/Portas.tsx · packages/lp-slices/src/slice.ts
 //! impacts:    —
 
-import { INDEX } from "@biliboss/lp-slices/slices";
+import { INDEX } from "@my/lp-slices/slices";
 import { Portas } from "./Portas";
 import { metadataOf } from "../lib/metadata";
 

@@ -32,7 +32,7 @@ const cria = (slug: string, resultado: string, ...extra: string[]) => {
     // `RAIZ`, porque eram a mesma pasta. Separados, `join(RAIZ, 'src/cli/my.ts')`
     // aponta pro vazio e o `spawnSync` devolve stdout VAZIO: o teste falhava
     // dizendo "esperava .../sprints/, recebi ''", que não parece caminho errado.
-    ['bun', 'run', join(code(), 'src/cli/my.ts'), 'projects', 'new', slug, '--resultado', resultado, '--area', '04-experimentos', ...extra],
+    ['bun', 'run', join(code(), 'apps/my/src/cli/my.ts'), 'projects', 'new', slug, '--resultado', resultado, '--area', '04-experimentos', ...extra],
     { cwd: RAIZ },
   )
   return new TextDecoder().decode(p.stdout)

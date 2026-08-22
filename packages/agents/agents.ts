@@ -4,8 +4,8 @@ import { join } from "node:path";
 
 import { Command } from "commander";
 
-import type { AgentSystem, Fail, Finding } from "@biliboss/interfaces/agents.ts";
-import type { ChatSystem } from "@biliboss/interfaces/chat.ts";
+import type { AgentSystem, Fail, Finding } from "@my/interfaces/agents.ts";
+import type { ChatSystem } from "@my/interfaces/chat.ts";
 
 import {
 	allMessages,
@@ -16,25 +16,25 @@ import {
 	read as readChannel,
 	say,
 	seen,
-} from "@biliboss/chat";
-import { list as liveAgents, type Agent as HerdrAgent } from "@biliboss/herdr/agents/list";
-import { forget, remember, roster } from "@biliboss/herdr/agents/roster";
-import { start as herdrStart, startWhenReady } from "@biliboss/herdr/agents/start";
-import { read as readPane } from "@biliboss/herdr/panes/read";
-import { send } from "@biliboss/herdr/panes/send";
-import { split } from "@biliboss/herdr/panes/split";
-import { did, result } from "@biliboss/herdr/run";
-import { close } from "@biliboss/herdr/tabs/close";
-import { focus as focusTab } from "@biliboss/herdr/tabs/focus";
-import { wait } from "@biliboss/herdr/agents/wait";
-import { list as tabs } from "@biliboss/herdr/tabs/list";
-import { create } from "@biliboss/herdr/workspaces/create";
-import { list as listWorkspaces } from "@biliboss/herdr/workspaces/list";
-import { move } from "@biliboss/herdr/workspaces/move";
-import { resolve } from "@biliboss/herdr/workspaces/resolve";
-import { emit } from "@biliboss/shared/findings";
-import { fmtOf, out } from "@biliboss/shared/gh";
-import { store } from "@biliboss/shared/paths";
+} from "@my/chat";
+import { list as liveAgents, type Agent as HerdrAgent } from "@my/herdr/agents/list";
+import { forget, remember, roster } from "@my/herdr/agents/roster";
+import { start as herdrStart, startWhenReady } from "@my/herdr/agents/start";
+import { read as readPane } from "@my/herdr/panes/read";
+import { send } from "@my/herdr/panes/send";
+import { split } from "@my/herdr/panes/split";
+import { did, result } from "@my/herdr/run";
+import { close } from "@my/herdr/tabs/close";
+import { focus as focusTab } from "@my/herdr/tabs/focus";
+import { wait } from "@my/herdr/agents/wait";
+import { list as tabs } from "@my/herdr/tabs/list";
+import { create } from "@my/herdr/workspaces/create";
+import { list as listWorkspaces } from "@my/herdr/workspaces/list";
+import { move } from "@my/herdr/workspaces/move";
+import { resolve } from "@my/herdr/workspaces/resolve";
+import { emit } from "@my/shared/findings";
+import { fmtOf, out } from "@my/shared/gh";
+import { store } from "@my/shared/paths";
 
 /** The CLIs this house knows how to run, keyed by the program name herdr detects.
  *  `engine` is the contract's discriminator and `bin` is what you exec — three

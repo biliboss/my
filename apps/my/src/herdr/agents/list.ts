@@ -16,7 +16,7 @@
 //! depends_on: src/herdr/run.ts
 //! impacts: src/herdr/agents/roster.ts
 
-import { list } from "@biliboss/herdr/agents/list";
+import { list } from "@my/herdr/agents/list";
 
 if (import.meta.main) {
   const out = await list()

@@ -136,8 +136,8 @@ export async function result(
  *
  *  So: no output is success here, and only an `error` envelope is failure.
  */
-export async function did(args: string[]): Promise<{ ok: boolean; error?: string }> {
-  const out = await run(args)
+export async function did(args: string[], timeoutMs?: number): Promise<{ ok: boolean; error?: string }> {
+  const out = await run(args, timeoutMs)
   if (!out.ok) return { ok: false, error: envelopeError(out.error ?? '') ?? out.error ?? 'herdr failed' }
 
   const failure = envelopeError(out.stdout)

@@ -21,7 +21,7 @@
 
 import { readdirSync, statSync } from "node:fs";
 import { join, relative } from "node:path";
-import { has, value } from "@biliboss/shared/argv";
+import { has, value } from "@my/shared/argv";
 import { home } from "../shared/file.ts";
 
 const ROOT = home();

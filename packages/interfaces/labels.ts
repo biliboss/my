@@ -189,7 +189,7 @@ export interface Finding {
 import type { Shared } from "./shared";
 
 export declare namespace LabelSystem {
-	/** Who declared it — `@biliboss/company`. The package name, because that is the unit
+	/** Who declared it — `@my/company`. The package name, because that is the unit
 	 *  that ships and the unit a collision is reported against. */
 	export type PackageName = string;
 

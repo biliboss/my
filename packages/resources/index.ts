@@ -1,4 +1,4 @@
-//! `Resources` (@biliboss/interfaces/resources.ts), implementado.
+//! `Resources` (@my/interfaces/resources.ts), implementado.
 //!
 //! ── ASSÍNCRONO, E O CONTRATO DIZ SÍNCRONO ───────────────────────────────────
 //!
@@ -30,10 +30,10 @@
 //! O dia em que o telemetry subir pra um pacote, isto vira três linhas. Está escrito
 //! aqui pra ser um pedido em vez de um silêncio.
 //!
-//! depends_on: ./store.ts · ./resource.ts · @biliboss/interfaces/resources.ts
+//! depends_on: ./store.ts · ./resource.ts · @my/interfaces/resources.ts
 
-import { LENSES, type Finding, type ResourceSystem } from "@biliboss/interfaces/resources.ts";
-import type { Shared } from "@biliboss/interfaces/shared.ts";
+import { LENSES, type Finding, type ResourceSystem } from "@my/interfaces/resources.ts";
+import type { Shared } from "@my/interfaces/shared.ts";
 import type { Resource } from "./resource.ts";
 import { index } from "./store.ts";
 

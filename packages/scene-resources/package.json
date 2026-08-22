@@ -1,5 +1,5 @@
 {
-  "name": "@biliboss/scene-resources",
+  "name": "@my/scene-resources",
   "version": "0.1.0",
   "description": "One scene, one question: what does this house know, and through which of the three lenses is it being read.",
   "license": "MIT",
@@ -10,13 +10,13 @@
     "./adapt": "./adapt.ts"
   },
   "dependencies": {
-    "@biliboss/interfaces": "workspace:*"
+    "@my/interfaces": "workspace:*"
   },
   "peerDependencies": {
     "react": ">=19"
   },
   "devDependencies": {
-    "@biliboss/resources": "workspace:*",
+    "@my/resources": "workspace:*",
     "@types/node": "^20",
     "@types/react": "catalog:",
     "react": "catalog:",

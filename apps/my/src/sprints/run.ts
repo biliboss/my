@@ -37,7 +37,7 @@ import { join } from 'node:path'
 import { list as listIssues, type Issue } from '../gh/issues.ts'
 import { open as openPrs } from '../gh/prs.ts'
 import { acharRun, buracos, CEILING_MIN, issueUrl, minutes, type Run, type Sprint } from '../runs.ts'
-import { fmtOf, out } from '../shared/gh.ts'
+import { fmtOf, out } from "@my/shared/gh"
 import { home } from '../shared/file.ts'
 
 const ROOT = home()

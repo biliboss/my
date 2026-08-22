@@ -10,7 +10,7 @@
 //! depends_on: packages/lp-slices/src/Chrome.tsx · packages/lp-slices/src/slices/empresa.ts
 //! impacts:    apps/lp/app/empresa/page.tsx
 
-import { Arrow, Button, Caveat, Compare, Kicker, LpHero, LpTicker, Section, SplitHeading } from "@biliboss/my-ui";
+import { Arrow, Button, Caveat, Compare, Kicker, LpHero, LpTicker, Section, SplitHeading } from "@my/my-ui";
 import { Chrome } from "../Chrome";
 import { GraphStory } from "../GraphStory";
 import { slice } from "../slices/empresa";

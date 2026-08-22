@@ -9,7 +9,7 @@
 //! depends_on: src/herdr/run.ts · src/herdr/policy.ts · src/herdr/workspaces/resolve.ts
 //! impacts:    src/herdr/workspaces/CONTEXT.md
 
-import { focus } from "@biliboss/herdr/workspaces/focus";
+import { focus } from "@my/herdr/workspaces/focus";
 
 if (import.meta.main) {
   const out = await focus(Bun.argv[2] ?? '')

@@ -1,12 +1,12 @@
 //! Disk access for the notes system: read frontmatter, write a zettel, append to a day.
 //!
-//! depends_on: @biliboss/interfaces/notes.ts
+//! depends_on: @my/interfaces/notes.ts
 
 import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { basename, join } from "node:path";
 
-import type { NotesSystem } from "@biliboss/interfaces/notes.ts";
+import type { NotesSystem } from "@my/interfaces/notes.ts";
 
 type Note = NotesSystem.Entities.Note;
 

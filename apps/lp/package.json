@@ -10,8 +10,8 @@
     "check": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@biliboss/lp-slices": "workspace:*",
-    "@biliboss/my-ui": "workspace:*",
+    "@my/lp-slices": "workspace:*",
+    "@my/my-ui": "workspace:*",
     "@heroui/react": "catalog:",
     "cytoscape": "catalog:",
     "framer-motion": "catalog:",

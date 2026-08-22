@@ -1,6 +1,6 @@
 import { did } from '../run.ts'
 import { fence } from '../policy.ts'
-import { upstream, type Fail } from "@biliboss/shared/result"
+import { upstream, type Fail } from "@my/shared/result"
 import { resolve } from './resolve.ts'
 
 export async function focus(key: string): Promise<{ ok: true; id: string } | Fail> {
