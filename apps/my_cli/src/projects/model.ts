@@ -179,7 +179,7 @@ export function citados(): Set<string> {
 	};
 
 	varrer(join(RAIZ, "_step_runs"));
-	varrer(join(AREAS, "00_workflows"));
+	varrer(join(RAIZ, "03_resources", "00_company"));
 
 	return achados;
 }

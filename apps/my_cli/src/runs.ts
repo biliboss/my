@@ -36,7 +36,7 @@ import { resolvePorPrefixo } from './shared/resolve.ts'
 import { home } from './shared/file.ts'
 
 const ROOT = home()
-const WORKFLOWS = join(ROOT, '02_areas/00_workflows')
+const WORKFLOWS = join(ROOT, '03_resources/00_company')
 
 export type Task = {
   id: string

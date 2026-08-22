@@ -61,7 +61,7 @@ export type Lens = ResourceSystem.ValueObjects.Lens;
 export const ROOT = home();
 export const RESOURCES = join(ROOT, "03_resources");
 /** Um processo é uma PASTA com `CONTEXT.md` — o mesmo caminho que `src/meta.ts` lê. */
-const WORKFLOWS = join(ROOT, "02_areas", "00_workflows");
+const WORKFLOWS = join(ROOT, "03_resources", "00_company");
 
 /** Pastas que nunca guardam conhecimento da casa: dependência de terceiro, artefato de
  *  build, e a saída de um run. Sem a poda, um `resources/` de build do Tauri entra no
@@ -216,18 +216,37 @@ export function index(raiz?: string): Resource[] {
 			else if (mds(dirname(path)).length === 1) push(path, basename(dirname(path)));
 		}
 
-	// 2 · o resto de `03_resources/`, com o nome da pasta como kind.
-	for (const path of mds(resources)) if (basename(path) !== "CONTEXT.md") push(path);
+	// 2 · o resto de `03_resources/`, com o nome da pasta como kind. `00_company/`
+	// fica FORA: ele entra pela regra 3, que trata a pasta como processo. Sem esta
+	// poda, os `armadilhas.md` de sete workflows viram sete recursos com o mesmo
+	// nome — medido em 22/08, quando `00_company` desceu pra dentro de `03_resources`.
+	const company = join(resources, "00_company");
+	for (const path of mds(resources))
+		if (basename(path) !== "CONTEXT.md" && !path.startsWith(company + "/")) push(path);
 
 	// 3 · os processos: a pasta é o processo, e o `CONTEXT.md` dela é o corpo. É a única
 	// exceção à linha acima, e é o que `src/meta.ts` já assumia sobre este caminho.
-	const workflows = join(root, "02_areas", "00_workflows");
+	const workflows = join(root, "03_resources", "00_company");
 	if (existsSync(workflows))
 		for (const domain of readdirSync(workflows, { withFileTypes: true })) {
 			if (!domain.isDirectory() || domain.name.startsWith(".")) continue;
+			// Um Value Stream tem PROCESS no meio (`01_plan/request_to_issue`) e
+			// `shared_workflows/` não tem. As duas formas entram: o que se indexa é o
+			// diretório com `CONTEXT.md` mais próximo da categoria, e o que estiver
+			// abaixo dele é STAGE — o stage é lido pelo workflow, nunca por nome solto.
+			const niveis: { name: string; dir: string }[] = [];
 			for (const step of readdirSync(join(workflows, domain.name), { withFileTypes: true })) {
 				if (!step.isDirectory() || step.name === "references" || step.name === "resources") continue;
-				const ctx = join(workflows, domain.name, step.name, "CONTEXT.md");
+				const here = join(workflows, domain.name, step.name);
+				const filhos = readdirSync(here, { withFileTypes: true }).filter(
+					(c) => c.isDirectory() && existsSync(join(here, c.name, "CONTEXT.md")),
+				);
+				if (/^\d\d_/.test(step.name) && filhos.length)
+					for (const c of filhos) niveis.push({ name: c.name, dir: join(here, c.name) });
+				else niveis.push({ name: step.name, dir: here });
+			}
+			for (const step of niveis) {
+				const ctx = join(step.dir, "CONTEXT.md");
 				if (existsSync(ctx)) {
 					seen.add(ctx);
 					const body = readFileSync(ctx, "utf8");

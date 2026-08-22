@@ -1,5 +1,5 @@
 //! O que pode apodrecer aqui: o disco mudar de forma e o leitor continuar
-//! achando que sabe. Tudo é lido de `02_areas/00_workflows/` de verdade — um
+//! achando que sabe. Tudo é lido de `03_resources/00_company/` de verdade — um
 //! fixture seria uma segunda opinião sobre o formato, que é justamente o que
 //! não se quer testar.
 //!
@@ -19,9 +19,10 @@ import { WORKFLOWS, body, categories, find, workflows } from './tree.ts'
 test('as categorias saem do disco, e nenhuma é vazia de sentido', () => {
   const cats = categories()
   expect(cats.length).toBeGreaterThan(0) // controle negativo: lista vazia passaria em tudo abaixo
-  // `00_main` é CONTRATO — é a família dos workflows que fazem o trabalho, e o
-  // mapa da casa aponta pra ela pelo nome.
-  expect(cats).toContain('00_main')
+  // `shared_workflows` é CONTRATO — é onde mora o que serve os TRÊS value
+  // streams, e o mapa da casa aponta pra ela pelo nome. Os streams entram por
+  // `categories()` porque o número deles é a ordem, e ordem muda.
+  expect(cats).toContain('shared_workflows')
 
   // O invariante NÃO é "tem workflow dentro": `03_agents` nasceu em 17/08 sem
   // filho nenhum, porque ela É a folha — a frota não é uma coisa que se roda, é
@@ -33,20 +34,20 @@ test('as categorias saem do disco, e nenhuma é vazia de sentido', () => {
 })
 
 test('acha o workflow com o número e sem ele', () => {
-  expect(find('01_coding')).toEqual({ category: '00_main', workflow: '01_coding' })
-  expect(find('coding')).toEqual({ category: '00_main', workflow: '01_coding' })
+  expect(find('02_build/feature_delivery')).toEqual({ category: '02_deliver_what_sell', workflow: '02_build/feature_delivery' })
+  expect(find('feature_delivery')).toEqual({ category: '02_deliver_what_sell', workflow: '02_build/feature_delivery' })
   expect(find('nao_existe')).toBeUndefined()
 })
 
 test('o corpo é o arquivo, não um resumo dele', () => {
-  const md = body('00_main', '01_coding')
+  const md = body('02_deliver_what_sell', '02_build/feature_delivery')
   expect(md).toContain('# 01_coding')
   expect(md).toContain('## Output')
 })
 
 test('um step de outra família também resolve — é o mapa inteiro, não só os mains', () => {
   const hit = find('do_a_drip')
-  expect(hit).toEqual({ category: '02_system', workflow: '004_do_a_drip' })
+  expect(hit).toEqual({ category: 'shared_workflows', workflow: 'do_a_drip' })
 })
 
 test('nome ambíguo é ERRO, não sorteio', () => {

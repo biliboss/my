@@ -49,9 +49,9 @@ test("CONTEXT.md é o mapa — salvo quando é a única página da subárvore", 
 });
 
 test("um processo é a PASTA, e o CONTEXT.md dela é o corpo", () => {
-	const rs = casa({ "02_areas/00_workflows/02_system/004_do_a_drip/CONTEXT.md": "as fases" });
+	const rs = casa({ "03_resources/00_company/shared_workflows/do_a_drip/CONTEXT.md": "as fases" });
 	expect(rs).toHaveLength(1);
-	expect(rs[0]!).toMatchObject({ name: "004_do_a_drip", kind: "processes", body: "as fases" });
+	expect(rs[0]!).toMatchObject({ name: "do_a_drip", kind: "processes", body: "as fases" });
 });
 
 test("alias resolve pra MESMA página, e o nome do arquivo ganha de alias alheio", () => {

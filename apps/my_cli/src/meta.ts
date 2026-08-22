@@ -58,8 +58,8 @@ const ROOT = home();
 const META = join(ROOT, "META.md");
 /** One rule per file, filed by TYPE: `03_resources/rules/<type>/<slug>.md`. */
 const RULES = join(ROOT, "03_resources", "rules");
-/** One process per folder: `02_areas/00_workflows/<domain>/<NN>_<verb>/CONTEXT.md`. */
-const WORKFLOWS = join(ROOT, "02_areas", "00_workflows");
+/** One process per folder: `03_resources/00_company/<stream|shared_workflows>/…/CONTEXT.md`. */
+const WORKFLOWS = join(ROOT, "03_resources", "00_company");
 
 type Section = { slug: string; title: string; body: string };
 
@@ -197,7 +197,7 @@ export function parse(md: string): {
 }
 
 /**
- * The processes, one folder each: `02_areas/00_workflows/<domain>/<NN>_<verb>/CONTEXT.md`.
+ * The processes, one folder each: `03_resources/00_company/<stream|shared_workflows>/…/CONTEXT.md`.
  *
  * They left META.md on 17/08 for the reason the rules did, plus one the rules did
  * not have: a process OWNS things — its runs land in `output/` beside it, and a
@@ -580,7 +580,7 @@ function runIndex(): Map<string, string> {
     if (typeof rel !== "string") continue;
     const m = rel.match(/^(.*\/output)\/(\d{3}_[^/]+)$/);
     if (m && statSync(join(WORKFLOWS, rel)).isDirectory()) {
-      out.set(m[2], join("02_areas", "00_workflows", rel));
+      out.set(m[2], join("03_resources", "00_company", rel));
     }
   }
   return new Map([...out].sort(([a], [b]) => a.localeCompare(b)));
@@ -772,7 +772,7 @@ export function janelas(): Map<string, { abriu: Date | null; ciclo: number | nul
     // parecia perfeitamente plausível.
     // DOIS caminhos, e o velho fica pra sempre: os runs sairam de `_meta/` em
     // 17/08, e o log de antes disso so existe sob o nome velho.
-    ["git", "log", "--format=@%cI", "--name-only", "--diff-filter=A", "--", "_meta/", "02_areas/00_workflows/"],
+    ["git", "log", "--format=@%cI", "--name-only", "--diff-filter=A", "--", "_meta/", "03_resources/00_company/"],
     { cwd: ROOT },
   ).stdout.toString();
 

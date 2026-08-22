@@ -20,7 +20,7 @@ import { join } from 'node:path'
 import { home } from '../shared/file.ts'
 
 const ROOT = home()
-export const WORKFLOWS = join(ROOT, '02_areas/00_workflows')
+export const WORKFLOWS = join(ROOT, '03_resources/00_company')
 
 /** As categorias: os diretórios de primeiro nível. `00_product`, `01_engineering`, … */
 export function categories(dir = WORKFLOWS): string[] {
@@ -31,14 +31,31 @@ export function categories(dir = WORKFLOWS): string[] {
     .sort()
 }
 
-/** Os workflows de uma categoria: os diretórios dela que têm um `CONTEXT.md`. */
+/**
+ *  Os workflows de uma categoria. Um Value Stream tem PROCESSES no meio
+ *  (`02_deliver_what_sell/01_plan/request_to_issue`) e `shared_workflows/` não
+ *  tem (`shared_workflows/research`) — os dois caem aqui, e o nome devolvido é
+ *  o caminho relativo à categoria.
+ *
+ *  A regra é posicional e não adivinha: `NN_` com filho que tem `CONTEXT.md` é
+ *  PROCESS, e desce um nível. Qualquer outro diretório com `CONTEXT.md` é o
+ *  workflow, e o que estiver abaixo dele é STAGE — nunca listado aqui.
+ */
 export function workflows(category: string, dir = WORKFLOWS): string[] {
   const path = join(dir, category)
   if (!existsSync(path)) return []
-  return readdirSync(path, { withFileTypes: true })
-    .filter((e) => e.isDirectory() && existsSync(join(path, e.name, 'CONTEXT.md')))
-    .map((e) => e.name)
-    .sort()
+  const dirs = (at: string) => readdirSync(at, { withFileTypes: true }).filter((e) => e.isDirectory())
+  const out: string[] = []
+  for (const e of dirs(path)) {
+    const here = join(path, e.name)
+    const filhos = dirs(here).filter((c) => existsSync(join(here, c.name, 'CONTEXT.md')))
+    if (/^\d\d_/.test(e.name) && filhos.length) {
+      for (const c of filhos) out.push(`${e.name}/${c.name}`)
+      continue
+    }
+    if (existsSync(join(here, 'CONTEXT.md'))) out.push(e.name)
+  }
+  return out.sort()
 }
 
 /**
@@ -52,10 +69,10 @@ export function find(name: string, dir = WORKFLOWS): { category: string; workflo
   // número — `00_product/03_research` e `02_system/012_research` existem — e
   // sem esta passada o slug completo caía no relaxado e devolvia o outro,
   // calado. Medido em 17/08 pedindo `012_research` e recebendo o `03_research`.
-  const exact = pairs.find((p) => p.workflow === name)
+  const exact = pairs.find((p) => p.workflow === name || p.workflow.split('/').pop() === name)
   if (exact) return exact
   const wanted = name.replace(/^\d+_/, '')
-  const loose = pairs.filter((p) => p.workflow.replace(/^\d+_/, '') === wanted)
+  const loose = pairs.filter((p) => (p.workflow.split('/').pop() ?? '').replace(/^\d+_/, '') === wanted)
   // Ambíguo é ERRO, não sorteio: devolver o primeiro é como se pede um e se
   // trabalha no outro por meia hora.
   if (loose.length > 1)

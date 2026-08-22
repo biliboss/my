@@ -21,14 +21,19 @@
 //! confiar. `POLL_MS` é o granular — ponytail: fixo em 200ms, promove a opção se
 //! algum chamador precisar de mais resolução do que isso.
 //!
+//! A CLI GANHA O PRINT EM LOTE DE `read.ts`: antes de ir pro ar, mostra o canal
+//! inteiro (reusando `read()`/`show()` de lá) — quem entra no meio de uma
+//! conversa vê o que já foi dito, não só o que chega dali pra frente.
+//!
 //!     my chat listen plantao-coding qa-workflow                 # fica na tela
 //!     my chat listen plantao-coding qa-workflow --debounce 500 --max-wait 5000
 //!
-//! depends_on: src/chat/store.ts · src/chat/inbox.ts
+//! depends_on: src/chat/store.ts · src/chat/read.ts
 //! impacts:    src/agents/chat.ts
 
 import type { Batch, ChatSystem } from "@biliboss/interfaces/chat.ts";
 import { allMessages, getCursor, setCursor, type Msg } from "./store.ts";
+import { read, show } from "./read.ts";
 
 const POLL_MS = 200;
 const DEFAULT_DEBOUNCE = 2000;
@@ -113,11 +118,12 @@ export async function main(argv: string[]): Promise<number> {
 	const max_wait = j > -1 ? Number(rest[j + 1]) : undefined;
 
 	console.log(`\x1b[2m— escutando ${channel || "(canal vazio)"} como ${me}; ctrl-c para sair —\x1b[0m`);
+	for (const m of read(channel)) show(m);
 	const handle = listen(
 		channel,
 		me,
 		(batch) => {
-			for (const m of batch.messages) console.log(`#${m.seq}  ${m.at.slice(11, 19)}  \x1b[1m${m.from}\x1b[0m → ${m.to}\n  ${m.text}`);
+			for (const m of batch.messages) show(m);
 		},
 		{ debounce, max_wait },
 	);
