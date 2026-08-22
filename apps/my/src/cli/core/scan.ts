@@ -21,7 +21,10 @@ export const SRC = join(import.meta.dir, "../..");
  *  leitor tenta entender e não consegue. */
 const NOT_A_VERB = new Set(["cli", "node_modules"]);
 
-export type Node = { name: string; file?: string; children: Node[] };
+/** `path` é o ENDEREÇO do comando dentro de `src/` — `herdr/agents`, não
+ *  `agents`. O nome nu não identifica: `agents` existe no topo E dentro de
+ *  `herdr`, e quem chaveia pelo nome confunde os dois. */
+export type Node = { name: string; path: string; file?: string; children: Node[] };
 
 /** COMANDO é quem se declara comando: `export function main` (a interface) ou
  *  `import.meta.main` (o guard que todo script desta casa tem). Lido do FONTE,
@@ -119,18 +122,20 @@ export function usage(file: string): string[] {
 
 /** `src/` → a árvore. `.test.ts` e pasta vazia ficam de fora: teste não é
  *  comando, e verbo sem subverbo nenhum seria um menu que não abre nada. */
-export function scan(dir: string = SRC): Node[] {
+export function scan(dir: string = SRC, prefix = ""): Node[] {
   return readdirSync(dir)
     .filter((e) => !e.startsWith(".") && !e.startsWith("_") && !NOT_A_VERB.has(e))
     .flatMap((entry) => {
-      const path = join(dir, entry);
-      if (statSync(path).isDirectory()) {
-        const children = scan(path);
-        return children.length ? [{ name: entry, children }] : [];
+      const disk = join(dir, entry);
+      if (statSync(disk).isDirectory()) {
+        const path = prefix ? `${prefix}/${entry}` : entry;
+        const children = scan(disk, path);
+        return children.length ? [{ name: entry, path, children }] : [];
       }
       if (!entry.endsWith(".ts") || entry.endsWith(".test.ts")) return [];
       // Se declara comando? é comando. Senão, só é comando se ninguém o importa.
-      if (!runnable(path) && LIBS.has(path)) return [];
-      return [{ name: entry.slice(0, -3), file: path, children: [] }];
+      if (!runnable(disk) && LIBS.has(disk)) return [];
+      const name = entry.slice(0, -3);
+      return [{ name, path: prefix ? `${prefix}/${name}` : name, file: disk, children: [] }];
     });
 }

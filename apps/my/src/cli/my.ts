@@ -42,7 +42,6 @@ class My {
   @verb("o pedido vira item na página, e a resposta vira nota em archive/") inbox() {}
   @verb("o projeto: cria com resultado e prazo, e acusa o que nasceu torto") projects() {}
   @verb("a sprint é PASTA: cria, soma os minutos, e acusa quem passou do teto") sprints() {}
-  @verb("a task é PASTA dentro da sprint: nasce, começa numa worktree, fecha provando") tasks() {}
   @verb("desenha antes de codar: a pasta docs/, o grafo e a árvore") system_design() {}
   @verb("tudo que esta casa sabe: as páginas, os kinds, e as três lentes") resources() {}
   @verb("os zettels: uma ideia por arquivo, e o id é o minuto em que nasceu") notes() {}
@@ -51,14 +50,24 @@ class My {
   @verb("os workflows da casa: as categorias, a árvore, o contrato de um") workflows() {}
   @verb("a pergunta que sobe numa tela e BLOQUEIA até alguém decidir") askuser() {}
   @verb("a frota: despacha trabalho endereçado e lê o que voltou") agents() {}
+  @verb("o barramento de conversa: os canais, quem falou, e quem está escutando") chat() {}
+  @verb("os value streams do mapa: o topo da cadeia, e o que cada um entrega") streams() {}
+  @verb("os processes: o que cada um roda, e de que value stream ele desce") processes() {}
+  @verb("o stage: o contexto ordenado, o evento que o acorda, e a corrente andando") stages() {}
+  @verb("o que de fato aconteceu: grava o evento, lê o traço, mede o que nunca disparou") events() {}
+  @verb("esta caixa vista de fora: o cartão A2A que outro agente lê") a2a() {}
+  @verb("o board: card, coluna, limite e label — e como ele flui") kanban() {}
+  @verb("a empresa desenhada: o grafo, e uma skill por workflow") company() {}
   @verb("onde as coisas ficam: as três raízes, as env, e quem escreve onde") home() {}
   @verb("o plantão: sobe um workspace por time, e ele PUXA da própria fila") teams() {}
   @verb("o multiplexador: workspaces, abas, panes, agentes") herdr() {}
+  // Endereço aninhado: o nome entre ASPAS é onde a barra cabe. Sem ele esta
+  // pasta herdava a frase do `my agents` do topo — as duas se chamam `agents`.
+  @verb("os agentes que o herdr vê rodando NESTA caixa") "herdr/agents"() {}
   @verb("a barra lateral do VS Code: que pasta, em que ordem, com que rótulo") vscode() {}
   @verb("o GitHub por fora: issue e PR, com o link que o ciclo cita") gh() {}
   @verb("as portas: uma rota por fatia de público, servidas de um domínio só") lp() {}
   @verb("os programas de fora: o grafo, os hooks do Claude Code, e se ainda respondem") tools() {}
-  @verb("o Claude Code por fora: os hooks que uma sessão ganha, e qual arquivo os deu") claude() {}
   @verb("o que apodreceu: citação pro vazio, CONTEXT.md, regra fora do lugar") check() {}
   @verb("o sistema cuidando de si: os checks, os hooks, as métricas") system() {}
   @verb("o que os scripts compartilham — sem comando próprio") shared() {}

@@ -110,6 +110,18 @@ async function call(file: string, args: string[]): Promise<number> {
   return mod.main(args);
 }
 
+/** A frase da PASTA: o `@verb` quando existe, a contagem quando ninguém
+ *  descreveu.
+ *
+ *  Casa pelo ENDEREÇO (`herdr/agents`), nunca pelo nome nu: com o nome,
+ *  `my herdr --help` imprimia "a frota: despacha trabalho endereçado…" no
+ *  `herdr/agents` — a frase do `my agents` do TOPO, herdada por acidente porque
+ *  as duas pastas se chamam igual (medido 22/08). Descrição errada é pior que
+ *  ausente: ela não parece faltar. */
+export function describe(node: Node): string {
+  return VERBS.get(node.path) ?? `${node.children.length} subcomandos`;
+}
+
 export async function attach(parent: Command, nodes: Node[]): Promise<Command> {
   for (const node of nodes) {
     if (node.file) {
@@ -162,10 +174,7 @@ export async function attach(parent: Command, nodes: Node[]): Promise<Command> {
         });
       continue;
     }
-    const folder = parent
-      .command(node.name)
-      // A frase do `@verb` quando existe; a contagem quando ninguém descreveu.
-      .description(VERBS.get(node.name) ?? `${node.children.length} subcomandos`);
+    const folder = parent.command(node.name).description(describe(node));
 
     // A folder name cannot hold a hyphen, but `my daily-notes` is what a hand
     // types. The alias is derived, never declared, so it follows a rename.

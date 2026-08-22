@@ -44,6 +44,23 @@ subverbo" não tinha resposta pra um verbo que já respondia sozinho ANTES de ga
 subverbos, e `my resources <assunto>` está escrito às dezenas nesta casa. Sem
 isto, virar pasta quebrava toda essa citação.
 
+## `my apropos` é a vista PLANA dos 158
+
+**A árvore que dá escopo ao verbo é a mesma que esconde o verbo.** `my --help`
+lista 36; o resto mora um ou dois níveis abaixo, e ver tudo custava uma
+invocação por pasta. [`../apropos.ts`](../apropos.ts) achata a mesma `scan()` e
+casa o termo contra o ENDEREÇO e a descrição, sem acento e sem caixa.
+
+```
+my apropos kanban card     dois termos é AND, nunca OR
+my apropos --json evento   o mesmo, pra outro programa ler
+```
+
+A unidade de resposta é a LINHA, não a página — é o que faz `| grep`, `| wc -l`
+e `| fzf` funcionarem. Corta na largura do terminal e **não corta no pipe**:
+truncar no pipe cortaria o que o `grep` do outro lado procura. Sem acerto o
+status é `1`, igual ao `grep`.
+
 ## Quem declara flag ganha o próprio `-h`
 
 Duas maneiras de um comando ter help, e o DISCO escolhe qual — o gatilho é o
@@ -99,13 +116,24 @@ contagem, não descrição.
 class My {
   @verb("o pedido que chega vira arquivo, com a hora") inbox() {}
   @verb("a barra lateral do VS Code, desenhada do disco") ws() {}
+  @verb("os agentes vivos NESTA caixa") "herdr/agents"() {}   // aninhado
 }
 ```
+
+A chave é o **ENDEREÇO** da pasta, e o nome do método entre aspas é onde a barra
+cabe. Chavear pelo nome nu fazia `my herdr --help` imprimir a frase do
+`my agents` do TOPO no `herdr/agents`, porque as duas pastas se chamam igual
+(medido 22/08) — e descrição errada é pior que ausente: ela não parece faltar.
 
 O corpo do método é vazio de propósito: quem executa é o subverbo, achado no
 disco. **Pasta sem `@verb` continua aparecendo**, só que sem a frase; **`@verb`
 sem pasta não vira comando nenhum.** A CLI continua sendo o disco — isto é a
 legenda dela, e a legenda não pode inventar comando.
+
+Pasta ANINHADA pode ficar sem frase — o help dela abre depois de já se saber o
+que se procura. A de TOPO não, e [`my.test.ts`](my.test.ts) trava as duas
+pontas: nenhum verbo de topo cai em `N subcomandos`, e nenhuma frase aponta pra
+pasta que não existe (foi o que achou as legendas órfãs de `tasks` e `claude`).
 
 Decorator LEGADO, que é o que o bun implementa: assinatura `(target, key)`, e o
 nome do verbo é o `key`. Medido em 17/08 — na forma TC39 o `ctx.name` chega
