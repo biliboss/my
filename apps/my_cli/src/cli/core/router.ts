@@ -167,6 +167,10 @@ export async function attach(parent: Command, nodes: Node[]): Promise<Command> {
       // A frase do `@verb` quando existe; a contagem quando ninguém descreveu.
       .description(VERBS.get(node.name) ?? `${node.children.length} subcomandos`);
 
+    // A folder name cannot hold a hyphen, but `my daily-notes` is what a hand
+    // types. The alias is derived, never declared, so it follows a rename.
+    if (node.name.includes("_")) folder.alias(node.name.replace(/_/g, "-"));
+
     // O verbo que responde PELADO: as flags e os posicionais têm que atravessar o
     // commander da pasta pra chegar no `index.ts`. `enablePositionalOptions` no PAI é
     // exigência do commander pro `passThroughOptions` — sem ele estoura na montagem.

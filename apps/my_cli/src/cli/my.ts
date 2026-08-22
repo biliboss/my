@@ -45,6 +45,9 @@ class My {
   @verb("a task é PASTA dentro da sprint: nasce, começa numa worktree, fecha provando") tasks() {}
   @verb("desenha antes de codar: a pasta docs/, o grafo e a árvore") system_design() {}
   @verb("tudo que esta casa sabe: as páginas, os kinds, e as três lentes") resources() {}
+  @verb("os zettels: uma ideia por arquivo, e o id é o minuto em que nasceu") notes() {}
+  @verb("o eixo do tempo: um arquivo por dia, append-only, e ele congela") daily_notes() {}
+  @verb("os labels em uso, contados nas notas e nos dias — derivados, nunca guardados") labels() {}
   @verb("os workflows da casa: as categorias, a árvore, o contrato de um") workflows() {}
   @verb("a pergunta que sobe numa tela e BLOQUEIA até alguém decidir") askuser() {}
   @verb("a frota: despacha trabalho endereçado e lê o que voltou") agents() {}
