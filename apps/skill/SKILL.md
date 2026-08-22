@@ -40,7 +40,7 @@ o commander do que achou — mover um arquivo MUDA a CLI, e é esse o ponto: é 
 impede um comando de existir sem código atrás.
 
 Consequência prática: **`my <verbo>` sem argumento é sempre a legenda daquele
-verbo**, e é mais barato que adivinhar. `my` sozinho lista os 28 verbos.
+verbo**, e é mais barato que adivinhar. `my` sozinho lista os 36 verbos.
 
 **Sem verbo pra isso? É pedido pra construir um.** Arquivo novo em
 `apps/my/src/<pasta>/` com um `//!` na primeira linha JÁ é o comando — a
@@ -60,7 +60,7 @@ docstring vira a descrição no help. `.test.ts` não vira comando.
 | onde este assunto aparece na casa | `my resources -g <termo>` · `my resources search <termo>` |
 | a forma pra copiar (landing, outline, call stack) | `my resources templates` |
 | **criar um projeto** | `my projects new --resultado … --prazo … --area …` |
-| que projeto nasceu torto | `my projects check` (`--json/--jsonl/--tsv/--watch`) |
+| que projeto nasceu torto | `my check projects` (`--json/--jsonl/--tsv/--watch`) |
 | **abrir uma sprint** | `my sprints new "<título>" [-P <proj>] [-n <nnn>]` |
 | criar a task DELA | `my tasks new "<título>" [-S <nnn>] -d <min> -p "<prova>"` |
 | ver sprints com a SOMA dos minutos | `my sprints list [-P <proj>]` (exit 1 acima do teto) |
@@ -84,6 +84,10 @@ docstring vira a descrição no help. `.test.ts` não vira comando.
 | **provar que nada apodreceu** | `my check all` (16 subverbos; sai 1 quando acha) |
 | onde as coisas ficam, e quem decidiu | `my home paths` · `my home env` · `my home check` |
 | o que esta casa mede sobre si | `my system metrics` |
+| **a empresa como ontologia** | `my streams` · `my processes` · `my stages` · `my events` — pelados listam, com nome mostram |
+| a empresa como dado, e os gaps dela | `03_resources/00_company/company.yaml` (à mão; o aninhamento É o endereço) |
+| gerar uma skill por workflow da casa | `my company skills` (`-n` seco, `--check` sai 1) |
+| o painel vivo da frota, numa TUI | `my dashboard` |
 
 Rodar o comando no herdr da OUTRA caixa: `--remote <host>` é global.
 
@@ -96,9 +100,15 @@ machine   ~/.me        ESTADO DE MÁQUINA — db, worktrees      default:~/.me
 ```
 
 **Nunca hardcode nenhuma das três**: `$(my home)` resolve a casa, e ela é
-trocável (`my home <caminho>`). Estado de máquina vai pro sqlite em `~/.me/me.db`
-(drizzle, `bun:sqlite`, migra na abertura); markdown e YAML seguem sendo o banco
-do que é DECIDIDO e versionado.
+trocável (`my home <caminho>`). Markdown e YAML seguem sendo o banco do que é
+DECIDIDO e versionado.
+
+**Estado de máquina vive na VPS, não em disco local** — SurrealDB em
+`fonseca-vps`, ns `my`, alcançado por um túnel `ssh -L` em `127.0.0.1:8788` que
+um agente do launchd mantém de pé. `my home db` diz se ele responde e imprime o
+comando de reabrir. Um servidor local foi REMOVIDO de propósito: dois bancos que
+respondem igual e guardam coisas diferentes custam mais que o túnel caído.
+O código do monorepo é escopo `@my/*` — `@my/agents`, `@my/chat`, `@my/herdr`.
 
 ## O que o `--help` não conta
 
@@ -164,9 +174,23 @@ contrato inteiro (grid de até 9 previews, `--spec`, stdin): `my references 015_
 ### A frota executa; o humano decide
 
 Três agentes permanentes vivem no workspace `workflows`, um por main, e recebem
-trabalho endereçado pelo barramento de chat (`.my_agents_chat.tsv`, append-only).
+trabalho endereçado pelo barramento de chat (`.my_chat.tsv`, append-only).
 Subir é `my workflows show delegate_agents`; saber que terminou é
 `my workflows show monitor_agent`; o porquê do barramento é `my references 016_agent_bus`.
+
+**Uma mensagem tem DUAS formas, e confundi-las custa dinheiro.** `to: <nome>` é
+DIRETA e acorda um; `to: "all"` é BROADCAST e acorda todo membro do canal, um
+turno de modelo cada. Medido 22/08: 67% do barramento é broadcast, e 16% das
+diretas foram pra quem não é membro do canal — mensagem que ninguém leria, porque
+ninguém faz polling de sala em que não entrou. `my chat check` acusa (`NOT A
+MEMBER`).
+
+**Um stage também pode ir pra um agente que roda e MORRE** — `my agents delegate
+<stage> --workflow <CONTEXT.md> --run <pasta> --cwd <repo> [--wait]`. O pedido
+NÃO vai no prompt: `--workflow`/`--run` viram um ask de UMA linha e o agente abre
+cada endereço na hora — #in_reference. Uma linha porque o herdr recusa argv com
+`\n` (`arguments cannot be encoded safely`), e porque a cópia diverge da issue no
+primeiro comentário novo.
 
 **A AUTORIDADE fica na sessão principal** — a entrevista, o portão dos 95%,
 publicar issue, promover `staging`→`main`, falar com cliente. Um agente pode
@@ -259,8 +283,8 @@ vizinho. A task **não declara `sprint:`** — a pasta que a contém já diz.
 Cada task declara `duration`, a sprint é a SOMA, e acima do teto a alavanca é
 PARTIR: outra sprint, depois outro pacote. **Nunca encolher a task pra caber**
 (`my meta resources sprint_order_and_size`). Quem acusa: `my sprints list`
-(exit 1), `my projects check` (`sprint_over_ceiling`, `sprint_duration_missing`,
-`unsprinted_tasks`).
+(exit 1), `my check projects` (`sprint_over_ceiling`, `sprint_duration_missing`,
+`unsprinted_tasks`) — o verbo é `check projects`, e `projects check` NÃO existe.
 
 ### Um pedido é um workflow; um TRABALHO é uma corrente
 
@@ -344,6 +368,8 @@ com o `agentes[]` que os runs declaram, então agente órfão não aparece sozin
 - **Contrato tem teto de 100 linhas.** Passou, o que sai vai pra `references/`.
 - **Cite o VERBO, nunca o caminho do script.** `my references worktree_and_staging`
   ✓ · `bun run apps/my/src/meta.ts …` ✗.
+- **`git add -u` é o mesmo erro que `git commit` pelado.** Medido 22/08: ele
+  levou 180 arquivos, e nem todos eram desta sessão. Pathspec, sempre.
 - **Escreva enquanto acontece.** Rodada que só viveu na sessão morre com ela.
 
 ## Se `my` não estiver no PATH
@@ -375,3 +401,5 @@ morrer.** Não é contrato; é relato, com o que NÃO foi medido escrito junto:
 - `references/experimental/delegar_workflow_ao_herdr.md` — delegar um workflow a
   um agente do herdr: as três chamadas, o system prompt por
   `--append-system-prompt-file`, o `MY_AGENT` no ambiente do pane
+- `my references in_reference` — o input é ENDEREÇO e nunca cópia; como cada tipo
+  resolve, e por que o ask do agente cabe numa linha só
