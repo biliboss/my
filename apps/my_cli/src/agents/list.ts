@@ -29,6 +29,7 @@
 import { Command } from 'commander'
 import { list as vivos, type Agent } from '../herdr/agents/list.ts'
 import { roster } from '../herdr/agents/roster.ts'
+import { list as listWorkspaces } from '../herdr/workspaces/list.ts'
 import { baseCurta, nomeDoClone } from './clone.ts'
 import { fmtOf, out } from '../shared/gh.ts'
 import type { AgentSystem } from '@biliboss/interfaces/agents.ts'
@@ -110,6 +111,11 @@ export async function main(argv: string[]): Promise<number> {
   const out0 = await vivos()
   if (!out0.ok) return console.error(`✗ ${out0.error}`), 1
 
+  // The workspace ID is already on the pane; the LABEL is the half a human reads,
+  // and it only exists on the workspace list. A failed join degrades to the id.
+  const spaces = await listWorkspaces({ includeHidden: true })
+  const labelOf = new Map(spaces.ok ? spaces.workspaces.map((w) => [w.id, w.label]) : [])
+
   const meuPane = process.env.HERDR_PANE_ID
   const minhaAba = out0.agents.find((a) => a.pane === meuPane)?.tab
   const linhas: Linha[] = out0.agents
@@ -124,7 +130,7 @@ export async function main(argv: string[]): Promise<number> {
     out(
       fmt,
       linhas,
-      (l) => [l.pane, l.status, l.base, String(l.n), l.workspace, l.nome],
+      (l) => [l.pane, l.status, l.base, String(l.n), l.workspace, labelOf.get(l.workspace) ?? '', l.nome],
       (l) => `${l.pane} ${l.status} ${l.nome}`,
     )
     return 0
@@ -137,7 +143,8 @@ export async function main(argv: string[]): Promise<number> {
   for (const l of ordem) {
     const marca = l.eu ? '←' : ' '
     const recuo = l.n ? '  └─ ' : ''
-    console.log(`${marca} ${l.pane.padEnd(8)} ${l.status.padEnd(8)} ${recuo}${l.nome}`)
+    const espaco = labelOf.get(l.workspace) ?? l.workspace
+    console.log(`${marca} ${l.pane.padEnd(8)} ${espaco.padEnd(18)} ${l.status.padEnd(8)} ${recuo}${l.nome}`)
   }
   const clones = ordem.filter((l) => l.n).length
   console.log(`${ordem.length} agentes · ${clones} clone(s)${opts.mine ? ' · só esta aba' : ''}`)
