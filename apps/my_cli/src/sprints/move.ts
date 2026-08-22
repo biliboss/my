@@ -44,7 +44,7 @@ export function command(): Command {
 		.option("-n, --dry-run", "imprime o plano e não move nada");
 }
 
-export function main(argv: string[]): number {
+export async function main(argv: string[]): Promise<number> {
 	const cmd = command().exitOverride();
 	try {
 		cmd.parse(argv, { from: "user" });
@@ -58,9 +58,9 @@ export function main(argv: string[]): number {
 	if (!ESTADOS.includes(estado as Estado)) return morre(`estado inválido: ${estado}\n  existem: ${ESTADOS.join(", ")}`);
 	// A mesma resolução do `list` e do `new`: `-P` uma vez fica LEMBRADO. Reimplementar
 	// aqui faria o `move` discordar dos irmãos sobre qual é o projeto corrente.
-	const { slug } = projetoCorrente(project);
+	const { slug } = await projetoCorrente(project);
 	if (!slug) return morre("sem projeto corrente: passe `-P <slug>` uma vez e ele fica lembrado");
-	if (project) lembra(slug);
+	if (project) await lembra(slug);
 
 	const s = acharSprint(slug, alvo);
 	if ("erro" in s) return morre(s.erro);
@@ -92,4 +92,4 @@ export function main(argv: string[]): number {
 	return 0;
 }
 
-if (import.meta.main) process.exit(main(Bun.argv.slice(2)));
+if (import.meta.main) process.exit(await main(Bun.argv.slice(2)));

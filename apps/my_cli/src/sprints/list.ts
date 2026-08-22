@@ -29,7 +29,7 @@ export function command(): Command {
     .option('--tsv', 'uma sprint por linha, pro awk')
 }
 
-export function main(argv: string[]): number {
+export async function main(argv: string[]): Promise<number> {
   const cmd = command().exitOverride()
   try {
     cmd.parse(argv, { from: 'user' })
@@ -37,9 +37,9 @@ export function main(argv: string[]): number {
     return (err as { exitCode?: number }).exitCode ?? 1
   }
   const opts = cmd.opts()
-  const { slug, porque } = projetoCorrente(opts.project)
+  const { slug, porque } = await projetoCorrente(opts.project)
   if (!slug) return console.error('sem projeto corrente: passe `-P <slug>` uma vez e ele fica lembrado'), 1
-  if (opts.project) lembra(slug)
+  if (opts.project) await lembra(slug)
 
   const todas = sprints(slug)
   const rows = todas.map((s) => ({
@@ -75,4 +75,4 @@ export function main(argv: string[]): number {
   return rows.some((r) => r.critica) ? 1 : 0
 }
 
-if (import.meta.main) process.exit(main(process.argv.slice(2)))
+if (import.meta.main) process.exit(await main(process.argv.slice(2)))

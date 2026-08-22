@@ -126,9 +126,9 @@ export async function main(argv: string[]): Promise<number> {
     return (err as { exitCode?: number }).exitCode ?? 1
   }
   const opts = cmd.opts()
-  const { slug } = projetoCorrente(opts.project)
+  const { slug } = await projetoCorrente(opts.project)
   if (!slug) return console.error('sem projeto corrente: passe `-P <slug>` uma vez e ele fica lembrado'), 1
-  if (opts.project) lembra(slug)
+  if (opts.project) await lembra(slug)
 
   // As sprints chegam por PREFIXO (`999`), igual ao resto da casa, e cada uma é
   // resolvida no nome de pasta inteiro antes de virar filtro: filtrar pelo que o

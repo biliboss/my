@@ -96,7 +96,7 @@ export function command(): Command {
   return cmd
 }
 
-export function main(argv: string[]): number {
+export async function main(argv: string[]): Promise<number> {
   const cmd = command().exitOverride()
   try {
     cmd.parse(argv, { from: 'user' })
@@ -106,8 +106,8 @@ export function main(argv: string[]): number {
   const opts = cmd.opts()
   // Sem `-P` ele varre TODOS, e não o corrente: uma fila torta em outro projeto
   // continua torta, e um check que só olha onde você está é um check que passa.
-  const slug = opts.project ? projetoCorrente(opts.project).slug : undefined
-  if (opts.project && slug) lembra(slug)
+  const slug = opts.project ? (await projetoCorrente(opts.project)).slug : undefined
+  if (opts.project && slug) await lembra(slug)
 
   const achados = check(slug)
   const fmt = fmtOf(argv)
@@ -121,4 +121,4 @@ export function main(argv: string[]): number {
   return achados.length ? 1 : 0
 }
 
-if (import.meta.main) process.exit(main(process.argv.slice(2)))
+if (import.meta.main) process.exit(await main(process.argv.slice(2)))
