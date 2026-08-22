@@ -66,7 +66,7 @@ export type Graph = {
  *  contratos num pacote próprio, a pasta acima deles é `packages/`, que não tem
  *  implementação nenhuma — o grafo reportaria zero órfãos e pareceria uma casa
  *  limpa. O default aponta pro pacote que os contratos dizem implementar. */
-const CODE = process.env.MY_GRAPH_CODE ?? join(process.cwd(), "..", "my_cli");
+const CODE = process.env.MY_GRAPH_CODE ?? join(process.cwd(), "..", "my");
 
 // O DEFAULT MUDOU TRÊS VEZES EM 20/08, e a última diz o porquê das outras: os
 // contratos saíram de `me/src/interfaces` (repositório privado, código dentro da

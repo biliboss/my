@@ -10,7 +10,7 @@
 //! frase. A busca trata rota genérica como duplicata, e aí as duas somem juntas.
 //!
 //! depends_on: —
-//! impacts:    apps/my_cli/src/lp/check.ts · apps/lp/lib/metadata.ts
+//! impacts:    apps/my/src/lp/check.ts · apps/lp/lib/metadata.ts
 
 /** O domínio ÚNICO da família. Uma porta é uma ROTA aqui dentro, nunca um
  *  domínio novo — o motivo escrito está em `_today/002_um_projeto_dois_apps.md`:

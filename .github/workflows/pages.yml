@@ -67,13 +67,13 @@ jobs:
       # e pega no segundo.
       - name: as portas, pela declaracao
         run: bun run src/lp/check.ts
-        working-directory: apps/my_cli
+        working-directory: apps/my
 
       - run: bun run --filter '@my/lp' build
 
       - name: as portas, pelo HTML publicado
         run: bun run src/lp/check.ts
-        working-directory: apps/my_cli
+        working-directory: apps/my
 
       - uses: actions/upload-artifact@v4
         with:

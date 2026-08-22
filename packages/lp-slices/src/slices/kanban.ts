@@ -22,7 +22,7 @@ export const slice: Slice = {
 		"Coluna acima do limite, label que ninguém declarou, card cujo trabalho sumiu do disco. Um comando lê o seu board e devolve a lista do que está torto.",
 	cta: {
 		label: "Ler o check que reprova um board",
-		href: "https://github.com/biliboss/my/blob/main/apps/my_cli/src/kanban/check.ts",
+		href: "https://github.com/biliboss/my/blob/main/apps/my/src/kanban/check.ts",
 	},
 	og: {
 		image: `${SITE}/og.png`,

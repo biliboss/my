@@ -6,7 +6,7 @@
 //! de fatia que ficou de fora daqui.
 //!
 //! depends_on: packages/lp-slices/src/slices/
-//! impacts:    apps/lp/app/ · apps/my_cli/src/lp/check.ts
+//! impacts:    apps/lp/app/ · apps/my/src/lp/check.ts
 
 import type { Slice } from "../slice";
 import { slice as codigoDecl } from "./codigo";

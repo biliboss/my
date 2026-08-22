@@ -17,7 +17,7 @@
 //! não existe — e o viewer responde a isso com painel vazio, que é indistinguível de
 //! bug (é a issue #8 do my-graph).
 //!
-//! depends_on: apps/my_cli/src/tools/graph.ts · apps/my_cli/src/tools/canvas.ts
+//! depends_on: apps/my/src/tools/graph.ts · apps/my/src/tools/canvas.ts
 //! impacts:    packages/interfaces/graph.ts
 
 import { basename } from "node:path";

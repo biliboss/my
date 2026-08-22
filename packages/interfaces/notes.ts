@@ -2,7 +2,7 @@
 //! plus the labels both carry. Full field list: `03_resources/notes/note.schema.json`.
 //!
 //! implemented: packages/notes/
-//! cli:         apps/my_cli/src/{notes,daily_notes,labels}/
+//! cli:         apps/my/src/{notes,daily_notes,labels}/
 
 import type { Shared } from "./shared";
 

@@ -22,7 +22,7 @@
 //! precisa compilá-los junto.
 //!
 //! depends_on: packages/lp-slices/src/slice.ts
-//! impacts:    .github/workflows/pages.yml · apps/my_cli/src/lp/check.ts
+//! impacts:    .github/workflows/pages.yml · apps/my/src/lp/check.ts
 
 import type { NextConfig } from "next";
 

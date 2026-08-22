@@ -11,7 +11,7 @@
 //! família não vai achar.
 //!
 //! depends_on: packages/my-ui/src/index.ts
-//! impacts:    apps/lp/app/ · apps/my_cli/src/lp/check.ts
+//! impacts:    apps/lp/app/ · apps/my/src/lp/check.ts
 
 export { Chrome } from "./Chrome";
 export * from "./slices/index";

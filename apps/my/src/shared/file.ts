@@ -33,7 +33,7 @@ import { dirname, join } from "node:path";
  *
  * SINCE 20/08 THESE ARE TWO DIFFERENT QUESTIONS, and both have callers. `code()` in
  * `home/paths.ts` anchors on `package.json` and answers "which package is this file
- * in" — `apps/my_cli/`. This one anchors on `.git` and answers "which checkout" —
+ * in" — `apps/my/`. This one anchors on `.git` and answers "which checkout" —
  * the monorepo. They were the same answer until the CLI moved into `apps/`, and the
  * one caller that needs THIS one is the resource that points at
  * `packages/interfaces/`, a sibling of the package and inside neither root.

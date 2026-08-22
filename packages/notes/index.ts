@@ -1,5 +1,5 @@
 //! `NotesSystemView` — the two lists, the labels, and the two writers.
-//! The CLI under `apps/my_cli/src/{notes,daily_notes,labels}/` only reads flags and prints.
+//! The CLI under `apps/my/src/{notes,daily_notes,labels}/` only reads flags and prints.
 //!
 //! depends_on: @biliboss/interfaces/notes.ts · ./store.ts
 

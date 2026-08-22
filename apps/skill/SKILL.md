@@ -35,7 +35,7 @@ Três coisas que ela existe pra impedir:
 
 ## A regra que economiza o resto: pasta é verbo, arquivo é subverbo
 
-Nada declara comando. `apps/my_cli/src/cli/my.ts` varre `src/` na abertura e monta
+Nada declara comando. `apps/my/src/cli/my.ts` varre `src/` na abertura e monta
 o commander do que achou — mover um arquivo MUDA a CLI, e é esse o ponto: é o que
 impede um comando de existir sem código atrás.
 
@@ -43,7 +43,7 @@ Consequência prática: **`my <verbo>` sem argumento é sempre a legenda daquele
 verbo**, e é mais barato que adivinhar. `my` sozinho lista os 28 verbos.
 
 **Sem verbo pra isso? É pedido pra construir um.** Arquivo novo em
-`apps/my_cli/src/<pasta>/` com um `//!` na primeira linha JÁ é o comando — a
+`apps/my/src/<pasta>/` com um `//!` na primeira linha JÁ é o comando — a
 docstring vira a descrição no help. `.test.ts` não vira comando.
 
 ## Do pedido ao verbo
@@ -343,7 +343,7 @@ com o `agentes[]` que os runs declaram, então agente órfão não aparece sozin
   resposta. O estado real já mora em arquivo.
 - **Contrato tem teto de 100 linhas.** Passou, o que sai vai pra `references/`.
 - **Cite o VERBO, nunca o caminho do script.** `my references worktree_and_staging`
-  ✓ · `bun run apps/my_cli/src/meta.ts …` ✗.
+  ✓ · `bun run apps/my/src/meta.ts …` ✗.
 - **Escreva enquanto acontece.** Rodada que só viveu na sessão morre com ela.
 
 ## Se `my` não estiver no PATH
@@ -352,7 +352,7 @@ Shim de três linhas que roda o FONTE, nunca binário compilado (`bun build
 --compile` congela a varredura de `src/` no estado do último build):
 
 ```bash
-exec bun run "$HOME/src/my/apps/my_cli/src/cli/my.ts" "$@"
+exec bun run "$HOME/src/my/apps/my/src/cli/my.ts" "$@"
 ```
 
 ## References

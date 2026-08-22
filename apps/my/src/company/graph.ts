@@ -16,7 +16,7 @@
 //! passa pelo Caddy e é qualificado; a janela abre em branco e o log nativo diz que
 //! carregou.
 //!
-//! depends_on: apps/my_cli/src/tools/graph.ts · apps/my_cli/src/tools/canvas.ts
+//! depends_on: apps/my/src/tools/graph.ts · apps/my/src/tools/canvas.ts
 //! impacts:    packages/interfaces/company.ts
 
 import { up } from "../tools/graph.ts";

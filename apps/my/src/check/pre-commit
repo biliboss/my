@@ -44,7 +44,7 @@ while [[ -L "$self" ]]; do
 done
 code="$(cd "$(dirname "$self")/../.." && pwd)"
 
-# O CHECKOUT do código, que desde 20/08 NÃO é o pacote: o CLI virou `apps/my_cli/`
+# O CHECKOUT do código, que desde 20/08 NÃO é o pacote: o CLI virou `apps/my/`
 # dentro do monorepo, então `$code` é o pacote e `$coderepo` é o `.git` que o contém.
 # Comparar `$repo` com `$code` fazia um commit no próprio monorepo cair no `!=` e
 # apontar `MY_HOME` pra raiz do monorepo — a casa vira o repositório do código, e

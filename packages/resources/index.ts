@@ -23,7 +23,7 @@
 //!
 //! `Resources extends UsageLogging`, e `unread(since)` só responde se `read()`
 //! estiver gravando span. O sink desta casa é `shared/telemetry.ts`, que mora no
-//! `my_cli` — este pacote não pode importar um app. Então `uses()` e `unread()`
+//! `my` — este pacote não pode importar um app. Então `uses()` e `unread()`
 //! devolvem `[]` e DIZEM que devolvem: leitura não registrada não é "ninguém leu",
 //! e as duas se parecem exatamente igual num array vazio.
 //!

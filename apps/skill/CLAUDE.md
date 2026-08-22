@@ -11,7 +11,7 @@ existe** e **como ela evolui** — e só quem vai editar a skill precisa dele.
 
 Ela morou em `~/src/me/skills/my/` até 22/08, junto da casa que ela descreve. O
 problema era mecânico: **a skill descreve a superfície de comandos, e a
-superfície de comandos é `apps/my_cli/src/`.** Verbo novo, verbo renomeado, verbo
+superfície de comandos é `apps/my/src/`.** Verbo novo, verbo renomeado, verbo
 morto — tudo isso acontece neste repositório, e uma skill no outro só descobre
 depois que alguém se lembra. Aqui ela entra no MESMO diff que a mudou.
 
@@ -62,7 +62,7 @@ Um experimento sobe conforme prova, e cada degrau custa mais que o anterior:
 | `references/experimental/` | rodou, foi medido, pode morrer | — |
 | referência de workflow na casa | é o jeito de fazer aquilo | rodou em mais de um caso, e o contrato de um main aponta pra ela |
 | referência de sistema (`references/system/`) | é um conceito da casa | vale além de um workflow, e tem cicatriz que explica o porquê |
-| verbo do CLI (`apps/my_cli/src/<pasta>/<verbo>.ts`) | é mecânico e repetido | alguém ia digitar a mesma sequência de novo |
+| verbo do CLI (`apps/my/src/<pasta>/<verbo>.ts`) | é mecânico e repetido | alguém ia digitar a mesma sequência de novo |
 
 A descida também existe e é saudável: experimento que não foi usado em duas
 semanas **se apaga**, e o commit que apaga diz por quê. Pasta de experimento que

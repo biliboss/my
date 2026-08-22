@@ -30,6 +30,28 @@
         "typescript": "catalog:",
       },
     },
+    "apps/my": {
+      "name": "@biliboss/my",
+      "version": "0.1.0",
+      "bin": {
+        "my": "./src/cli/my.ts",
+      },
+      "dependencies": {
+        "@biliboss/company": "workspace:*",
+        "@biliboss/herdr": "workspace:*",
+        "@biliboss/interfaces": "workspace:*",
+        "@biliboss/lp-slices": "workspace:*",
+        "@biliboss/notes": "workspace:*",
+        "@biliboss/shared": "workspace:*",
+        "commander": "^15.0.0",
+        "drizzle-orm": "^0.45.2",
+        "surrealdb": "^2.0.8",
+      },
+      "devDependencies": {
+        "drizzle-kit": "^0.31.10",
+        "typescript": "catalog:",
+      },
+    },
     "apps/my-graph": {
       "name": "@biliboss/my-graph",
       "version": "0.1.0",
@@ -50,28 +72,6 @@
         "@types/react": "catalog:",
         "@types/react-dom": "catalog:",
         "tailwindcss": "^4",
-        "typescript": "catalog:",
-      },
-    },
-    "apps/my_cli": {
-      "name": "@biliboss/my-cli",
-      "version": "0.1.0",
-      "bin": {
-        "my": "./src/cli/my.ts",
-      },
-      "dependencies": {
-        "@biliboss/company": "workspace:*",
-        "@biliboss/herdr": "workspace:*",
-        "@biliboss/interfaces": "workspace:*",
-        "@biliboss/lp-slices": "workspace:*",
-        "@biliboss/notes": "workspace:*",
-        "@biliboss/shared": "workspace:*",
-        "commander": "^15.0.0",
-        "drizzle-orm": "^0.45.2",
-        "surrealdb": "^2.0.8",
-      },
-      "devDependencies": {
-        "drizzle-kit": "^0.31.10",
         "typescript": "catalog:",
       },
     },
@@ -248,9 +248,9 @@
 
     "@biliboss/lp-slices": ["@biliboss/lp-slices@workspace:packages/lp-slices"],
 
-    "@biliboss/my-canvas": ["@biliboss/my-canvas@workspace:packages/my-canvas"],
+    "@biliboss/my": ["@biliboss/my@workspace:apps/my"],
 
-    "@biliboss/my-cli": ["@biliboss/my-cli@workspace:apps/my_cli"],
+    "@biliboss/my-canvas": ["@biliboss/my-canvas@workspace:packages/my-canvas"],
 
     "@biliboss/my-graph": ["@biliboss/my-graph@workspace:apps/my-graph"],
 

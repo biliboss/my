@@ -173,7 +173,7 @@ function stackResource(): Resource {
 		name: "stack",
 		kind: "references",
 		// TRÊS RAÍZES E ESTA É A DO CHECKOUT. `home()` é a casa, `code()` é o pacote
-		// (`apps/my_cli/`), e `packages/interfaces/` não está em nenhuma das duas: ela
+		// (`apps/my/`), e `packages/interfaces/` não está em nenhuma das duas: ela
 		// é irmã do pacote, na raiz do monorepo. É o único lugar do fonte que precisa
 		// da terceira, e é por isso que `repoRoot()` continua existindo.
 		path: join(repoRoot(), "packages/interfaces/resources.ts"),

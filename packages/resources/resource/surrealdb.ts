@@ -176,7 +176,7 @@ Record id com ponto sai envolto: \`pref:⟨tasks.project⟩\`. É display, não 
 
 ## References
 
-- @../../../../my/apps/my_cli/src/home/db.ts — a conexão, o schema e o \`--sql\`
+- @../../../../my/apps/my/src/home/db.ts — a conexão, o schema e o \`--sql\`
 - @../../../../my/packages/interfaces/labels.ts — o contrato que usa aresta e LIVE
 `,
 });
