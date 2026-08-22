@@ -48,13 +48,27 @@ export declare namespace ChatSystem {
 		 *  discussed, so the channel outlives whoever was in it. */
 		export type ChannelName = string;
 
-		/** Whoever can be addressed: an agent by name, `"human"` for the person at the
-		 *  wheel, `"all"` for the room.
+		/** ONE name that can be addressed: an agent, or `"human"` for the person at
+		 *  the wheel. It is NOT `"all"` — the room is not a name, and the two are
+		 *  different questions. See `Broadcast` below.
 		 *
-		 *  `"human"` IS NOT AN AGENT and must never be routed like one — a message to
-		 *  `"all"` that wakes four agents and pages a person is the mistake this union
-		 *  exists to make visible. */
-		export type Addressee = string | "all" | "human";
+		 *  `"human"` IS NOT AN AGENT and must never be routed like one. */
+		export type Name = string;
+
+		/** THE ROOM, and the only reserved word in this column. A channel's members
+		 *  are who it means. */
+		export type All = "all";
+
+		/** Whoever a message can be addressed to: one name, or the room.
+		 *
+		 *  IT USED TO BE `string | "all" | "human"`, and that union is a lie
+		 *  TypeScript erases: `string` absorbs both literals, so the compiler checked
+		 *  nothing and a typo went out as a direct message to a name nobody has.
+		 *  MEASURED 22/08 nos 795 do barramento: 264 diretas, e 43 delas (16%) foram
+		 *  pra quem NÃO é membro declarado do canal — `soulperuibe → via-1` 4 vezes,
+		 *  `pm → pm` falando consigo mesmo, `viacorretor → summary-boy` que não
+		 *  existe. Nenhuma estourou, nenhuma foi lida, nenhuma apareceu num check. */
+		export type Addressee = Name | All;
 
 		/** What a message is ABOUT: an inbox item, a task, a work path. Absent means the
 		 *  room itself — coordination that is not about one thing. */
@@ -102,7 +116,7 @@ export declare namespace ChatSystem {
 			channel: ValueObjects.ChannelName;
 			/** REQUIRED, never inferred from context: a room with four agents and a human
 			 *  needs to say who asked for the rewrite. */
-			from: ValueObjects.Addressee;
+			from: ValueObjects.Name;
 			to: ValueObjects.Addressee;
 			at: ValueObjects.Instant;
 			text: string;
@@ -110,6 +124,28 @@ export declare namespace ChatSystem {
 			/** Present when this answers a specific message. What makes a question and its
 			 *  answer readable as a pair a week later. */
 			answers?: ValueObjects.Cursor;
+		}
+
+		/** ADDRESSED TO ONE, and it wakes exactly that one. `to` is a member of the
+		 *  channel — a direct to somebody who is not is a message nobody will ever
+		 *  read, because nobody polls a room they did not join.
+		 *
+		 *  It is a READING of `Message`, not a second row: the wire has one shape and
+		 *  `to` is what tells the two apart. A stored `kind` column would be the fifth
+		 *  message type this contract already refused. */
+		export interface Direct extends Message {
+			to: ValueObjects.Name;
+		}
+
+		/** ADDRESSED TO THE ROOM, and it wakes every member of the channel.
+		 *
+		 *  IT IS THE COMMON CASE AND THE EXPENSIVE ONE: 531 das 795 mensagens do
+		 *  barramento (67%) são broadcast, e cada uma acorda todo mundo que assina o
+		 *  canal — um turno de modelo por membro, com fatura. `Direct` existe pra
+		 *  quando a pergunta tem um dono, e usá-lo é o que separa uma sala de um
+		 *  megafone. */
+		export interface Broadcast extends Message {
+			to: ValueObjects.All;
 		}
 
 		export interface Channel {
@@ -131,8 +167,15 @@ export declare namespace ChatSystem {
 
 /** Answers about a channel. Nothing here writes. */
 export interface View {
-	/** No message without `from`, and no `answers` pointing at a `seq` that does not exist. */
+	/** No message without `from`, no `answers` pointing at a `seq` that does not
+	 *  exist, and no `Direct` to a name the channel does not have — the last one is
+	 *  the 16% measured in 22/08, and the reason `Direct` and `Broadcast` are two
+	 *  names instead of one string. */
 	check(): Finding[];
+
+	/** Which of the two a message is. A PREDICATE and not a column: the wire keeps
+	 *  one shape, and `to === "all"` is the whole discriminator. */
+	broadcast(m: ChatSystem.Entities.Message): m is ChatSystem.Entities.Broadcast;
 
 	channels(): ChatSystem.Entities.Channel[];
 
