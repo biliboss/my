@@ -65,6 +65,46 @@ const OWN_HELP = /from\s+["']commander["']/;
  *  subverbos, e a gramática pelada entra ali como `Examples:` do docstring dele. */
 const DEFAULT_SUBVERB = "index";
 
+/** `--remote <host>` SAI DO ARGV E VIRA AMBIENTE, antes de o commander ver
+ *  qualquer coisa.
+ *
+ *  ANTES DO PARSE, e não dentro da action: `allowUnknownOption()` faz o
+ *  commander ENGOLIR uma flag que ninguém declarou em vez de repassá-la, então
+ *  `--remote` nunca chegava no `[args...]` — medido 22/08, `my herdr workspaces
+ *  list --remote fonseca-vps` devolveu a lista LOCAL, que é o pior desfecho
+ *  possível: a resposta da caixa errada, com cara de sucesso.
+ *
+ *  É também a única forma de a flag valer pra TODO verbo sem ser declarada em
+ *  cada um — quinze arquivos declarando a mesma flag é uma decisão escrita
+ *  quinze vezes, e o décimo sexto verbo nasce sem ela.
+ *
+ *  Quem LÊ o ambiente é `src/herdr/run.ts`, o único lugar que faz shellout pro
+ *  herdr. Verbo nenhum lê `MY_HERDR_HOST` direto: se ele lesse, passaria a haver
+ *  duas respostas pra "que caixa é esta". */
+export function stripRemote(args: string[]): string[] {
+  const out: string[] = [];
+  for (let i = 0; i < args.length; i++) {
+    const a = args[i]!;
+    if (a === "--remote") {
+      const host = args[++i];
+      // Sem host o certo é ESTOURAR e não cair no local em silêncio: `--remote`
+      // sozinho é alguém pedindo a outra caixa, e atender na local é responder
+      // outra pergunta com cara de sucesso.
+      if (!host || host.startsWith("-")) throw new Error("--remote precisa do host: `--remote fonseca-vps`");
+      process.env.MY_HERDR_HOST = host;
+      continue;
+    }
+    const eq = a.startsWith("--remote=") ? a.slice("--remote=".length) : undefined;
+    if (eq !== undefined) {
+      if (!eq) throw new Error("--remote precisa do host: `--remote=fonseca-vps`");
+      process.env.MY_HERDR_HOST = eq;
+      continue;
+    }
+    out.push(a);
+  }
+  return out;
+}
+
 async function call(file: string, args: string[]): Promise<number> {
   const mod = (await import(file)) as { main: Main };
   return mod.main(args);

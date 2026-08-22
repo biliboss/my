@@ -32,7 +32,7 @@
 //! impacts:    src/CONTEXT.md · CONTEXT.md
 
 import { Command } from "commander";
-import { attach } from "./core/router.ts";
+import { attach, stripRemote } from "./core/router.ts";
 import { scan } from "./core/scan.ts";
 import { verb } from "./core/verbs.ts";
 
@@ -53,6 +53,7 @@ class My {
   @verb("o multiplexador: workspaces, abas, panes, agentes") herdr() {}
   @verb("a barra lateral do VS Code: que pasta, em que ordem, com que rótulo") vscode() {}
   @verb("o GitHub por fora: issue e PR, com o link que o ciclo cita") gh() {}
+  @verb("as portas: uma rota por fatia de público, servidas de um domínio só") lp() {}
   @verb("os programas de fora: o grafo, os hooks do Claude Code, e se ainda respondem") tools() {}
   @verb("o Claude Code por fora: os hooks que uma sessão ganha, e qual arquivo os deu") claude() {}
   @verb("o que apodreceu: citação pro vazio, CONTEXT.md, regra fora do lugar") check() {}
@@ -61,11 +62,23 @@ class My {
 }
 void My;
 
+// `--remote <host>` é a ÚNICA flag global desta CLI, e ela sai do argv aqui —
+// antes de qualquer commander existir. O porquê, com o que custou, está em
+// `core/router.ts#stripRemote`.
+let argv: string[];
+try {
+  argv = stripRemote(process.argv.slice(2));
+} catch (err) {
+  console.error(err instanceof Error ? err.message : String(err));
+  process.exit(2);
+}
+
 (
   await attach(
     new Command("my")
       .description("a CLI desta casa — pasta é verbo, arquivo é subverbo")
-      .showHelpAfterError(),
+      .showHelpAfterError()
+      .addHelpText("after", "\nGlobal:\n  --remote <host>  roda o comando no herdr da outra caixa (ex.: fonseca-vps)\n"),
     scan(),
   )
-).parse();
+).parse(argv, { from: "user" });

@@ -25,6 +25,15 @@ const ME = process.env.ME_ROOT ?? join(import.meta.dir, "../../..");
  *  `main` continua funcionando, e o dia em que o último migrar esta função sai
  *  junto com o único `bun` que sobrou dentro da CLI. */
 export function spawn(script: string, args: string[]): number {
-  const r = spawnSync("bun", ["run", join(ME, "src", script), ...args], { stdio: "inherit", cwd: ME });
+  // `env` EXPLÍCITO, e não o default de herdar. Medido 22/08: o roteador escreve
+  // `MY_HERDR_HOST` em `process.env` durante a execução (é o `--remote`), e o
+  // filho subia SEM ele — o default herda o bloco de ambiente com que o processo
+  // NASCEU, não o mutado. O sintoma foi o pior possível: `my herdr workspaces
+  // list --remote fonseca-vps` respondeu a lista LOCAL, com exit 0.
+  const r = spawnSync("bun", ["run", join(ME, "src", script), ...args], {
+    stdio: "inherit",
+    cwd: ME,
+    env: { ...process.env },
+  });
   return r.status ?? 1;
 }

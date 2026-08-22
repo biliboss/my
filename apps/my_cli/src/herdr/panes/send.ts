@@ -21,7 +21,7 @@
 //! depends_on: src/herdr/run.ts · src/herdr/policy.ts · src/shared/argv.ts
 //! impacts:    src/inbox/capture.ts
 
-import { did } from '../run.ts'
+import { did, host } from '../run.ts'
 import { read } from './read.ts'
 import { fence } from '../policy.ts'
 import { upstream, type Fail } from '../../shared/result.ts'
@@ -44,8 +44,15 @@ export async function submit(pane: string): Promise<{ ok: true; pane: string } |
   return out.ok ? { ok: true, pane } : upstream(out.error ?? 'herdr failed')
 }
 
-/** Quanto se espera o texto APARECER na tela antes de bater o Enter. */
-const ARRIVAL_MS = 5_000
+/** Quanto se espera o texto APARECER na tela antes de bater o Enter.
+ *
+ *  O NÚMERO DOBRA NO REMOTO, e não por conforto: a espera é feita LENDO o pane, e
+ *  cada leitura contra `--remote` é uma ida e volta de ssh. Medido 22/08 contra
+ *  `fonseca-vps`: o texto chegou, os 5000ms acabaram antes de a leitura confirmar,
+ *  e o verbo recusou com "Enter NÃO foi enviado" — deixando exatamente o pane
+ *  digitado-e-parado que este bloco inteiro existe pra impedir. O espelho
+ *  (`mirror.ts`) foi o que mostrou o texto lá, com o comando dizendo que falhou. */
+const ARRIVAL_MS = () => (host() ? 20_000 : 5_000)
 /** Quantas vezes se insiste no Enter quando o texto não saiu do prompt. */
 const ENTER_TRIES = 3
 /** A janela do fim da tela onde a CAIXA DE ENTRADA vive — medida no TUI do Claude
@@ -158,8 +165,9 @@ export async function send(
   // verbo falha em vez de bater Enter no escuro. O sintoma que isso mata é o pior
   // possível: sucesso em toda chamada e um agente parado com a pergunta na tela,
   // indistinguível de um agente pensando.
-  if (!(await onScreen(pane, needle, ARRIVAL_MS, opts.window))) {
-    return upstream(`o texto não apareceu em ${pane} em ${ARRIVAL_MS}ms — Enter NÃO foi enviado`)
+  const arrival = ARRIVAL_MS()
+  if (!(await onScreen(pane, needle, arrival, opts.window))) {
+    return upstream(`o texto não apareceu em ${pane} em ${arrival}ms — Enter NÃO foi enviado`)
   }
 
   // E confirma que SAIU. Um Enter que o TUI engoliu responde ok igual, então a

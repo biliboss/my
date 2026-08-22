@@ -2,6 +2,14 @@
 //! fleet lives.
 //!
 //!     bun run src/herdr/run.ts workspace list
+//!     my herdr workspaces list --remote fonseca-vps
+//!
+//! IT IS ALSO THE ONE PLACE THAT KNOWS ABOUT THE OTHER BOX. `--remote <host>` is
+//! stripped by the router into `MY_HERDR_HOST` (@src/cli/core/router.ts) and read
+//! here, so every verb that already calls `run()` speaks to the VPS with no flag
+//! of its own. The alternative — a `--remote` declared on each of the fifteen
+//! subverbs — is one decision written fifteen times, and the sixteenth verb is
+//! born without it.
 //!
 //! herdr owns the sessions, workspaces, tabs and panes; its CLI prints one JSON
 //! envelope per call. Every shellout goes through `run()` here, never through
@@ -25,17 +33,44 @@
 
 export const HERDR_TIMEOUT_MS = 9000
 
+/** O MESMO comando, na caixa de lá. O `ssh` acrescenta handshake e latência de
+ *  rede a cada chamada, e 9000ms foi medido contra um herdr LOCAL — apertar o
+ *  remoto no teto do local transformaria rede lenta em "servidor morto", que é
+ *  a leitura errada mais cara que este módulo pode devolver. */
+export const HERDR_REMOTE_TIMEOUT_MS = 30_000
+
+/** QUAL CAIXA, e ela é UMA por processo.
+ *
+ *  Vem de `MY_HERDR_HOST`, que o roteador escreve quando alguém passa
+ *  `--remote <host>` (@src/cli/core/router.ts) — assim TODO verbo que já chama
+ *  `run()` fala remoto sem ganhar uma flag própria. Uma flag por verbo seria a
+ *  mesma decisão escrita em quinze lugares, e o décimo sexto nasceria sem ela.
+ *
+ *  IDS DE PANE SÃO POR HOST, e nada avisa: `w1D:p3` aqui e `w1D:p3` na VPS são
+ *  panes diferentes em máquinas diferentes. Por isso o host é do PROCESSO e não
+ *  de uma chamada — misturar local e remoto no mesmo comando é como um id
+ *  resolve na caixa errada. */
+export const host = (): string | undefined => process.env.MY_HERDR_HOST || undefined
+
 export async function run(
   args: string[],
-  timeoutMs = HERDR_TIMEOUT_MS,
+  timeoutMs?: number,
 ): Promise<{ ok: boolean; stdout: string; error?: string }> {
+  const remote = host()
+  // `herdr` por CAMINHO ABSOLUTO no remoto: o `PATH` de uma sessão ssh
+  // não-interativa não carrega `~/.local/bin`, e o `command not found` que volta
+  // parece herdr fora do ar. `-o BatchMode=yes` porque um prompt de senha aqui
+  // travaria o processo até o timeout, sem nada legível na saída.
+  const argv = remote ? ['ssh', '-o', 'BatchMode=yes', remote, 'herdr', ...args] : ['herdr', ...args]
+  const limit = timeoutMs ?? (remote ? HERDR_REMOTE_TIMEOUT_MS : HERDR_TIMEOUT_MS)
   try {
-    const child = Bun.spawn(['herdr', ...args], { stdout: 'pipe', stderr: 'pipe', timeout: timeoutMs })
+    const child = Bun.spawn(argv, { stdout: 'pipe', stderr: 'pipe', timeout: limit })
     const stdout = await new Response(child.stdout).text()
     await child.exited
 
     if (child.exitedDueToTimeout) {
-      return { ok: false, stdout: '', error: `herdr ${args.join(' ')} timed out after ${timeoutMs}ms` }
+      const onde = remote ? ` em ${remote}` : ''
+      return { ok: false, stdout: '', error: `herdr ${args.join(' ')}${onde} timed out after ${limit}ms` }
     }
     if (child.exitCode !== 0) {
       const stderr = await new Response(child.stderr).text()
