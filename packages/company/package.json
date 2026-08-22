@@ -1,0 +1,25 @@
+{
+  "name": "@biliboss/company",
+  "version": "0.1.0",
+  "description": "The company's workflows, and the project-scope skills generated from them.",
+  "license": "MIT",
+  "author": "Gabriel (biliboss)",
+  "type": "module",
+  "exports": {
+    ".": "./index.ts",
+    "./workflows": "./workflows.ts",
+    "./skills": "./skills.ts"
+  },
+  "dependencies": {
+    "@biliboss/interfaces": "workspace:*",
+    "@biliboss/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/node": "^20",
+    "typescript": "catalog:"
+  },
+  "scripts": {
+    "check": "tsc --noEmit --strict --target es2022 --module esnext --moduleResolution bundler --allowImportingTsExtensions --skipLibCheck --types node,bun *.ts"
+  }
+}

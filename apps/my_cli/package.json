@@ -17,7 +17,8 @@
     "surrealdb": "^2.0.8",
     "@biliboss/notes": "workspace:*",
     "@biliboss/herdr": "workspace:*",
-    "@biliboss/shared": "workspace:*"
+    "@biliboss/shared": "workspace:*",
+    "@biliboss/company": "workspace:*"
   },
   "devDependencies": {
     "drizzle-kit": "^0.31.10",

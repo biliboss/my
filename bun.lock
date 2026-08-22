@@ -184,6 +184,7 @@
         "my": "./src/cli/my.ts",
       },
       "dependencies": {
+        "@biliboss/company": "workspace:*",
         "@biliboss/herdr": "workspace:*",
         "@biliboss/interfaces": "workspace:*",
         "@biliboss/lp-slices": "workspace:*",
@@ -195,6 +196,19 @@
       },
       "devDependencies": {
         "drizzle-kit": "^0.31.10",
+        "typescript": "catalog:",
+      },
+    },
+    "packages/company": {
+      "name": "@biliboss/company",
+      "version": "0.1.0",
+      "dependencies": {
+        "@biliboss/interfaces": "workspace:*",
+        "@biliboss/shared": "workspace:*",
+      },
+      "devDependencies": {
+        "@types/bun": "latest",
+        "@types/node": "^20",
         "typescript": "catalog:",
       },
     },
@@ -464,6 +478,8 @@
     "@babel/types": ["@babel/types@7.29.8", "", { "dependencies": { "@babel/helper-string-parser": "^7.29.7", "@babel/helper-validator-identifier": "^7.29.7" } }, "sha512-Vj1jF3cPfxg7OAfoI7QnVKLoILlm2JF9pnVHrX8qx7AHMiYWT+NDAA7jChlNgRS4WTLc/fD1lXLmPixluj+3Gg=="],
 
     "@babylonjs/core": ["@babylonjs/core@7.54.3", "", {}, "sha512-P5ncXVd8GEUJLhwloP9V0oVwQYIrvZztguVeLlvd5Rx+9aQnenKjpV8auJ6SRsUlAmNZU4pFTKzwF6o2EUfhAw=="],
+
+    "@biliboss/company": ["@biliboss/company@workspace:packages/company"],
 
     "@biliboss/herdr": ["@biliboss/herdr@workspace:packages/herdr"],
 
