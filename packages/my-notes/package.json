@@ -1,0 +1,22 @@
+{
+  "name": "@biliboss/my-notes",
+  "version": "0.1.0",
+  "description": "The two time-and-idea axes of the house: zettels in 03_resources/notes/ and the day in 00_daily_notes/, plus the labels both carry.",
+  "license": "MIT",
+  "author": "Gabriel (biliboss)",
+  "type": "module",
+  "exports": {
+    ".": "./index.ts",
+    "./store": "./store.ts"
+  },
+  "dependencies": {
+    "@biliboss/interfaces": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "typescript": "catalog:"
+  },
+  "scripts": {
+    "check": "tsc --noEmit --strict --target es2022 --module esnext --moduleResolution bundler --allowImportingTsExtensions --skipLibCheck --types node *.ts"
+  }
+}

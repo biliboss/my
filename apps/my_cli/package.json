@@ -6,12 +6,16 @@
   "author": "Gabriel (biliboss)",
   "private": true,
   "type": "module",
-  "bin": { "my": "./src/cli/my.ts" },
+  "bin": {
+    "my": "./src/cli/my.ts"
+  },
   "dependencies": {
     "@biliboss/interfaces": "workspace:*",
+    "@biliboss/lp-slices": "workspace:*",
     "commander": "^15.0.0",
     "drizzle-orm": "^0.45.2",
-    "surrealdb": "^2.0.8"
+    "surrealdb": "^2.0.8",
+    "@biliboss/my-notes": "workspace:*"
   },
   "devDependencies": {
     "drizzle-kit": "^0.31.10",
