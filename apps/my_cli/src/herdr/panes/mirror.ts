@@ -1,8 +1,13 @@
 //! O PANE DA OUTRA CAIXA, DENTRO DO HERDR DAQUI — uma aba local cujo conteúdo é
 //! o terminal que está rodando na VPS.
 //!
-//!     bun run src/herdr/panes/mirror.ts fonseca-vps w3D:p1
+//!     bun run src/herdr/panes/mirror.ts fonseca-vps w3D:p1 --workspace a2a
 //!     bun run src/herdr/panes/mirror.ts fonseca-vps w3D:p1 --label a2a-vps
+//!
+//! `--workspace <label>` é o que quase sempre se quer: workspace de lá vira
+//! WORKSPACE aqui, criado se não existir, e o espelho vai no pane raiz dele. Sem
+//! ele o espelho nasce como ABA do workspace corrente — que é onde ninguém
+//! procura por uma máquina remota.
 //!
 //! É O QUE FALTAVA PRA "REMOTO" SER USÁVEL. `--remote <host>` (@src/cli/core/router.ts)
 //! deixa um comando AGIR na outra caixa, e isso resolve script. Não resolve olhar:
@@ -29,6 +34,8 @@
 
 import { run } from '../run.ts'
 import { create } from '../tabs/create.ts'
+import { create as createWorkspace } from '../workspaces/create.ts'
+import { resolve } from '../workspaces/resolve.ts'
 import { upstream, type Fail } from '../../shared/result.ts'
 import { value } from '../../shared/argv.ts'
 
@@ -55,12 +62,34 @@ export async function mirror(
   host: string,
   pane: string,
   opts: { label?: string; workspace?: string; remoteBin?: string } = {},
-): Promise<{ ok: true; pane: string; tab: string } | Fail> {
+): Promise<{ ok: true; pane: string; tab: string; workspace?: string } | Fail> {
   if (!/^w[A-Za-z0-9]+:p\d+$/.test(pane)) {
     return upstream(`\`${pane}\` não é id de pane — a forma é \`w3D:p1\`, e ela vale na caixa ${host}, não nesta`)
   }
 
-  const tab = await local(() => create({ workspace: opts.workspace, label: opts.label ?? `${pane}@${host}` }))
+  // UM WORKSPACE DE LÁ VIRA UM WORKSPACE AQUI, e não uma aba no que estava
+  // aberto. Medido 22/08: espelhar sem isto pendurou `a2a@fonseca-vps` como aba
+  // dentro de `me`, e a barra lateral — que é onde se procura por workspace —
+  // seguia com três nomes locais. O espelho existia e não estava onde alguém
+  // olharia por ele, que na prática é não existir.
+  let workspace = opts.workspace
+  if (workspace) {
+    const found = await local(() => resolve(workspace!))
+    if (!found.ok) {
+      const novo = await local(() => createWorkspace(workspace!, { focus: false }))
+      if (!novo.ok) return novo
+      workspace = novo.id
+      // O workspace já nasce com um pane de shell; o espelho vai pra ELE, e não
+      // numa aba a mais — senão a primeira fica pendurada vazia.
+      const cmd = `${MIRROR} pane ${host} ${pane} --remote-bin '${opts.remoteBin ?? 'herdr'}'`
+      const rodou = await local(() => run(['pane', 'run', novo.pane, cmd]))
+      if (!rodou.ok) return upstream(rodou.error)
+      return { ok: true, pane: novo.pane, tab: novo.pane, workspace: novo.id }
+    }
+    workspace = found.workspace.id
+  }
+
+  const tab = await local(() => create({ workspace, label: opts.label ?? `${pane}@${host}` }))
   if (!tab.ok) return tab
 
   const cmd = `${MIRROR} pane ${host} ${pane} --remote-bin '${opts.remoteBin ?? 'herdr'}'`
@@ -81,6 +110,10 @@ if (import.meta.main) {
     workspace: value('workspace'),
     remoteBin: value('remote-bin'),
   })
-  console.log(out.ok ? `${out.pane}\t${pane}@${host}` : `✗ ${out.error}`)
-  process.exit(out.ok ? 0 : 1)
+  if (!out.ok) {
+    console.error(`✗ ${out.error}`)
+    process.exit(1)
+  }
+  console.log(`${out.workspace ? `${out.workspace} ` : ''}${out.pane}\t${pane}@${host}`)
+  process.exit(0)
 }

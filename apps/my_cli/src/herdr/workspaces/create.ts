@@ -103,7 +103,10 @@ if (import.meta.main) {
 
   if (has('mirror')) {
     const { mirror } = await import('../panes/mirror.ts')
-    const espelho = await mirror(host!, out.pane, { label: `${label}@${host}` })
+    // O MESMO LABEL nos dois lados. Um workspace remoto tem que aparecer como
+    // WORKSPACE na barra daqui, com o nome que ele tem lá — foi o que faltou em
+    // 22/08, quando o espelho virou aba dentro de `me` e a barra seguiu igual.
+    const espelho = await mirror(host!, out.pane, { workspace: `${label}@${host}` })
     // O workspace JÁ existe neste ponto, então falhar aqui não é falhar tudo: o
     // exit conta a segunda metade, e a linha acima já disse o que ficou de pé.
     console.log(espelho.ok ? `${espelho.pane}\t${out.pane}@${host}` : `✗ espelho: ${espelho.error}`)
