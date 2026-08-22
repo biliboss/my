@@ -54,6 +54,9 @@ class My {
   @verb("onde as coisas ficam: as três raízes, as env, e quem escreve onde") home() {}
   @verb("o plantão: sobe um workspace por time, e ele PUXA da própria fila") teams() {}
   @verb("o multiplexador: workspaces, abas, panes, agentes") herdr() {}
+  // Endereço aninhado: o nome entre ASPAS é onde a barra cabe. Sem ele esta
+  // pasta herdava a frase do `my agents` do topo — as duas se chamam `agents`.
+  @verb("os agentes que o herdr vê rodando NESTA caixa") "herdr/agents"() {}
   @verb("a barra lateral do VS Code: que pasta, em que ordem, com que rótulo") vscode() {}
   @verb("o GitHub por fora: issue e PR, com o link que o ciclo cita") gh() {}
   @verb("as portas: uma rota por fatia de público, servidas de um domínio só") lp() {}

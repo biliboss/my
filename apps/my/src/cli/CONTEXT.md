@@ -116,8 +116,14 @@ contagem, não descrição.
 class My {
   @verb("o pedido que chega vira arquivo, com a hora") inbox() {}
   @verb("a barra lateral do VS Code, desenhada do disco") ws() {}
+  @verb("os agentes vivos NESTA caixa") "herdr/agents"() {}   // aninhado
 }
 ```
+
+A chave é o **ENDEREÇO** da pasta, e o nome do método entre aspas é onde a barra
+cabe. Chavear pelo nome nu fazia `my herdr --help` imprimir a frase do
+`my agents` do TOPO no `herdr/agents`, porque as duas pastas se chamam igual
+(medido 22/08) — e descrição errada é pior que ausente: ela não parece faltar.
 
 O corpo do método é vazio de propósito: quem executa é o subverbo, achado no
 disco. **Pasta sem `@verb` continua aparecendo**, só que sem a frase; **`@verb`
